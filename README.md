@@ -11,4 +11,11 @@ Idées de mini-jeux :
 
     -Un space invader contre les spams
     -Un casse-brique sur ???    
-    -Un labyrinte avec clé/porte (je me comprends) pour expliquer vite fait le fonctionnement d'une recherche google
+    -Un labyrinthe avec clé/porte (je me comprends) pour expliquer vite fait le fonctionnement d'une recherche google
+    -Labyrinthe
+    -Trivial poursuit / Incollable
+    -Jeu de plateforme
+    -Questions (Qui veut gagner des millions / Reign / Tout le monde veut prendre sa place)
+    -Point & Click (ex : 7 différences)
+    -pokémon
+    -jeu de carte
