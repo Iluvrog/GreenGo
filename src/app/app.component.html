@@ -10,16 +10,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Jeux <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" [routerLink]="['/home']">Liste de Jeux <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" [routerLink]="['/jeu/1']">Jeu 1</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" [routerLink]="['/jeu/2']">Jeu 2</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" [routerLink]="['/jeu/3']">Jeu 3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/jeu/4']">Jeu 4</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -30,16 +33,6 @@
     </nav>
 </div>
 
-
-
-
-
-<div class="container">
-    <!-- *ngFor sert a faire une boucle dans le code html-->
-    <div *ngFor="let game of gameList" class="game-container game m2 s2">
-        <a href='{{game}}'><img [src]='"assets/img/"+game+".png"' alt="{{game}}" class="game-icon">
-            <p class="game-title">{{game}}</p>
-        </a>
-
-
-    </div>
+<div class="mt-5">
+    <router-outlet></router-outlet>
+</div>
