@@ -1,34 +1,50 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20em;
-    margin-bottom: 20em;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 0px;
-    margin-bottom: 10em;
-    background-color: lightgreen;
-    padding: 1em;
-}
-
-.game-container {
-    margin-left: 50px;
-    margin-right: 50px;
-}
-
-.game-icon {
-    width: 15em;
-    height: 15em;
-}
-
-body {
-    margin-top: 0px;
-    height: 100%;
-}
-
-.game-title {
-    text-align: center
-}
+    .div-game-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .game-icon {
+        width: 15em;
+        height: 15em;
+    }
+    
+    @media screen and (max-width: 1300px) {
+        .div-game-container {
+            flex-direction: column;
+        }
+        .game-icon {
+            width: 8em;
+            height: 8em;
+        }
+    }
+    
+    .game-container {
+        margin-left: 50px;
+        margin-right: 50px;
+        display: flex;
+    }
+    
+    .game-container {
+        transition: all .2s ease-in-out;
+    }
+    
+    .game-container:hover {
+        transform: scale(1.1);
+    }
+    
+    .game-title {
+        text-align: center;
+        margin: 0px;
+    }
+    
+    .game-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    a.game-div {
+        text-decoration: none;
+        color: black;
+    }
