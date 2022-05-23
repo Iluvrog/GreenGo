@@ -1,1 +1,19 @@
-<p>jeu2 works!</p>
+<div class="level">
+    <p> Level : {{ levelCounter }}</p>
+</div>
+<div class="frame">  
+   <div class="plateau" *ngFor="let Array of plateau; let i = index;">
+        <div class="Array" *ngFor="let case of Array; let j = index;">
+            <button class="case 
+                {{ (case == 0 ? 'close' : '')}}
+                {{ (case == 1 ? 'open' : '')}}
+                {{ (case == 2 ? 'impty' : '')}}
+                {{ (case == 3 ? 'correct' : '')}}
+                {{ (case == 4 ? 'incorrect' : '')}}"
+                (click)="click()"
+            > <p><br></p> </button>
+        </div>
+    </div>
+    <button class="previous" (click)="previous ()">previous</button>
+    <button class="next" (click)="next()">next</button>
+</div>

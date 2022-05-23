@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { question } from 'src/app/models/question';
 
 @Component({
-  selector: 'app-jeu3',
-  templateUrl: './jeu3.component.html',
-  styleUrls: ['./jeu3.component.css']
+  selector: 'app-question',
+  templateUrl: './question.component.html',
+  styleUrls: ['./question.component.css']
 })
-export class Jeu3Component implements OnInit {
+export class QuestionComponent implements OnInit {
 
   questions: question[] = [];
   currentQuestion: question | undefined;
   counter:number = 0 ;
   score:number = 0 ;
 
-  constructor(private route: ActivatedRoute, private router:Router) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.questions = [
@@ -48,8 +47,7 @@ export class Jeu3Component implements OnInit {
     }
     this.counter++ ;
     this.currentQuestion = this.questions[this.counter] ;
-
-    //this.router.navigate(['jeu/2/']) ;
   }
 
 }
+

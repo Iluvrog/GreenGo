@@ -10,6 +10,7 @@ import { Jeu1Component } from './jeu-list/jeu1/jeu1.component';
 import { Jeu2Component } from './jeu-list/jeu2/jeu2.component';
 import { Jeu3Component } from './jeu-list/jeu3/jeu3.component';
 import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
+import { QuestionComponent } from './jeu-list/jeu2/Question/question.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
     Jeu1Component,
     Jeu2Component,
     Jeu3Component,
-    Jeu4Component
+    Jeu4Component,
+    QuestionComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
       { path: 'jeu/2', component: Jeu2Component},
       { path: 'jeu/3', component: Jeu3Component},
       { path: 'jeu/4', component: Jeu4Component},
-      { path: '**', redirectTo: 'home', pathMatch: 'full'}
+      { path: 'que', component: QuestionComponent },
+      { path: '**', redirectTo: 'home', pathMatch: 'full'}  
     ])
   ],
   providers: [],
