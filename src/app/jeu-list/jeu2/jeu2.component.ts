@@ -9,11 +9,12 @@ import { QuestionComponent } from './Question/question.component';
   templateUrl: './jeu2.component.html',
   styleUrls: ['./jeu2.component.css'],
   template:`
-    <app-question [answer]="answer"></app-question>`
+    <app-jeu2 (messageEvent)="receiveMessage($event)"></app-jeu2>`
 })
 export class Jeu2Component implements OnInit {
 
   constructor(private route: ActivatedRoute, private router:Router ) { }
+
   answer = true ;
   // 0: close, 1: open, 2:impty, 3:correct, 4:false
   niveaux: number[][][] = [] ;
@@ -38,12 +39,13 @@ export class Jeu2Component implements OnInit {
         this.plateau[i][j] = 0 ;
       }
     }
-    this.currentPosition = [0,0] ;
-    this.plateau[0][0] = 1 ;
-    this.plateau[1][1] = 2 ;
-    this.plateau[2][2] = 3 ;
-    this.plateau[1][3] = 4 ;
-    this.plateau[1][2] = 2 ;
+    //this.currentPosition = [0,0] ;
+
+    this.plateau[1][1] = 1 ;
+    //this.plateau[1][1] = 2 ;
+    //this.plateau[2][1] = 4 ;
+    //this.plateau[1][3] = 4 ;
+    //this.plateau[1][2] = 2 ;
 
     this.niveaux[0] = this.plateau ;
 
@@ -65,8 +67,7 @@ export class Jeu2Component implements OnInit {
     this.plateau[1][4] = 2 ;
     this.plateau[2][2] = 2 ;
     this.plateau[1][2] = 1 ;
-    this.plateau[1][1] = 3 ;
-    this.plateau[1][3] = 4 ;
+
     
 
     this.niveaux[1] = this.plateau ;
@@ -97,21 +98,70 @@ export class Jeu2Component implements OnInit {
     this.niveaux[2] = this.plateau ;
 
     this.plateau = this.niveaux[this.levelCounter] ;
+    
+    
+    if( localStorage.getItem('plateau') != null)
+      this.plateau = JSON.parse( localStorage.getItem('plateau') || "" ) ;
+
+    this.levelCounter = JSON.parse( localStorage.getItem('levelCounter') || "0" ) ;
+
+    if(localStorage.getItem('currentPosition') != null)
+      this.currentPosition = JSON.parse( localStorage.getItem('currentPosition') || "" ) ;
+    
   }
 
   next (){
     this.levelCounter++ ;
-    this.plateau = this.niveaux[this.levelCounter]
+    this.plateau = this.niveaux[this.levelCounter] ;
+    
   }
 
   previous (){
     if (this.levelCounter > 0)
       this.levelCounter-- ;
-    this.plateau = this.niveaux[this.levelCounter]
+    this.plateau = this.niveaux[this.levelCounter] ;
   }
 
-  click(){
+  click(i:number, j:number){
     this.router.navigate(['que']) ;
+    this.currentPosition = [i,j] ;
+
+    if(this.plateau){ 
+      if(this.answer)
+        this.plateau[this.currentPosition[0]][this.currentPosition[1]] = 3 ;
+      else
+        this.plateau[this.currentPosition[0]][this.currentPosition[1]] = 4 ;
+      
+      this.adjacent(this.currentPosition) ;
+    }
+
+    localStorage.setItem('plateau', JSON.stringify(this.plateau) );
+    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
+    localStorage.setItem('currentPosition', JSON.stringify(this.currentPosition) ); 
+  }
+
+  receiveMessage($event: boolean){
+    this.answer = $event ;
+  }
+  
+  adjacent(pos:number[]) {
+    
+    if(this.plateau){
+      if(this.plateau[pos[0]][pos[1]+1] == 0 && pos[1]+1 < this.plateau[0].length)
+        this.plateau[pos[0]][pos[1]+1] = 1 ;
+      if(this.plateau[pos[0]][pos[1]-1] == 0 && pos[1]-1 >= 0)
+        this.plateau[pos[0]][pos[1]-1] = 1 ;
+
+      if(this.plateau[pos[0]+1][pos[1]] == 0 && pos[0]+1 < this.plateau.length)
+        this.plateau[pos[0]+1][pos[1]] = 1 ;
+      if(this.plateau[pos[0]-1][pos[1]] == 0 && pos[0]-1 >= 0)
+        this.plateau[pos[0]-1][pos[1]] = 1 ;
+    }
+  }
+  
+  restart(){
+    localStorage.removeItem('plateau') ;
+    this.plateau = this.niveaux[this.levelCounter] ;
   }
    
 }

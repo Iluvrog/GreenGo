@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { question } from 'src/app/models/question';
 import { Jeu2Component } from '../jeu2.component';
@@ -11,13 +11,15 @@ import { Jeu2Component } from '../jeu2.component';
 })
 export class QuestionComponent implements OnInit {
   
-  @ViewChild('game') game: Jeu2Component | undefined ;
+  //@ViewChild('game') game: Jeu2Component | undefined ;
 
   questions: question[] = [];
   currentQuestion: question | undefined;
   counter:number = 0 ;
   score:number = 0 ;
-  @Input() answer:boolean | undefined ;
+  answer:boolean = false ;
+
+  @Output() messageEvent = new EventEmitter<boolean>() ;
 
   constructor(private route: ActivatedRoute, private router:Router ) { }
 
@@ -55,7 +57,7 @@ export class QuestionComponent implements OnInit {
     this.currentQuestion = this.questions[this.counter] ;
   }
 
-  respond (resp:string){
+  respond (resp:string, id:number){
     if(resp == this.currentQuestion?.reponse){
       this.score++ ;
       this.answer = true ;
@@ -64,16 +66,27 @@ export class QuestionComponent implements OnInit {
     
     localStorage.setItem('counter', JSON.stringify(this.counter) );
     localStorage.setItem('score', JSON.stringify(this.score) );
-    
+    /*
+    for(var i=0; i <4; i++){
+      var Button = <HTMLInputElement> document.getElementById(i.toString()) ;
+      Button.disabled = true;
+    }
+
+    var Button = <HTMLInputElement> document.getElementById(id.toString()) ;
+    Button.disabled = false ;
+    */
   }
 
   countinue(){
     
+    //this.game?.plateau[this.game.currentPosition[0]][this.game.currentPosition[1]] = 0 ;
+    this.messageEvent.emit(this.answer) ;
+
     this.router.navigate(['jeu/2']) ;
     this.currentQuestion = this.questions[this.counter] ;
-    //this.game?.plateau[this.game.currentPosition[0]][this.game.currentPosition[1]] = 0 ;
-
+    
   }
 
 }
+
 
