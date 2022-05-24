@@ -35,3 +35,10 @@
 
 
 }
+
+.countinue {
+    width: 20%;
+    align-self: flex-start;
+    background-color:rgba(70, 161, 78, 0.71);
+    margin-left: 40%;
+}

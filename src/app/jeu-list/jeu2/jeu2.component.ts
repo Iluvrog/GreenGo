@@ -1,24 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { question } from 'src/app/models/question';
+import { QuestionComponent } from './Question/question.component';
 
 
 @Component({
   selector: 'app-jeu2',
   templateUrl: './jeu2.component.html',
-  styleUrls: ['./jeu2.component.css']
+  styleUrls: ['./jeu2.component.css'],
+  template:`
+    <app-question [answer]="answer"></app-question>`
 })
 export class Jeu2Component implements OnInit {
 
   constructor(private route: ActivatedRoute, private router:Router ) { }
-
+  answer = true ;
   // 0: close, 1: open, 2:impty, 3:correct, 4:false
   niveaux: number[][][] = [] ;
   plateau: number[][] | undefined ;
   hight:number | undefined ;
   width:number | undefined ;
   levelCounter:number = 0 ;
+  currentPosition: number[] = new Array(2) ;
   
   ngOnInit(): void {
+
     this.width = 3 ;
     this.hight = 4 ;
     this.plateau = new Array(this.width) ;
@@ -32,6 +38,7 @@ export class Jeu2Component implements OnInit {
         this.plateau[i][j] = 0 ;
       }
     }
+    this.currentPosition = [0,0] ;
     this.plateau[0][0] = 1 ;
     this.plateau[1][1] = 2 ;
     this.plateau[2][2] = 3 ;
