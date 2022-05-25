@@ -6,7 +6,13 @@
     <div>
         <div class="question">{{ currentQuestion?.question }}</div>
         <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
-            <button class="choix" (click)="respond(choice)">{{ choice }}</button>
+            <button class="choix 
+            {{ ((choice == currentQuestion?.reponse) ? 'correct' : '')}}
+            {{ (!(choice == currentQuestion?.reponse) ? 'incorrect' : '')}}"
+            id="{{i}}"
+            (click)="respond(choice, i)"
+            >{{ choice }}</button>
         </div>
     </div>
+    <button class="countinue" (click) = "countinue()" >countinue</button>
 </div>

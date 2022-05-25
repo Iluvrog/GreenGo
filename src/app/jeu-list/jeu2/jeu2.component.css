@@ -54,7 +54,13 @@
     width: 20%;
     align-self: flex-start;
     background-color:rgba(70, 161, 78, 0.71);
-    margin-right: 60%;
+    margin-right: 20%;
+}
+
+.restart {
+    width: 20%;
+    background-color:rgba(70, 161, 78, 0.71);
+    margin-right: 20%;
 }
 
 .next {

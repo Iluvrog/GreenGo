@@ -35,3 +35,20 @@
 
 
 }
+
+.countinue {
+    width: 20%;
+    align-self: flex-start;
+    background-color:rgba(70, 161, 78, 0.71);
+    margin-left: 40%;
+}
+
+.choix.correct:focus {
+    background-color:rgba(70, 161, 78, 0.71);
+}
+
+.choix.incorrect:focus {
+    background-color:rgba(161, 70, 70, 0.71); 
+}
+
+
