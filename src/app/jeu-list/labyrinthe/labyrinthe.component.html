@@ -1,0 +1,179 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="30" class="help-container">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px">
+        <div fxFlex>
+          <h1>- Rules -</h1>
+        </div>
+        <div fxFlex>
+          <ul>
+            <li>
+              ...
+            </li>
+          </ul>
+        </div>
+        <div fxflex>
+          <img src="assets/img/1.png" />
+        </div>
+        <!--<div fxflex>
+          <button mat-stroked-button [routerLink]="['/home']">
+            Back to Home
+          </button>
+        </div>-->
+      </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center" class="canvas-container">
+      <div fxflex="10">
+        <h1>
+          Level: <span class="level">{{ id }}</span>
+        </h1>
+      </div>
+  
+      <!--<div fxFlex="10">
+        <h3>
+          Current Moves: {{ currentMoves }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Target
+          Moves:
+          {{ targetMoves }}
+        </h3>
+      </div>-->
+  
+      <div fxFlex="60">
+        <div class="container">
+          <div class="row" *ngFor="let row of board; let i = index">
+            <div
+              class="column" *ngFor="let column of row; let j = index">
+              <div
+                class="case 
+                  {{ (getvalue(i,j) == 15 ? 'vide' : '')}}
+                  {{ (getvalue(i,j) < 15 ? 'autre' : '')}}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- [ngStyle]="{ 'background-image': setImage(i, j) }"-->
+  
+      <!--<div fxFlex="40" [hidden]="!hasWon">
+        <img class="level-complete" src="assets/canvas-images/success.png" />
+      </div>
+  
+      <div fxFlex="40" [hidden]="!hasLost">
+        <img class="level-complete" src="assets/canvas-images/failed.jpg" />
+      </div>
+  
+      <div fxFlex [hidden]="!hasWon && !hasLost">
+        <div class="next-level">
+          <button (click)="Navigate()">
+            Next Level
+          </button>
+        </div>
+      </div>
+  
+      <div fxFlex [hidden]="!hasWon && !hasLost">
+        <div class="retry-level">
+          <button (click)="refresh()">
+            Retry Level
+          </button>
+        </div>
+      </div>
+  
+      <div fxFlex [hidden]="hasWon || hasLost">
+        <div class="buttons">
+          <button
+            mat-button
+            [disabled]="id - 1 <= 0"
+            [routerLink]="['/levels', id - 1]"
+          >
+            Previous Level
+          </button>
+          <button mat-button (click)="moveUp()" id="up-button">
+            <i class="material-icons">keyboard_arrow_up</i>
+          </button>
+          <button mat-button (click)="moveDown()" id="down-button">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </button>
+          <button mat-button (click)="moveLeft()" id="left-button">
+            <i class="material-icons">keyboard_arrow_left</i>
+          </button>
+  
+          <button mat-button (click)="moveRight()" id="right-button">
+            <i class="material-icons">keyboard_arrow_right</i>
+          </button>
+          <button mat-button (click)="refresh()">
+            <i class="material-icons">cached</i>
+          </button>
+  
+          <button
+            mat-button
+            [disabled]="id + 1 > allLevels.length"
+            [routerLink]="['/levels', id + 1]"
+          >
+            Next Level
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.8)"
+    size="medium"
+    color="#fff"
+    type="square-jelly-box"
+    ><p style="color: white;">Loading...</p></ngx-spinner
+  >
+  <div class="level">
+      <p> Level : tutoriel</p>
+  </div>
+  
+  <div fxFlex="60">
+      <div class="container">
+        <div class="row" *ngFor="let row of labyrinthe_case; let i = index">
+          <div
+            class="column"
+            [ngStyle]="{ 'background-image': setImage(i, j) }"
+            *ngFor="let column of row; let j = index"
+          ></div>
+        </div>
+      </div>
+    </div>-->
+  
+  <!--<script type="text/javascript">
+      
+      function draw() {
+        var canvas = document.getElementById("canvas");
+        if (canvas.getContext) {
+          var ctx = canvas.getContext("2d");
+  
+          ctx.fillStyle = 'rgb(200, 0, 0)';
+          ctx.fillRect(10, 10, 50, 50);
+  
+          ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
+          ctx.fillRect(30, 30, 50, 50);
+        }
+      }
+    
+  </script>
+  
+  <style type="text/css"> canvas {border: 1px solid balck ;} </style>
+  
+  <body onload="draw();">
+      <canvas id="tutoriel" width="500" height="500"> </canvas>
+  </body>-->
+  
+  <!--<div class="frame">
+      
+      
+      <div class="plateau" *ngFor="let Array of labyrinthe_case; let i = index;">
+          <div class="Array" *ngFor="let case of Array; let j = index;">
+              <img class="case 
+                  {{ (case == 0 ? 'vide' : '')}}
+                  {{ (case == 1 ? 'normal' : '')}}"
+                  (click)="click()"
+              >
+          </div>
+      </div>
+      <button class="previous" (click)="previous ()">previous</button>
+      <button class="next" (click)="next()">next</button>
+  </div>-->
+  

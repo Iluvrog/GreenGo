@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { JeuListComponent } from './jeu-list/jeu-list.component';
-import { Jeu1Component } from './jeu-list/jeu1/jeu1.component';
+import { LabyrintheComponent } from './jeu-list/labyrinthe/labyrinthe.component';
 import { Jeu2Component } from './jeu-list/jeu2/jeu2.component';
 import { Jeu3Component } from './jeu-list/jeu3/jeu3.component';
 import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
@@ -16,7 +16,7 @@ import { QuestionComponent } from './jeu-list/jeu2/Question/question.component';
   declarations: [
     AppComponent,
     JeuListComponent,
-    Jeu1Component,
+    LabyrintheComponent,
     Jeu2Component,
     Jeu3Component,
     Jeu4Component,
@@ -28,7 +28,7 @@ import { QuestionComponent } from './jeu-list/jeu2/Question/question.component';
     RouterModule.forRoot([
       { path: 'home', component: JeuListComponent},
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'jeu/1', component: Jeu1Component},
+      { path: 'labyrinthe', component: LabyrintheComponent},
       { path: 'jeu/2', component: Jeu2Component},
       { path: 'jeu/3', component: Jeu3Component},
       { path: 'jeu/4', component: Jeu4Component},
