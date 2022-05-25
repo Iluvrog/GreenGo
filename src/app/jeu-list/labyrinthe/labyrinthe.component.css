@@ -25,7 +25,6 @@
   }
   
   .column {
-    border: 1px solid rgba(33, 219, 120, 0.616);
     width: 30px;
     height: 30px;
     display: inline-block;
@@ -36,6 +35,10 @@
 
   .case{
     background-color: rgba(142, 5, 5, 0);
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    border:none;
   }
 
   .case.vide{

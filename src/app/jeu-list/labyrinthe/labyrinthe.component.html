@@ -24,7 +24,7 @@
     <div fxLayout="column" fxLayoutAlign="center center" class="canvas-container">
       <div fxflex="10">
         <h1>
-          Level: <span class="level">{{ id }}</span>
+          Level: <span class="level">{{ id + 1 }}</span>
         </h1>
       </div>
   
@@ -41,11 +41,11 @@
           <div class="row" *ngFor="let row of board; let i = index">
             <div
               class="column" *ngFor="let column of row; let j = index">
-              <div
+              <button 
                 class="case 
                   {{ (getvalue(i,j) == 15 ? 'vide' : '')}}
                   {{ (getvalue(i,j) < 15 ? 'autre' : '')}}">
-              </div>
+              </button>
             </div>
           </div>
         </div>
