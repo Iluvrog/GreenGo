@@ -59,9 +59,15 @@ export class QuestionComponent implements OnInit {
 
   respond (resp:string, id:number){
     if(resp == this.currentQuestion?.reponse){
+      console.log("truu");
       this.score++ ;
       this.answer = true ;
     }
+    else{
+      this.answer = false ;
+      console.log("fal");
+    }
+
     this.counter++ ;
     
     localStorage.setItem('counter', JSON.stringify(this.counter) );
