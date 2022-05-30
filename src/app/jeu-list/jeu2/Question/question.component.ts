@@ -14,6 +14,7 @@ export class QuestionComponent implements OnInit {
   currentQuestion: question | undefined;
   counter:number = 0 ;
   score:number = 0 ;
+  reponse:string | undefined;
 
   constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) { }
 
@@ -52,6 +53,7 @@ export class QuestionComponent implements OnInit {
   }
 
   respond (resp:string, id:number){
+    this.reponse = resp ;
     if(resp == this.currentQuestion?.reponse){
       this.score++ ;
       this.service.correctAnswer = true ;
@@ -61,6 +63,7 @@ export class QuestionComponent implements OnInit {
     }
 
     this.counter++ ;
+    this.service.answer = true ;
 
     localStorage.setItem('counter', JSON.stringify(this.counter) );
     localStorage.setItem('score', JSON.stringify(this.score) );
@@ -71,8 +74,8 @@ export class QuestionComponent implements OnInit {
     }
 
     var Button = <HTMLInputElement> document.getElementById(id.toString()) ;
-    Button.disabled = false ;
     */
+    
   }
 
   countinue(){
@@ -82,7 +85,7 @@ export class QuestionComponent implements OnInit {
   }
 
   confirm(){
-    this.service.answer = true ;
+    
   }
 
 }

@@ -8,9 +8,10 @@
         <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
             <button class="choix 
             {{ ((choice == currentQuestion?.reponse) && service.answer ? 'correct' : '')}}
-            {{ (!(choice == currentQuestion?.reponse) && service.answer ? 'incorrect' : '')}}"
+            {{ (!(choice == currentQuestion?.reponse) && choice == reponse && service.answer ? 'incorrect' : '')}}
+            {{ (service.answer ? 'respond' : '')}}"
             id="{{i}}"
-            (click)="respond(choice, i)"
+            (click)="respond(choice, i)"     
             >{{ choice }}</button>
         </div>
     </div>

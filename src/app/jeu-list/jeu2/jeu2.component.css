@@ -19,6 +19,7 @@
     pointer-events: none;
     border-color: aquamarine ;
     padding: 15% 45%;
+    border-radius:10px;
 }
 
 .case.closeC {

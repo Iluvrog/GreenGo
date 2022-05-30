@@ -26,6 +26,7 @@
     margin-top: 2%;
     margin-left: 1%;
     margin-bottom: 2%;
+    border-radius:10px;
 }
 
 .score {
@@ -47,12 +48,16 @@
     margin-left: 60%;
 }
 
-.choix.correct:focus {
+.choix.correct {
     background-color:rgba(70, 161, 78, 0.71);
 }
 
-.choix.incorrect:focus {
+.choix.incorrect {
     background-color:rgba(161, 70, 70, 0.71); 
+}
+
+.choix.respond {
+    pointer-events: none; 
 }
 
 
