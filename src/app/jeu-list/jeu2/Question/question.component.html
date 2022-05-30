@@ -7,12 +7,15 @@
         <div class="question">{{ currentQuestion?.question }}</div>
         <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
             <button class="choix 
-            {{ ((choice == currentQuestion?.reponse) ? 'correct' : '')}}
-            {{ (!(choice == currentQuestion?.reponse) ? 'incorrect' : '')}}"
+            {{ ((choice == currentQuestion?.reponse) && service.answer ? 'correct' : '')}}
+            {{ (!(choice == currentQuestion?.reponse) && service.answer ? 'incorrect' : '')}}"
             id="{{i}}"
             (click)="respond(choice, i)"
             >{{ choice }}</button>
         </div>
     </div>
-    <button class="countinue" (click) = "countinue()" >countinue</button>
+    <div>
+        <button class="confirm" (click) = "confirm()" >confirm</button>
+        <button class="countinue" (click) = "countinue()" >countinue</button>
+    </div>  
 </div>

@@ -15,7 +15,7 @@ export class QuestionComponent implements OnInit {
   counter:number = 0 ;
   score:number = 0 ;
 
-  constructor(private route: ActivatedRoute, private router:Router, private service:ServiceService ) { }
+  constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) { }
 
   ngOnInit(): void {
     
@@ -61,7 +61,6 @@ export class QuestionComponent implements OnInit {
     }
 
     this.counter++ ;
-    this.service.answer = true ;
 
     localStorage.setItem('counter', JSON.stringify(this.counter) );
     localStorage.setItem('score', JSON.stringify(this.score) );
@@ -80,6 +79,10 @@ export class QuestionComponent implements OnInit {
     this.router.navigate(['jeu/2']) ;
     this.currentQuestion = this.questions[this.counter] ;
     
+  }
+
+  confirm(){
+    this.service.answer = true ;
   }
 
 }
