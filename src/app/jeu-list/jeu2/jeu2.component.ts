@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { question } from 'src/app/models/question';
-import { QuestionComponent } from './Question/question.component';
+import { ServiceService } from './service.service';
 
 
 @Component({
@@ -15,7 +14,7 @@ import { QuestionComponent } from './Question/question.component';
 })
 export class Jeu2Component implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router:Router ) { }
+  constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) { }
 
   answer:boolean | undefined ;
   // 0: close, 1: open, 2:impty, 3:correct, 4:false
@@ -124,26 +123,28 @@ export class Jeu2Component implements OnInit {
     this.plateau = this.niveaux[this.levelCounter] ;
   }
 
-  click(i:number, j:number){
+  async click(i:number, j:number){
     this.router.navigate(['que']) ;
     this.currentPosition = [i,j] ;
 
+    this.service.answer = false ;
+
+    this.adjacent(this.currentPosition) ;
+
+    while(!this.service.answer){
+      await new Promise(r => setTimeout(r, 500));
+    }
+
     if(this.plateau){ 
-      if(this.answer)
+      if(this.service.correctAnswer)
         this.plateau[this.currentPosition[0]][this.currentPosition[1]] = 3 ;
       else
         this.plateau[this.currentPosition[0]][this.currentPosition[1]] = 4 ;
-      
-      this.adjacent(this.currentPosition) ;
     }
     
     localStorage.setItem('plateau', JSON.stringify(this.plateau) );
     localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
     localStorage.setItem('currentPosition', JSON.stringify(this.currentPosition) ); 
-  }
-
-  receiveMessage($event: boolean){
-    this.answer = $event ;
   }
   
   adjacent(pos:number[]) {
@@ -159,13 +160,7 @@ export class Jeu2Component implements OnInit {
        
       if( pos[0]-1 >= 0 && this.plateau[pos[0]-1][pos[1]] == 0)
         this.plateau[pos[0]-1][pos[1]] = 1 ;
-      
 
-      console.log("aaaaaaaaaa") ;
-      console.log("pos : " , pos[0]-1, pos[1]) ;
-      console.log("pos : " , pos[0]+1, pos[1]) ;
-      console.log("pos : " , pos[0], pos[1]+1) ;
-      console.log("pos : " , pos[0], pos[1]-1) ;
     }
   }
   

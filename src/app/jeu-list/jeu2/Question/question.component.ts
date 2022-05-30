@@ -1,30 +1,24 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { question } from 'src/app/models/question';
-import { Jeu2Component } from '../jeu2.component';
+import { ServiceService } from '../service.service';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
-  styleUrls: ['./question.component.css'],
-  template: `<game2 #game></game2>`
+  styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  
-  //@ViewChild('game') game: Jeu2Component | undefined ;
 
   questions: question[] = [];
   currentQuestion: question | undefined;
   counter:number = 0 ;
   score:number = 0 ;
-  answer:boolean = false ;
 
-  @Output() messageEvent = new EventEmitter<boolean>() ;
-
-  constructor(private route: ActivatedRoute, private router:Router ) { }
+  constructor(private route: ActivatedRoute, private router:Router, private service:ServiceService ) { }
 
   ngOnInit(): void {
-    this.answer = false ;
+    
     this.counter = JSON.parse( localStorage.getItem('counter') || "0" ) ;
     this.score = JSON.parse( localStorage.getItem('score') || "0" ) ;
     if(this.counter >= 4){
@@ -59,17 +53,16 @@ export class QuestionComponent implements OnInit {
 
   respond (resp:string, id:number){
     if(resp == this.currentQuestion?.reponse){
-      console.log("truu");
       this.score++ ;
-      this.answer = true ;
+      this.service.correctAnswer = true ;
     }
     else{
-      this.answer = false ;
-      console.log("fal");
+      this.service.correctAnswer = false ;
     }
 
     this.counter++ ;
-    
+    this.service.answer = true ;
+
     localStorage.setItem('counter', JSON.stringify(this.counter) );
     localStorage.setItem('score', JSON.stringify(this.score) );
     /*
@@ -84,10 +77,6 @@ export class QuestionComponent implements OnInit {
   }
 
   countinue(){
-    
-    //this.game?.plateau[this.game.currentPosition[0]][this.game.currentPosition[1]] = 0 ;
-    this.messageEvent.emit(this.answer) ;
-
     this.router.navigate(['jeu/2']) ;
     this.currentQuestion = this.questions[this.counter] ;
     
