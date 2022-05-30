@@ -42,9 +42,25 @@
             <div
               class="column" *ngFor="let column of row; let j = index">
               <button 
-                class="case 
+                  class="case 
                   {{ (getvalue(i,j) == 15 ? 'vide' : '')}}
-                  {{ (getvalue(i,j) < 15 ? 'autre' : '')}}">
+                  {{ (getvalue(i,j) == 14 ? 'hdb' : '')}}
+                  {{ (getvalue(i,j) == 13 ? 'hdg' : '')}}
+                  {{ (getvalue(i,j) == 12 ? 'hd' : '')}}
+                  {{ (getvalue(i,j) == 11 ? 'hbg' : '')}}
+                  {{ (getvalue(i,j) == 10 ? 'hb' : '')}}
+                  {{ (getvalue(i,j) == 9 ? 'hg' : '')}}
+                  {{ (getvalue(i,j) == 8 ? 'h' : '')}}
+                  {{ (getvalue(i,j) == 7 ? 'dbg' : '')}}
+                  {{ (getvalue(i,j) == 6 ? 'bd' : '')}}
+                  {{ (getvalue(i,j) == 5 ? 'dg' : '')}}
+                  {{ (getvalue(i,j) == 4 ? 'd' : '')}}
+                  {{ (getvalue(i,j) == 3 ? 'bg' : '')}}
+                  {{ (getvalue(i,j) == 2 ? 'b' : '')}}
+                  {{ (getvalue(i,j) == 1 ? 'g' : '')}}
+                  {{ (getvalue(i,j) == 0 ? 'none' : '')}}
+                  {{ (perso(i,j) ? 'perso' : '')}}"
+                  >
               </button>
             </div>
           </div>
@@ -75,9 +91,9 @@
             Retry Level
           </button>
         </div>
-      </div>
+      </div> -->
   
-      <div fxFlex [hidden]="hasWon || hasLost">
+      <div fxFlex>
         <div class="buttons">
           <button
             mat-button
@@ -106,7 +122,7 @@
           <button
             mat-button
             [disabled]="id + 1 > allLevels.length"
-            [routerLink]="['/levels', id + 1]"
+            [routerLink]="['/labyrinthe', id + 1]"
           >
             Next Level
           </button>
@@ -115,7 +131,7 @@
     </div>
   </div>
   
-  <ngx-spinner
+  <!--<ngx-spinner
     bdColor="rgba(0, 0, 0, 0.8)"
     size="medium"
     color="#fff"

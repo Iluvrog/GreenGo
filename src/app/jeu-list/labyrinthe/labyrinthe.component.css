@@ -39,21 +39,114 @@
     height: 30px;
     pointer-events: none;
     border:none;
+    --border: 3px solid rgb(0, 0, 0);
+    --color:rgb(255, 255, 255);
   }
 
   .case.vide{
-    background-color: rgb(0, 0, 0);
-  }
-
-  .case.autre{
     background-color: rgb(255, 255, 255);
   }
+
+  .case.none{
+    background-color: var(--color);
+  }
   
+  .case.h{
+    background-color: var(--color);
+    border-top: var(--border);
+  }
+
+  .case.d{
+    background-color: var(--color);
+    border-right: var(--border);
+  }
+
+  .case.b{
+    background-color: var(--color);
+    border-bottom: var(--border);
+  }
+
+  .case.g{
+    background-color: var(--color);
+    border-left: var(--border);
+  }
+
+  .case.hd{
+    background-color: var(--color);
+    border-top: var(--border);
+    border-right: var(--border);
+  }
+
+  .case.bd{
+    background-color: var(--color);
+    border-bottom: var(--border);
+    border-right: var(--border);
+  }
+
+  .case.bg{
+    background-color: var(--color);
+    border-bottom: var(--border);
+    border-left: var(--border);
+  }
+
+  .case.hg{
+    background-color: var(--color);
+    border-top: var(--border);
+    border-left: var(--border);
+  }
+
+  .case.hb{
+    background-color: var(--color);
+    border-top: var(--border);
+    border-bottom: var(--border);
+  }
+
+  .case.dg{
+    background-color: var(--color);
+    border-left: var(--border);
+    border-right: var(--border);
+  }
+
+  .case.hdb{
+    background-color: var(--color);
+    border-top: var(--border);
+    border-right: var(--border);
+    border-bottom: var(--border);
+  }
+
+  .case.hdg{
+    background-color: var(--color);
+    border-top: var(--border);
+    border-right: var(--border);
+    border-left: var(--border);
+  }
+
+  .case.hbg{
+    background-color: var(--color);
+    border-top: var(--border);
+    border-bottom: var(--border);
+    border-left: var(--border);
+  }
+
+  .case.dbg{
+    background-color: var(--color);
+    border-right: var(--border);
+    border-bottom: var(--border);
+    border-left: var(--border);
+  }
+
   .buttons {
     margin-top: 40px;
     padding: 5px;
     border: grey 2px solid;
     border-radius: 60px;
+  }
+
+  .case.perso{
+    background-color: rgb(234, 69, 69);
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
   }
   
   .level {
