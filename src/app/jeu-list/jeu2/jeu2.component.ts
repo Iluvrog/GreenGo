@@ -14,8 +14,6 @@ import { ServiceService } from './service.service';
 })
 export class Jeu2Component implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) { }
-
   answer:boolean | undefined ;
   // 0: close, 1: open, 2:impty, 3:correct, 4:false
   niveaux: number[][][] = [] ;
@@ -24,11 +22,10 @@ export class Jeu2Component implements OnInit {
   width:number | undefined ;
   levelCounter:number = 0 ;
   currentPosition: number[] = new Array(2) ;
-  
-  ngOnInit(): void {
 
-    this.width = 3 ;
-    this.hight = 4 ;
+  constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) {
+    this.width = 5 ;
+    this.hight = 11 ;
     this.plateau = new Array(this.width) ;
     i:Number ;
     for(var i=0; i<this.width; i++){
@@ -37,46 +34,62 @@ export class Jeu2Component implements OnInit {
 
     for(var i=0; i<this.width; i++){
       for(var j=0; j<this.hight; j++){
-        this.plateau[i][j] = 0 ;
+        if(j<3 || j >7){
+          this.plateau[i][j] = 2 ;
+        } 
+        else         
+          this.plateau[i][j] = 0 ;
       }
     }
-    //this.currentPosition = [0,0] ;
 
-    this.plateau[1][1] = 1 ;
-    //this.plateau[1][1] = 2 ;
-    //this.plateau[2][1] = 4 ;
-    //this.plateau[1][3] = 4 ;
-    //this.plateau[1][2] = 2 ;
+    this.plateau[4][3] = 1 ;
+
+    for(var i=1; i<4; i++){
+      for(var j=4; j<7; j++){
+          this.plateau[i][j] = 2 ;
+      }
+    }
 
     this.niveaux[0] = this.plateau ;
 
-    this.width = 3 ;
-    this.hight = 5 ;
+    this.width = 9 ;
+    this.hight = 11 ;
     this.plateau = new Array(this.width) ;
-    i:Number ;
+    
     for(var i=0; i<this.width; i++){
       this.plateau[i] = new Array(this.hight) ;
     }
 
     for(var i=0; i<this.width; i++){
       for(var j=0; j<this.hight; j++){
-        this.plateau[i][j] = 0 ;
+        if((j==2 || j==5 || j ==8 || i ==3 || i==5 ))         
+          this.plateau[i][j] = 0 ;
+        else{
+          this.plateau[i][j] = 2 ;
+        }   
       }
     }
-    this.plateau[0][2] = 2 ;
-    this.plateau[1][0] = 2 ;
-    this.plateau[1][4] = 2 ;
-    this.plateau[2][2] = 2 ;
-    this.plateau[1][2] = 1 ;
+    this.plateau[4][5] = 1 ;
 
-    
+    this.plateau[3][0] = 2 ;
+    this.plateau[3][1] = 2 ;
+    this.plateau[5][0] = 2 ;
+    this.plateau[5][1] = 2 ;
+
+    this.plateau[3][9] = 2 ;
+    this.plateau[3][10] = 2 ;
+    this.plateau[5][9] = 2 ;
+    this.plateau[5][10] = 2 ;
+
+    this.plateau[4][2] = 2 ;
+    this.plateau[4][8] = 2 ;
 
     this.niveaux[1] = this.plateau ;
 
     this.width = 3 ;
     this.hight = 7 ;
     this.plateau = new Array(this.width) ;
-    i:Number ;
+
     for(var i=0; i<this.width; i++){
       this.plateau[i] = new Array(this.hight) ;
     }
@@ -98,9 +111,86 @@ export class Jeu2Component implements OnInit {
 
     this.niveaux[2] = this.plateau ;
 
+    this.width = 11 ;
+    this.hight = 11 ;
+    this.plateau = new Array(this.width) ;
+
+    for(var i=0; i<this.width; i++){
+      this.plateau[i] = new Array(this.hight) ;
+    }
+
+    for(var i=0; i<this.width; i++){
+      for(var j=0; j<this.hight; j++){
+        this.plateau[i][j] = 0 ;
+      }
+    }
+    this.plateau[0][0] = 2 ;
+    this.plateau[1][0] = 2 ;
+    this.plateau[2][0] = 2 ;
+    this.plateau[3][0] = 2 ;
+    this.plateau[4][0] = 2 ;
+    this.plateau[10][0] = 2 ;
+    
+    for(var j=6; j<11; j++){
+      this.plateau[j][10] = 2 ;
+      }
+
+    for(var u=1; u<4; u++){
+      for(var j=6; j<9; j++){
+      this.plateau[j][u] = 2 ;
+      }
+      this.plateau[10][u] = 2 ;
+    }
+
+    for(var u=2; u<5; u++){
+      for(var j=1; j<4; j++){
+      this.plateau[j][u] = 2 ;
+      }
+      this.plateau[10][u] = 2 ;
+    }
+
+    for(var u=6; u<9; u++){
+      for(var j=7; j<10; j++){
+      this.plateau[j][u] = 2 ;
+      }
+      this.plateau[0][u] = 2 ;
+    }
+
+    for(var u=7; u<10; u++){
+      for(var j=2; j<5; j++){
+      this.plateau[j][u] = 2 ;
+      }
+      this.plateau[0][u] = 2 ;
+    }
+
+  
+    this.plateau[0][10] = 2 ;
+    this.plateau[5][5] = 1 ;
+
+    this.niveaux[3] = this.plateau ;
+
+    this.width = 11 ;
+    this.hight = 11 ;
+    this.plateau = new Array(this.width) ;
+
+    for(var i=0; i<this.width; i++){
+      this.plateau[i] = new Array(this.hight) ;
+    }
+
+    for(var i=0; i<this.width; i++){
+      for(var j=0; j<this.hight; j++){
+        this.plateau[i][j] = 0 ;
+      }
+    }
+    this.plateau[0][0] = 1 ;
+
+    this.niveaux[4] = this.plateau ;
+  }
+  
+  ngOnInit(): void {
+    
     this.plateau = this.niveaux[this.levelCounter] ;
-    
-    
+
     if( localStorage.getItem('plateau') != null)
       this.plateau = JSON.parse( localStorage.getItem('plateau') || "" ) ;
 

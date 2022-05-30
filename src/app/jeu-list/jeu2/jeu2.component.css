@@ -1,29 +1,27 @@
 .frame {
-    width: 60%;
+    width: 80%;
     height: 60%;
     margin-top: 5%;
-    margin-left: 20%;
+    margin-left: 10%;
     border: 2px solid rgba(66, 8, 55, 0.71);
     background-color: rgba(111, 41, 97, 0.3);
+    padding: 1%;
 }
 
-.plateau {
-    margin: 2.5%;
-    width: 28%;
-    padding: 2%;   
+.Array {
+    width: 9.091%;   
     display: inline-block;
     vertical-align: middle;
 }
 
 .case{
-    width: 80%;
-    height: 80%;
-    margin: 10%;
+    margin-top: 5% ;
     pointer-events: none;
-    border-color: aliceblue ;
+    border-color: aquamarine ;
+    padding: 15% 45%;
 }
 
-.case.close {
+.case.closeC {
     background-color: rgba(71, 58, 68, 0.71);
 
 }
