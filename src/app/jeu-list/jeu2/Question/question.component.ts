@@ -79,7 +79,8 @@ export class QuestionComponent implements OnInit {
   }
 
   countinue(){
-    this.router.navigate(['jeu/2']) ;
+    if(this.service.answer)
+      this.router.navigate(['jeu/2']) ;
     this.currentQuestion = this.questions[this.counter] ;
     
   }
