@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from "./service/level.service";
-
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-labyrinthe',
@@ -48,8 +48,9 @@ export class LabyrintheComponent implements OnInit {
   public hasWon: boolean = false;
   public hasLost: boolean = false;*/
 
-  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService ) { 
+  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService ) { 
     this.manPosition = [];
+    this.setHotKeys();
   }
 
 
@@ -151,5 +152,16 @@ export class LabyrintheComponent implements OnInit {
 
   refresh(): void {
     window.location.reload();
+  }
+
+  setHotKeys() {
+    this._hotkeysService.add(new Hotkey(['up', 'down','left','right','space'], (event: KeyboardEvent, combo: string): boolean => {
+      if (combo === 'up') { this.moveUp(); }
+      if (combo === 'down') { this.moveDown(); }
+      if (combo === 'left') { this.moveLeft(); }
+      if (combo === 'right') { this.moveRight(); }
+      if (combo === 'space') { ; }
+      return false; // Prevent bubbling
+    }));
   }
 }

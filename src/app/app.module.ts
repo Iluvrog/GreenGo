@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 
 import { JeuListComponent } from './jeu-list/jeu-list.component';
 import { LabyrintheComponent } from './jeu-list/labyrinthe/labyrinthe.component';
+import {HotkeyModule} from 'angular2-hotkeys';
 import { Jeu2Component } from './jeu-list/jeu2/jeu2.component';
 import { Jeu3Component } from './jeu-list/jeu3/jeu3.component';
 import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
@@ -34,7 +35,8 @@ import { QuestionComponent } from './jeu-list/jeu2/Question/question.component';
       { path: 'jeu/4', component: Jeu4Component},
       { path: 'que', component: QuestionComponent },
       { path: '**', redirectTo: 'home', pathMatch: 'full'}  
-    ])
+    ]),
+    HotkeyModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
