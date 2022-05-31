@@ -1,7 +1,6 @@
 import parser as p
 import tkinter as tk
 from tkinter import filedialog
-from traceback import clear_frames
 
 class visualParser(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -50,26 +49,26 @@ class uploadPage(tk.Frame):
 
 class questionPage(tk.Frame):
     isStarted = False
-    def clear_frame(self):
-        if self.isStarted:
-            for widget in self.winfo_children():
-                widget.destroy()
-            label = tk.Label(self, text="This is questionPage")
-            label.pack(side="top", fill="x", pady=10)
 
-            button = tk.Button(self, text="Reset", command=lambda: self.controller.show_frame("uploadPage"))
-            button.pack()
+    def reset(self):
+        self.clear_frame()
+        self.controller.show_frame("uploadPage")
+
+    def clear_frame(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        label = tk.Label(self, text="This is questionPage")
+        label.pack(side="top", fill="x", pady=10)
+        button = tk.Button(self, text="Reset", command= self.reset)
+        button.pack()
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        self.isStarted = True
         self.controller = controller
-        button = tk.Button(self, text="Reset", command=lambda: controller.show_frame("uploadPage"))
+        button = tk.Button(self, text="Reset", command= self.reset)
         button.pack()
 
     def startEdition(self, questionList):
-        if self.isStarted:
-            self.clear_frame()
         self.quests = questionList
         self.nbQuest = len(self.quests)
         self.index = 0
