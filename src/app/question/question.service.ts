@@ -64,48 +64,44 @@ export class QuestionService {
         if(q1){
           colorQ1 = 'green';
           nbRepJuste++;
-          //localStorage.setItem('nbRepJuste', this.nbRepJuste.toString());
         }else{
           colorQ1 = 'red';
         }
-        //localStorage.setItem('colorQ1', this.colorQ1);
       }
       if(is2){
         if(q2){
           colorQ2 = 'green';
           nbRepJuste++;
-          //localStorage.setItem('nbRepJuste', this.nbRepJuste.toString());
         }else{
           colorQ2 = 'red';
         }
-        //localStorage.setItem('colorQ2', this.colorQ2);
       }
       if(is3){
         if(q3){
           colorQ3 = 'green';
           nbRepJuste++;
-          //localStorage.setItem('nbRepJuste', this.nbRepJuste.toString());
         }else{
           colorQ3 = 'red';
         }
-        //localStorage.setItem('colorQ3', this.colorQ3);
       }
       if(is4){
         if(q4){
           colorQ4 = 'green';
           nbRepJuste++;
-          //localStorage.setItem('nbRepJuste', this.nbRepJuste.toString());
         }else{
           colorQ4 = 'red';
         }
-        //localStorage.setItem('colorQ4', this.colorQ4);
       }
-      //localStorage.setItem('isValidate', this.isValidate.toString());
       return[colorQ1, colorQ2, colorQ3, colorQ4, true, nbRepJuste, false, false, false, false, 0];
     }else{
       alert("Vous devez choisir une réponse pour valider");
       return['nothing', 'nothing', 'nothing', 'nothing', false, nbRepJuste];
     }
+  }
+
+  validerM(): any[]{
+    
+    return [];
   }
 
   reset(): any[]{
@@ -122,14 +118,6 @@ export class QuestionService {
       tab = this.reset();
       return [nbQuestion, false, tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], false, 'nothing', 'nothing', 'nothing', 'nothing'];
     }
-
-    /*localStorage.setItem('nbQuestion', this.nbQuestion.toString());
-    localStorage.setItem('isFinish', this.isFinish.toString());
-    localStorage.setItem('isValidate', this.isValidate.toString());
-    localStorage.setItem('colorQ1', this.colorQ1);
-    localStorage.setItem('colorQ2', this.colorQ2);
-    localStorage.setItem('colorQ3', this.colorQ3);
-    localStorage.setItem('colorQ4', this.colorQ4);*/
   }
 
   nouvellePartie() :any[]{
@@ -137,15 +125,5 @@ export class QuestionService {
     
     let tab = this.reset();
     return [tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], false, 'nothing', 0, 1, false];
-
-
-    /*localStorage.setItem('isValidate', this.isValidate.toString());
-    localStorage.setItem('colorQ1', this.colorQ1);
-    localStorage.setItem('colorQ2', this.colorQ2);
-    localStorage.setItem('colorQ3', this.colorQ3);
-    localStorage.setItem('colorQ4', this.colorQ4);
-    localStorage.setItem('nbRepJuste', this.nbRepJuste.toString());
-    localStorage.setItem('nbQuestion', this.nbQuestion.toString());
-    localStorage.setItem('isFinish', this.isFinish.toString());*/
   }
 }
