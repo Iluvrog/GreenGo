@@ -85,10 +85,6 @@ export class QuestionComponent implements OnInit {
     
   }
 
-  confirm(){
-    
-  }
-
 }
 
 

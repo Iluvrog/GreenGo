@@ -1,5 +1,5 @@
 <div class="level">
-    <p> Level : {{ levelCounter }} answer : {{ service.correctAnswer }}</p>
+    <p> Level : {{ levelCounter }} </p>
 </div>
 <div class="frame">  
    <div class="plateau" *ngFor="let Array of plateau; let i = index;">
@@ -9,12 +9,13 @@
                 {{ (case == 1 ? 'open' : '')}}
                 {{ (case == 2 ? 'impty' : '')}}
                 {{ (case == 3 ? 'correct' : '')}}
-                {{ (case == 4 ? 'incorrect' : '')}}"
+                {{ (case == 4 ? 'incorrect' : '')}}
+                {{ (exit[levelCounter] && case == 5 ? 'exit' : 'closeC')}}"
                 (click)="click(i,j)"
-            ><br> </button>
+            ><br></button>
         </div>
     </div>
-    <div style="margin-top: 1%;">
+    <div style="margin-top: 2%;">
         <button class="previous" (click)="previous ()">previous</button>
         <button class="restart" (click)="restart()">restart</button>
         <button class="next" (click)="next()">next</button>
