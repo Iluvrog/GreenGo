@@ -1,6 +1,7 @@
 import parser as p
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import ttk
 
 class visualParser(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -24,8 +25,10 @@ class visualParser(tk.Tk):
 
     def startQuestionPage(self, questionList):
         questionPage = self.frames["questionPage"]
-        questionPage.startEdition(questionList)
+        questionPage.setQuestionList(questionList)
+        questionPage.startEdition()
         questionPage.tkraise()
+
 
 class uploadPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -50,49 +53,97 @@ class uploadPage(tk.Frame):
 class questionPage(tk.Frame):
     isStarted = False
 
-    def reset(self):
-        self.clear_frame()
-        self.controller.show_frame("uploadPage")
-
-    def clear_frame(self):
-        for widget in self.winfo_children():
+    def clear_question(self):
+        widgetList = self.winfo_children()
+        for widget in widgetList:
             widget.destroy()
-        label = tk.Label(self, text="This is questionPage")
-        label.pack(side="top", fill="x", pady=10)
-        button = tk.Button(self, text="Reset", command= self.reset)
-        button.pack()
+
+    def reset(self):
+        self.index = 0
+        self.clear_question()
+        self.controller.show_frame("uploadPage")
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        button = tk.Button(self, text="Reset", command= self.reset)
-        button.pack()
-
-    def startEdition(self, questionList):
-        self.quests = questionList
-        self.nbQuest = len(self.quests)
         self.index = 0
+
+    def next(self):
+        if self.index < self.nbQuest - 1:
+            self.index += 1
+            self.clear_question()
+            self.startEdition()
+        else:
+            print("no more question")
+
+    def previous(self):
+        if self.index > 0:
+            self.index -= 1
+            self.clear_question()
+            self.startEdition()
+        else:
+            print("already first question")
+
+    def setQuestionList(self, questionList):
+        self.questionList = questionList
+        self.nbQuest = len(self.questionList)
+
+    def startEdition(self):
+        
+        button = tk.Button(self, text="Reset", command= self.reset)
+        button.grid(row=0, column= 1)
+        previousButton = tk.Button(self, text = "previous", command = self.previous)
+        previousButton.grid(row=0, column= 0)
+        nextButton = tk.Button(self, text = "next", command = self.next)
+        nextButton.grid(row=0, column= 2)
         if self.nbQuest > 0:
-            for i in range(self.nbQuest):
-                typeEntry = tk.Entry()
-                typeEntry.insert('end', questionList[i].getType())
-                typeText = tk.Label(text = "type: ")
-                questEntry = tk.Entry()
-                questText = tk.Label(text = "question: ")
-                questEntry.insert('end', questionList[i].getQuestion())
-                typeText.pack(side="top")
-                typeEntry.pack(side="top", fill="x")
-                questText.pack(side="top")
-                questEntry.pack(side="top", fill="x")
-                answText = tk.Label(text = "Answers: ")
-                answText.pack(side="top")
-                answers = questionList[i].getAnswers()
-                answerTextList = []
-                for j in range(len(answers)):
-                    answerTextList.append(tk.Entry())
-                    answerTextList[j].insert('end', answers[j])
-                    answerTextList[j].pack(side="top", fill="x")
-            
+
+            i = self.index
+            currentQuestion = self.questionList[i]
+            ##typeEntry = tk.Entry(self)
+            ##typeEntry.insert('end', self.questionList[i].getType())
+
+            type = currentQuestion.getType()
+            typeCombo = ttk.Combobox(self, values=["MultiChoice","SingleChoice", "True/False"], state = "readonly")
+
+            if type != "":
+                if type == "multichoice":
+                    if currentQuestion.getSingle() == "true":
+                        typeCombo.current(1)
+                    elif currentQuestion.getSingle() == "false":
+                        typeCombo.current(0)
+                elif type == "truefalse":
+                    typeCombo.current(2)
+            typeText = tk.Label(self, text = "type: ")
+
+
+            questEntry = tk.Entry(self)
+            questEntry.insert('end', currentQuestion.getQuestion())
+
+            questText = tk.Label(self, text = "question: ")
+
+            typeText.grid(row=1, column= 0)
+            ##typeEntry.pack(side="top", fill="x")
+            typeCombo.grid(row=1, column= 1)
+            questText.grid(row=2, column= 0)
+            questEntry.grid(row=2, column= 1)
+            answText = tk.Label(self, text = "Answers: ")
+            answText.grid(row=3, column= 0)
+            answers = currentQuestion.getAnswers()
+            answerTextList = []
+            for j in range(len(answers)):
+                answerText = tk.Entry(self)
+                answerValue = tk.Entry(self)
+                print("réponse" + answers[j][0])
+                print("value =" + answers[j][1])
+                answerText.insert('end', answers[j][0])
+                answerValue.insert('end', answers[j][1])
+                
+                answerText.grid(row = 4+j, column = 0)
+                answerValue.grid(row = 4+j,column = 1)
+
+                answerTextList.append((answerText,answerValue))
+
 if __name__ == "__main__":
     app = visualParser()
     app.mainloop()
