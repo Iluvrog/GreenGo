@@ -105,8 +105,6 @@ def XMLparser(filename):
                 ##    pass
                 ##elif child.tag == "idnumber":
                 ##    pass
-                elif child.tag == "single":
-                    single = child.text
                 ##elif child.tag == "shuffleanswers":
                 ##    pass
                 ##elif child.tag == "answernumbering":
@@ -122,7 +120,6 @@ def XMLparser(filename):
                     newQuestion.addAnswer(
                         re.sub(HTMLTag, '', str(child[0].text)), fraction)
             newQuestion.setFeedback(general = general,correct =  correct, incorrect = incorrect)
-            newQuestion.setSingle(single)
             questionList.append(newQuestion)
 
     return questionList
