@@ -69,12 +69,61 @@
     background-color: red!important;
 }
 
+.blue{
+    background-color: rgb(86, 86, 233)!important; 
+}
+
 .nouvellePartie{
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
 }
 
 .bouton{
     display: flex;
     justify-content:space-between;
+}
+
+.feedback{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.terre{
+    width: 30%;
+    margin-left: 35%;
+}
+
+.timer{
+    width: 7.5vw;
+    height: 7.5vw;
+    border: 1vw solid #28a745;
+    border-radius: 100%;
+    position: absolute;
+    text-align: center;
+}
+
+.text{
+    font-size: 3.5vw;
+    font-weight: bold;
+    color: #28a745;
+    vertical-align: middle;
+}
+
+.textVert{
+    color: #28a745!important;
+    transition: 1s;
+    border-color: #28a745!important;
+}
+
+.textOrange{
+    color: orange;
+    transition: 1s!important;
+    border-color: orange!important;
+}
+
+.textRouge{
+    transition: 1s;
+    color: red!important;
+    border-color :red!important;
 }

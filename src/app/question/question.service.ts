@@ -58,50 +58,62 @@ export class QuestionService {
     return [is1, is2, is3, is4, isActivate];
   }
 
-  valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: boolean, q2: boolean, q3: boolean, q4: boolean, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null) :any[]{
-    if(isActivate){
+  valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: number, q2: number, q3: number, q4: number, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null, time: number) :any[]{
+    let b: boolean = true;
+    let total = q1 + q2 + q3 + q4;
+    let newScore = 0;
+    if(isActivate || time == 0){
+      colorQ1 = (q1 > 0) ? 'blue' : 'nothing';
+      colorQ2 = (q2 > 0) ? 'blue' : 'nothing';
+      colorQ3 = (q3 > 0) ? 'blue' : 'nothing';
+      colorQ4 = (q4 > 0) ? 'blue' : 'nothing';
+
       if(is1){
-        if(q1){
+        if(q1 > 0){
           colorQ1 = 'green';
-          nbRepJuste++;
+          newScore++;
         }else{
           colorQ1 = 'red';
+          b = false;
         }
       }
       if(is2){
-        if(q2){
+        if(q2 > 0){
           colorQ2 = 'green';
-          nbRepJuste++;
+          newScore++;
         }else{
           colorQ2 = 'red';
+          b = false;
         }
       }
       if(is3){
-        if(q3){
+        if(q3 > 0){
           colorQ3 = 'green';
-          nbRepJuste++;
+          newScore++;
         }else{
           colorQ3 = 'red';
+          b = false;
         }
       }
       if(is4){
-        if(q4){
+        if(q4 > 0){
           colorQ4 = 'green';
-          nbRepJuste++;
+          newScore++;
         }else{
           colorQ4 = 'red';
+          b = false;
         }
       }
+      if(b){
+        nbRepJuste = nbRepJuste + (newScore / total) ;
+      }
+      console.log(b);
+      console.log(nbRepJuste);
       return[colorQ1, colorQ2, colorQ3, colorQ4, true, nbRepJuste, false, false, false, false, 0];
     }else{
       alert("Vous devez choisir une réponse pour valider");
       return['nothing', 'nothing', 'nothing', 'nothing', false, nbRepJuste];
     }
-  }
-
-  validerM(): any[]{
-    
-    return [];
   }
 
   reset(): any[]{

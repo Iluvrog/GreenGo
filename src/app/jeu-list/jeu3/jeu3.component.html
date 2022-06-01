@@ -1,104 +1,122 @@
-<div *ngIf = "!isFinish">
-    <div class="container">
-        <div class="row">
-            <div class="col m8 s8">
-                <div class="card horizontal question taille">
-                    <p>Question {{ nbQuestion }} : ceci est une question ?</p>
+<div class="container">
+    <div class="card">
+        <div *ngIf="!isValidate && !isFinish" class="timer {{ colorTimer }}">
+            <p class="text {{ colorTimer }}">{{ time }}</p>
+        </div>
+        <img class="terre" src="../../assets/img/terre.jpg" alt="">
+        <div *ngIf="isValidate" class="feedback">
+            <div class="card">
+                <h4 class="center">Explication</h4>
+                <p class="explication">
+                    Ceci est l'explication de la question, elle ne s'affiche que lorsque la réponse est valider !
+                </p>
+            </div>
+        </div>
+        
+        
+        <div *ngIf = "!isFinish">
+            <div class="container">
+                <div class="row">
+                    <div class="col m8 s8">
+                        <div class="card horizontal question taille">
+                            <p>Question {{ nbQuestion }} : ceci est une question ?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="container">
+                <div *ngIf="typeQuestion == 0" class="row">
+                    <div class="colonne m6">
+                        <div class="rep {{ is1 }} {{ colorQ1 }}" (click)="clickReponse(1)">
+                            <div>Réponse : Ceci est la réponse A</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is2 }} {{ colorQ2 }}" (click)="clickReponse(2)">
+                            <div>Réponse : Ceci est la réponse B</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is3 }} {{ colorQ3 }}" (click)="clickReponse(3)">
+                            <div>Réponse : Ceci est la réponse C</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is4 }} {{ colorQ4 }}" (click)="clickReponse(4)">
+                            <div>Réponse : Ceci est la réponse D</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="typeQuestion == 1" class="row">
+                    <div class="colonne m6">
+                        <div class="rep {{ is1 }} {{ colorQ1 }}" (click)="clickReponse(1)">
+                            <div>Vrai</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is2 }} {{ colorQ2 }}" (click)="clickReponse(2)">
+                            <div>Faux</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="typeQuestion == 2" class="row">
+                    <div class="colonne m6">
+                        <div class="rep {{ is1 }} {{ colorQ1 }}" (click)="clickReponseM(1)">
+                            <div>Réponse : Ceci est la réponse A</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is2 }} {{ colorQ2 }}" (click)="clickReponseM(2)">
+                            <div>Réponse : Ceci est la réponse B</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is3 }} {{ colorQ3 }}" (click)="clickReponseM(3)">
+                            <div>Réponse : Ceci est la réponse C</div>
+                        </div>
+                    </div>
+                    <div class="colonne m6">
+                        <div class="rep {{ is4 }} {{ colorQ4 }}" (click)="clickReponseM(4)">
+                            <div>Réponse : Ceci est la réponse D</div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!isValidate" class="bouton">
+                    <button (click)="reset()">
+                        Annuler
+                    </button>
+                    <button (click)="nouvellePartie()">
+                        Nouvelle partie
+                    </button>
+                    <button (click)="valider()">
+                        Valider
+                    </button>
+                </div>
+                <div *ngIf="isValidate">
+                    <button class="boutonDroit" (click)="questionSuivante()">
+                        Suivant
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <div *ngIf="typeQuestion == 0" class="row">
-            <div class="colonne m6">
-                <div class="rep {{ is1 }} {{ colorQ1 }}" (click)="clickReponse(1)">
-                    <div>Réponse : Ceci est la réponse A</div>
+        
+        <div *ngIf="isFinish">
+            <div class="container">
+                <div class="row">
+                    <div class="col m8 s8">
+                        <div class="card horizontal question taille">
+                            <p>Voici votre score : {{ nbRepJuste }} / 3</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is2 }} {{ colorQ2 }}" (click)="clickReponse(2)">
-                    <div>Réponse : Ceci est la réponse B</div>
+                <div class="row">
+                    <div class="col m8 s8">
+                        <button class="nouvellePartie" (click)="nouvellePartie()" >
+                            Nouvelle Partie
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is3 }} {{ colorQ3 }}" (click)="clickReponse(3)">
-                    <div>Réponse : Ceci est la réponse C</div>
-                </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is4 }} {{ colorQ4 }}" (click)="clickReponse(4)">
-                    <div>Réponse : Ceci est la réponse D</div>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="typeQuestion == 1" class="row">
-            <div class="colonne m6">
-                <div class="rep {{ is1 }} {{ colorQ1 }}" (click)="clickReponse(1)">
-                    <div>Vrai</div>
-                </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is2 }} {{ colorQ2 }}" (click)="clickReponse(2)">
-                    <div>Faux</div>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="typeQuestion == 2" class="row">
-            <div class="colonne m6">
-                <div class="rep {{ is1 }} {{ colorQ1 }}" (click)="clickReponseM(1)">
-                    <div>Réponse : Ceci est la réponse A</div>
-                </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is2 }} {{ colorQ2 }}" (click)="clickReponseM(2)">
-                    <div>Réponse : Ceci est la réponse B</div>
-                </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is3 }} {{ colorQ3 }}" (click)="clickReponseM(3)">
-                    <div>Réponse : Ceci est la réponse C</div>
-                </div>
-            </div>
-            <div class="colonne m6">
-                <div class="rep {{ is4 }} {{ colorQ4 }}" (click)="clickReponseM(4)">
-                    <div>Réponse : Ceci est la réponse D</div>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="!isValidate" class="bouton">
-            <button (click)="reset()">
-                Annuler
-            </button>
-            <button (click)="nouvellePartie()">
-                Nouvelle partie
-            </button>
-            <button (click)="valider()">
-                Valider
-            </button>
-        </div>
-        <div *ngIf="isValidate">
-            <button class="boutonDroit" (click)="questionSuivante()">
-                Suivant
-            </button>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="isFinish">
-    <div class="container">
-        <div class="row">
-            <div class="col m8 s8">
-                <div class="card horizontal question taille">
-                    <p>Voici votre score : {{ nbRepJuste }} / 3</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col m8 s8">
-                <button class="nouvellePartie" (click)="nouvellePartie()" >
-                    Nouvelle Partie
-                </button>
             </div>
         </div>
     </div>

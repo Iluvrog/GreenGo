@@ -26,30 +26,55 @@ export class Jeu3Component implements OnInit {
 
     val = localStorage.getItem("nbRepJuste-J3");
     this.nbRepJuste = (val == null) ? 0 : +val;
+
+    val = localStorage.getItem("Timer-J3");
+    this.time = (val == null) ? 15 : +val;
+
+    this.colorTimer = (localStorage.getItem("colorTimer-J3") == null) ? 'textVert' : localStorage.getItem("colorTimer-J3");
+    this.startTimer(this.time);
   }
 
+  //pas besoin
+  colorTimer: string|null = 'textVert';
+  time: number = 15;
+  isStart = false;
+
+  //pas besoin
   isActivate = false;
   isValidate = false;
   isFinish = false;
   previousNb = 0;
   nbQuestion = 1;
   nbRepJuste = 0;
-  typeQuestion = 0;
 
+  //besoin
+  //0 : 4 réponse / 1 choix
+  //1 : 2 réponse / 1 choix
+  //2 : 4 réponse / plusieurs choix
+  typeQuestion = 1;
+
+  //pas besoin
   is1 = false;
   is2 = false;
   is3 = false;
   is4 = false;
 
-  q1 = true;
-  q2 = false;
-  q3 = false;
-  q4 = false;
+  //besoin
+  q1 = 1;
+  q2 = 1;
+  q3 = 1;
+  q4 = 0;
 
+  //Pas besoin
   colorQ1: string|null = 'nothing';
   colorQ2: string|null = 'nothing';
   colorQ3: string|null = 'nothing';
   colorQ4: string|null = 'nothing';
+
+  /*textRep1 :string|null;
+  textRep2 :string|null;
+  textRep3 :string|null;
+  textRep4 :string|null;*/
 
   clickReponse(nb: number){
     let tab = this.questionService.clickReponse(nb, this.previousNb, this.is1, this.is2, this.is3, this.is4, this.isValidate, this.isActivate);
@@ -71,7 +96,7 @@ export class Jeu3Component implements OnInit {
   }
 
   valider(){
-    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4);
+    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, this.time);
     this.colorQ1 = tab[0];
     this.colorQ2 = tab[1];
     this.colorQ3 = tab[2];
@@ -117,6 +142,15 @@ export class Jeu3Component implements OnInit {
     this.colorQ3 = tab[11];
     this.colorQ4 = tab[12];
     this.sauvegarder();
+
+    this.colorTimer = 'textVert';
+    if(!this.isFinish){
+      if(!this.isStart){
+        this.startTimer(15);
+      }else{
+        this.time = 15;
+      }
+    }
   }
 
   nouvellePartie(){
@@ -134,6 +168,13 @@ export class Jeu3Component implements OnInit {
     this.nbQuestion = tab[9];
     this.isFinish = tab[10];
     this.sauvegarder();
+
+    this.colorTimer = 'textVert';
+    if(!this.isStart){
+      this.startTimer(15);
+    }else{
+      this.time = 15;
+    }
   }
 
   sauvegarder(){
@@ -147,8 +188,40 @@ export class Jeu3Component implements OnInit {
     localStorage.setItem('nbRepJuste-J3', this.nbRepJuste.toString());
     localStorage.setItem('nbQuestion-J3', this.nbQuestion.toString());
     localStorage.setItem('isFinish-J3', this.isFinish.toString());
-    localStorage.setItem('nbQuestion-J3', this.nbQuestion.toString());
-    localStorage.setItem('isFinish-J3', this.isFinish.toString());
     localStorage.setItem('isValidate-J3', this.isValidate.toString());
+  }
+
+  startTimer(val: number) {
+    if(!this.isStart){
+      this.isStart = true;
+      this.time = val;
+      if(val <= 8 && val > 3){
+        this.colorTimer = 'textOrange';
+      }else if(val <= 3){
+        this.colorTimer = 'textRouge';
+      }else{
+        this.colorTimer = 'textVert';
+      }
+      let intervalId = setInterval(() => {
+        if (this.time - 1 == -1 || this.isValidate) {
+          if(!this.isValidate){
+            this.valider();
+          }
+          clearInterval(intervalId);
+          this.isStart = false;
+        }else{
+          this.time -= 1;
+          if(this.time == 8){
+            this.colorTimer = 'textOrange';
+          }else if(this.time == 3){
+            this.colorTimer = 'textRouge';
+          }
+          localStorage.setItem('Timer-J3', this.time.toString());
+          if(this.colorTimer != null){
+            localStorage.setItem('colorTimer-J3', this.colorTimer);
+          }
+        } 
+      }, 1000)
+    }
   }
 }
