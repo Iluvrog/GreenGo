@@ -79,3 +79,8 @@
     border-color: black;
     text-align: center;
 }
+
+.icon {
+    /*height: 0.9em;*/
+    width: 0.8em;
+}

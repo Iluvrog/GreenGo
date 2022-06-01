@@ -12,7 +12,7 @@
                 {{ (case == 4 ? 'incorrect' : '')}}
                 {{ (exit[levelCounter] && case == 5 ? 'exit' : 'closeC')}}"
                 (click)="click(i,j)"
-            ><img src="../../../assets/img_jeu2/icone{{ case != 5 ? case: (exit[levelCounter] && case == 5  ? case:0) }}.png" height="20px" [style.display]="case == 2 ? 'none':'flex'"></button>
+            ><img src="../../../assets/img_jeu2/icone{{ case != 5 ? case: (exit[levelCounter] && case == 5  ? case:0) }}.png" [style.display]="case == 2 ? 'none':'flex'" class="icon"></button>
         </div>
     </div>
     <div style="margin-top: 2%;">
