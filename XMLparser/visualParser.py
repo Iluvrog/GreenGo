@@ -187,7 +187,8 @@ class questionPage(tk.Frame):
                     
                     answerText.grid(row = 4+j, column = 0)
                     answerValue.grid(row = 4+j,column = 1)
-
+                    deleteAnswer = tk.Button(self, text = "delete", command=lambda: print(answerText, answerValue, deleteAnswer))##deleteAnswAction(answerText,answerValue, deleteAnswer))
+                    deleteAnswer.grid(row= 4+j,column = 2)
                     self.answerTextList.append((answerText,answerValue))
             else:
                 answers = [("true",100),("false",0)]
@@ -200,7 +201,6 @@ class questionPage(tk.Frame):
                     answerValue.config(state='disabled')
                     answerText.grid(row = 4+j, column = 0)
                     answerValue.grid(row = 4+j,column = 1)
-
                     self.answerTextList.append((answerText,answerValue))
 
             feedbackList = currentQuestion.getFeedback()
