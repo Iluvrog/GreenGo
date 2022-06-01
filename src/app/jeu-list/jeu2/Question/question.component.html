@@ -15,6 +15,7 @@
             >{{ choice }}</button>
         </div>
     </div>
+    <div class="feedback" [style.display]="service.answer ? 'block': 'none'"><p> {{currentQuestion?.feedback }}</p></div>
     <div>
         <button class="countinue" (click) = "countinue()" >countinue</button>
     </div>  

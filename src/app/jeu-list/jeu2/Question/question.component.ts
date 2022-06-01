@@ -31,22 +31,30 @@ export class QuestionComponent implements OnInit {
       {
         question: 'question1...',
         reponse: 'A',
-        choix: ['A','B','C','D']
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 0 
       },
       {
         question: 'question2...',
         reponse: 'B',
-        choix: ['A','B','C','D']
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 1
       },
       {
         question: 'question3...',
         reponse: 'C',
-        choix: ['A','B','C','D']
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 2
       },
       {
         question: 'question4...',
         reponse: 'D',
-        choix: ['A','B','C','D']
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 3
       }
     ]
     this.currentQuestion = this.questions[this.counter] ;

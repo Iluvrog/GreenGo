@@ -216,10 +216,10 @@ export class Jeu2Component implements OnInit {
 
     if(localStorage.getItem('currentPosition') != null)
       this.currentPosition = JSON.parse( localStorage.getItem('currentPosition') || "" ) ; 
-    /*
+    
     if(localStorage.getItem('exit') != null)
       this.exit = JSON.parse( localStorage.getItem('exit') || "" ) ;
-*/
+
     this.plateau = this.niveaux[this.levelCounter] ;
   }
 
