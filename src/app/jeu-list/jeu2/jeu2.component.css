@@ -9,9 +9,11 @@
 }
 
 .Array {
-    width: 9.091%;   
+    width: 7%;   
     display: inline-block;
     vertical-align: middle;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 .case{

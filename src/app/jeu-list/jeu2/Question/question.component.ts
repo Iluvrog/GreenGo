@@ -22,7 +22,7 @@ export class QuestionComponent implements OnInit {
     
     this.counter = JSON.parse( localStorage.getItem('counter') || "0" ) ;
     this.score = JSON.parse( localStorage.getItem('score') || "0" ) ;
-    if(this.counter >= 4){
+    if(this.counter >= 5){
       this.counter = 0 ;
       this.score = 0 ;
     }
@@ -53,6 +53,13 @@ export class QuestionComponent implements OnInit {
         question: 'question4...',
         reponse: 'D',
         choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 3
+      },
+      {
+        question: 'question5...',
+        reponse: 'F',
+        choix: ['V','F'],
         feedback: 'feedback',
         type: 3
       }
