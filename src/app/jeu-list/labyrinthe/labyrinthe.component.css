@@ -6,7 +6,7 @@
   }
   
   .help-container {
-    height: 100vh;
+    height: 120vh;
     background-color: rgb(29, 29, 29);
     color: white;
     width: 100%;
@@ -140,6 +140,30 @@
     padding: 5px;
     border: grey 2px solid;
     border-radius: 60px;
+  }
+
+  .case.keys.yellow{
+    background-color: rgb(243, 243, 32);
+  }
+
+  .case.keys.blue{
+    background-color: rgba(88, 133, 247, 0.6);
+  }
+
+  .case.keys.purple{
+    background-color: rgba(206, 63, 151, 0.6);
+  }
+
+  .case.doors.yellow{
+    border-top: 5px solid rgb(243, 243, 32);
+  }
+
+  .case.doors.blue{
+    border-top: 5px solid rgba(88, 133, 247, 0.6);
+  }
+
+  .case.doors.purple{
+    border-top: 5px solid rgba(206, 63, 151, 0.6);
   }
 
   .case.perso{
