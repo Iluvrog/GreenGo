@@ -88,6 +88,12 @@ class questionPage(tk.Frame):
         self.questionList = questionList
         self.nbQuest = len(self.questionList)
 
+    def isInt(self, value_if_allowed):
+        try:
+            value = float(value_if_allowed)
+            return value >=-100 and value <= 100
+        except ValueError:
+            return value_if_allowed == ""
     def startEdition(self):
         
         button = tk.Button(self, text="Reset", command= self.reset)
@@ -100,6 +106,7 @@ class questionPage(tk.Frame):
 
             i = self.index
             currentQuestion = self.questionList[i]
+
             ##typeEntry = tk.Entry(self)
             ##typeEntry.insert('end', self.questionList[i].getType())
 
@@ -130,19 +137,47 @@ class questionPage(tk.Frame):
             answText = tk.Label(self, text = "Answers: ")
             answText.grid(row=3, column= 0)
             answers = currentQuestion.getAnswers()
-            answerTextList = []
+            self.answerTextList = []
+
+            onlyInt = (self.register(self.isInt),'%P')
             for j in range(len(answers)):
                 answerText = tk.Entry(self)
-                answerValue = tk.Entry(self)
-                print("réponse" + answers[j][0])
-                print("value =" + answers[j][1])
+                answerValue = tk.Entry(self, validate="key", validatecommand=onlyInt)
                 answerText.insert('end', answers[j][0])
                 answerValue.insert('end', answers[j][1])
                 
                 answerText.grid(row = 4+j, column = 0)
                 answerValue.grid(row = 4+j,column = 1)
 
-                answerTextList.append((answerText,answerValue))
+                self.answerTextList.append((answerText,answerValue))
+
+            feedbackList = currentQuestion.getFeedback()
+            self.feedbackTextList = []
+            general = tk.Entry(self)
+            general.insert('end', feedbackList[0])
+            startfeedBack = 4 + len(answers)
+            feedbackLabel = tk.Label(self, text = "Feedback:")
+            feedbackLabel.grid(row= startfeedBack,column= 0)
+            general.grid(row= startfeedBack+1, column= 0)
+            if type != "":
+                if type == "multichoice":
+                    correct = tk.Entry(self)
+                    partial = tk.Entry(self)
+                    incorrect = tk.Entry(self)
+                    correct.insert('end', feedbackList[1])
+                    partial.insert('end', feedbackList[2])
+                    incorrect.insert('end', feedbackList[3])
+                    correct.grid(row= startfeedBack+2, column= 0)
+                    partial.grid(row= startfeedBack+3, column= 0)
+                    incorrect.grid(row= startfeedBack+4, column= 0)
+                    
+                elif type == "truefalse":
+                    correct = tk.Entry(self)
+                    incorrect = tk.Entry(self)
+                    correct.insert('end', feedbackList[1])
+                    incorrect.insert('end', feedbackList[3])
+                    correct.grid(row= startfeedBack+2, column= 0)
+                    incorrect.grid(row= startfeedBack+4, column= 0)
 
 if __name__ == "__main__":
     app = visualParser()

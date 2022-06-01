@@ -115,15 +115,13 @@ def XMLparser(filename):
                 ##    pass
                 elif child.tag == "correctfeedback":
                     correct = re.sub(HTMLTag, '', str(child[0].text))
-                elif child.tag == "partiallycorrectfeedback":
-                    partial = re.sub(HTMLTag, '', str(child[0].text))
                 elif child.tag == "incorrectfeedback":
                     incorrect = re.sub(HTMLTag, '', str(child[0].text))
                 elif child.tag == "answer":
                     fraction = child.attrib.get("fraction")
                     newQuestion.addAnswer(
                         re.sub(HTMLTag, '', str(child[0].text)), fraction)
-            newQuestion.setFeedback(general, correct, partial, incorrect)
+            newQuestion.setFeedback(general = general,correct =  correct, incorrect = incorrect)
             newQuestion.setSingle(single)
             questionList.append(newQuestion)
 
