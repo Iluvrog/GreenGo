@@ -130,7 +130,9 @@ class questionPage(tk.Frame):
         self.clear_question()
         self.startEdition()
 
-
+    def deleteRow(self, j):
+        for w in self.answerTextList[j]:
+            w.destroy()
 
 
     def startEdition(self):
@@ -187,9 +189,9 @@ class questionPage(tk.Frame):
                     
                     answerText.grid(row = 4+j, column = 0)
                     answerValue.grid(row = 4+j,column = 1)
-                    deleteAnswer = tk.Button(self, text = "delete", command=lambda: print(answerText, answerValue, deleteAnswer))##deleteAnswAction(answerText,answerValue, deleteAnswer))
+                    deleteAnswer = tk.Button(self, text = "delete", command=lambda t=j: self.deleteRow(t))
                     deleteAnswer.grid(row= 4+j,column = 2)
-                    self.answerTextList.append((answerText,answerValue))
+                    self.answerTextList.append((answerText,answerValue, deleteAnswer))
             else:
                 answers = [("true",100),("false",0)]
                 for j in range(2):
