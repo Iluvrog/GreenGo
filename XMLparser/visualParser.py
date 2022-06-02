@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 
-
+##---------------------------unique window------------------------------------
 class visualParser(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -12,18 +12,21 @@ class visualParser(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+##--------generating two frames------------
         self.frames = {}
-        for F in (uploadPage, questionPage):
+        for F in (uploadPage, questionPage):##uploadPage for the xml import, question page to visualise and edit questions
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame("uploadPage")
 
+##-------------unique window----------
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
 
+##-------when xml is imported we initialise correctly the question page----------
     def startQuestionPage(self, questionList):
         questionPage = self.frames["questionPage"]
         questionPage.setQuestionList(questionList)
@@ -31,6 +34,9 @@ class visualParser(tk.Tk):
         questionPage.tkraise()
 
 
+
+
+##-----------------------------XML Frame definition------------------------------------
 class uploadPage(tk.Frame):
     def __init__(self, parent, controller):
         def UploadAction(questionList, event=None):
@@ -50,26 +56,30 @@ class uploadPage(tk.Frame):
 
 
 
-
+##---------------------------------Question edition frame-------------------------------------
 class questionPage(tk.Frame):
     isStarted = False
 
+    ##-------to remove every widget from the page----
     def clear_question(self):
         widgetList = self.winfo_children()
         for widget in widgetList:
             widget.destroy()
 
+##---------as if nothing ever happend--------------
     def reset(self):
         self.index = 0
         self.clear_question()
         self.controller.show_frame("uploadPage")
 
+##---------just basic useful variables--------------
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.index = 0
         self.typeVariable = tk.StringVar()
 
+##----------show next question if any---------
     def next(self):
         if self.index < self.nbQuest - 1:
             self.index += 1
@@ -78,6 +88,7 @@ class questionPage(tk.Frame):
         else:
             print("no more question")
 
+##----------show previous question if any---------
     def previous(self):
         if self.index > 0:
             self.index -= 1
@@ -86,10 +97,12 @@ class questionPage(tk.Frame):
         else:
             print("already first question")
 
+##----------to get QuestionList from xml---------
     def setQuestionList(self, questionList):
         self.questionList = questionList
         self.nbQuest = len(self.questionList)
 
+##----------restrain entry box value to float between -100 100---------
     def isInt(self, value_if_allowed):
         try:
             value = float(value_if_allowed)
@@ -97,6 +110,7 @@ class questionPage(tk.Frame):
         except ValueError:
             return value_if_allowed == ""
 
+##----------store inputed data---------
     def save(self):
         type = self.typeVariable.get()
         if type == "Multichoice" or type =="SingleChoice":
@@ -124,19 +138,37 @@ class questionPage(tk.Frame):
         elif type =="truefalse":
             incorrect = fbackList[2]
             newQuestion.setFeedback(general= general, correct=correct, incorrect= incorrect)
+
+
         for quest in self.answerTextList:
             newQuestion.addAnswer(quest[0].get(),quest[1].get())
         self.questionList[self.index] = newQuestion
         self.clear_question()
         self.startEdition()
 
+
+##----------delete the row j of answer---------
     def deleteRow(self, j):
-        for w in self.answerTextList[j]:
-            w.destroy()
+        if len(self.answerTextList) > 2:
+            for w in self.answerTextList[j]:
+                w.destroy()
+            self.answerTextList.pop(j)
+        else:
+            print("at least 2 answers")
 
+##----------add a row of answer (save is necessary)---------
+    def addRow(self):
+        onlyInt = (self.register(self.isInt),'%P')
+        answerText = tk.Entry(self)
+        answerValue = tk.Entry(self, validate="key", validatecommand=onlyInt)
+        answerText.insert('end', "")
+        answerValue.insert('end', "")
+        self.answerTextList.append((answerText,answerValue))
+        self.save()
 
+##-------initialise page at the current question index-------------------
     def startEdition(self):
-        
+        ##headers buttons
         button = tk.Button(self, text="Reset", command= self.reset)
         button.grid(row=0, column= 1)
         previousButton = tk.Button(self, text = "previous", command = self.previous)
@@ -151,6 +183,7 @@ class questionPage(tk.Frame):
             ##typeEntry = tk.Entry(self)
             ##typeEntry.insert('end', self.questionList[i].getType())
 
+            ##here is type combobox
             type = currentQuestion.getType()
             self.typeCombo = ttk.Combobox(self, values=["Multichoice","SingleChoice", "True/False"], state = "readonly", textvariable=self.typeVariable)
             if type != "":
@@ -163,7 +196,7 @@ class questionPage(tk.Frame):
                     self.typeCombo.current(2)
             typeText = tk.Label(self, text = "type: ")
 
-
+            ##question text
             self.questEntry = tk.Entry(self)
             self.questEntry.insert('end', currentQuestion.getQuestion())
 
@@ -174,6 +207,8 @@ class questionPage(tk.Frame):
             self.typeCombo.grid(row=1, column= 1)
             questText.grid(row=2, column= 0)
             self.questEntry.grid(row=2, column= 1)
+
+            ##answers
             answText = tk.Label(self, text = "Answers: ")
             answText.grid(row=3, column= 0)
             self.answerTextList = []
@@ -205,6 +240,7 @@ class questionPage(tk.Frame):
                     answerValue.grid(row = 4+j,column = 1)
                     self.answerTextList.append((answerText,answerValue))
 
+            ##feedbacks
             feedbackList = currentQuestion.getFeedback()
             self.feedbackTextList = []
             general = tk.Entry(self)
@@ -240,8 +276,16 @@ class questionPage(tk.Frame):
                     next = startfeedBack+4
                     self.feedbackTextList.append(correct)
                     self.feedbackTextList.append(incorrect)
+                    
+            ##bottom buttons
             saveButton = tk.Button(self, text= "save", command=self.save)
             saveButton.grid(row = 25)
+            addAnsButton = tk.Button(self, text= "add answer", command=self.addRow)
+            addAnsButton.grid(row = 25, column=1)
+
+
+
+
 if __name__ == "__main__":
     app = visualParser()
     app.mainloop()
