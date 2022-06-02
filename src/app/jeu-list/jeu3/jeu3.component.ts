@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionService } from 'src/app/question/question.service';
+import { Question } from '../../question';
 
 @Component({
   selector: 'app-jeu3',
@@ -8,7 +9,22 @@ import { QuestionService } from 'src/app/question/question.service';
 })
 export class Jeu3Component implements OnInit {
 
-  constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService) {
+    this.textRep1 = ''
+    this.textRep2 = ''
+    this.textRep3 = ''
+    this.textRep4 = ''
+    this.idCurrentQuestion = 0
+    if(questionService.currentQuestionsList != undefined){
+      this.currentQuestion = questionService.currentQuestionsList[0]
+      this.typeQuestion = this.currentQuestion.questionType
+    }else{
+      this.currentQuestion = new Question('')
+      this.typeQuestion = 0
+    }
+
+
+   }
 
   ngOnInit(): void {
     this.isActivate = (localStorage.getItem('isActivate-J3') == null || localStorage.getItem('isActivate-J3') == "false") ? false : true;
@@ -32,7 +48,25 @@ export class Jeu3Component implements OnInit {
 
     this.colorTimer = (localStorage.getItem("colorTimer-J3") == null) ? 'textVert' : localStorage.getItem("colorTimer-J3");
     this.startTimer(this.time);
+
+    this.questionList = this.questionService.currentQuestionsList
+    
+    if(this.currentQuestion?.answers != undefined){
+        console.log(this.currentQuestion?.answers[0])
+        this.textRep1 = this.currentQuestion?.answers[0]
+        this.textRep2 = this.currentQuestion?.answers[1]
+        this.textRep3 = this.currentQuestion?.answers[2]
+        this.textRep4 = this.currentQuestion?.answers[3]
+      }
+    
+     
+    
   }
+
+ 
+  questionList : Question[] | undefined
+  currentQuestion : Question 
+  idCurrentQuestion : number
 
   //pas besoin
   colorTimer: string|null = 'textVert';
@@ -51,7 +85,7 @@ export class Jeu3Component implements OnInit {
   //0 : 4 réponse / 1 choix
   //1 : 2 réponse / 1 choix
   //2 : 4 réponse / plusieurs choix
-  typeQuestion = 1;
+  typeQuestion 
 
   //pas besoin
   is1 = false;
@@ -71,10 +105,10 @@ export class Jeu3Component implements OnInit {
   colorQ3: string|null = 'nothing';
   colorQ4: string|null = 'nothing';
 
-  /*textRep1 :string|null;
+  textRep1 :string|null 
   textRep2 :string|null;
   textRep3 :string|null;
-  textRep4 :string|null;*/
+  textRep4 :string|null;
 
   clickReponse(nb: number){
     let tab = this.questionService.clickReponse(nb, this.previousNb, this.is1, this.is2, this.is3, this.is4, this.isValidate, this.isActivate);
@@ -141,6 +175,19 @@ export class Jeu3Component implements OnInit {
     this.colorQ2 = tab[10];
     this.colorQ3 = tab[11];
     this.colorQ4 = tab[12];
+    this.idCurrentQuestion++
+    if(this.questionList != undefined){
+      this.currentQuestion = this.questionList[this.idCurrentQuestion]
+    }
+  
+    if(this.currentQuestion?.answers != undefined){
+      this.textRep1 = this.currentQuestion?.answers[0]
+      this.textRep2 = this.currentQuestion?.answers[1]
+      this.textRep3 = this.currentQuestion?.answers[2]
+      this.textRep4 = this.currentQuestion?.answers[3]
+    }
+
+  
     this.sauvegarder();
 
     this.colorTimer = 'textVert';

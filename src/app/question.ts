@@ -1,5 +1,5 @@
 export class Question {
-    text : string | undefined
+    text : string 
     answers : string[] | undefined
     answerValue: number[] | undefined
     questionType : number | undefined
@@ -7,7 +7,7 @@ export class Question {
 
     
 
-    constructor(txt?:string, ans?:string[], ansV?:number[], qt?:number, fb?:string){
+    constructor(txt:string, ans?:string[], ansV?:number[], qt?:number, fb?:string){
         this.text = txt
         if(this.answers != undefined){
             this.answers = ans

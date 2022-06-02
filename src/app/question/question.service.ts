@@ -1,11 +1,58 @@
 import { Injectable } from '@angular/core';
+import { Question } from '../question';
+import fileQuestionsJSON from '../../assets/questions.json'
+import fileAnswerJSON from '../../assets/answers.json'
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
 
-  constructor() { }
+  questionsJSON = fileQuestionsJSON//Actuellement se trouve dans src/assets/question, plus tard sera recuperer par requete http
+  answersJSON = fileAnswerJSON//Pareil
+
+  numberOfQuestions : number | undefined //a initialiser dans le constructeur peut etre selon le type de jeu
+  allQuestions : Question[]  = [] //Variable a utiliser contenant la liste de toutes les questions
+  
+  currentQuestionsList: Question[] | undefined //Liste de n questions courante
+
+  
+  constructor() { 
+    this.allQuestions = []
+    this.currentQuestionsList  = []
+    this.parseJSONToModel()//On remplit allQuestions ici
+    this.numberOfQuestions = 4
+    this.currentQuestionsList = this.getNQuestions(this.numberOfQuestions)
+  }
+  
+  parseJSONToModel(){
+    this.questionsJSON.forEach(element => {
+      let quest: Question = new Question(element.QUESTION)
+      quest.questionType = +element.FORMAT //+ pour cast en number
+      
+      
+      this.answersJSON.forEach(ans =>{
+        if(ans.IDQ === element.ID){
+          quest.answers?.push(ans.ANSWER)
+          quest.answerValue?.push(+ans.VALUE)
+        }
+        
+      });
+      this.allQuestions?.push(quest)
+    });
+  }
+  /* Choisis àléatoirement n questions parmis l'array questions, A FAIRE : FAIRE EN SORTE QUE PAS DE REPETITION*/
+  getNQuestions(n:number){
+    let lesQuestions =  []
+    
+    for (var a = [...Array(this.allQuestions?.length).keys()], i = n; i--; ) {
+      var random = Math.floor(Math.random()*this.allQuestions?.length);
+      lesQuestions.push(this.allQuestions[random])
+    }
+     return lesQuestions
+     
+   }
+
 
   clickReponse(nb: number, previousNb: number, is1: boolean, is2: boolean, is3: boolean, is4: boolean, isValidate: boolean, isActivate: boolean) :any[]{
     if(!isValidate){
@@ -123,7 +170,7 @@ export class QuestionService {
   questionSuivante(nbQuestion :number) :any[]{
     nbQuestion++;
     let tab : any[];
-    if(nbQuestion == 4){
+    if(nbQuestion == this.numberOfQuestions){
       tab = this.reset();
       return [nbQuestion, true, tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], false, 'nothing', 'nothing', 'nothing', 'nothing'];
     }else{
