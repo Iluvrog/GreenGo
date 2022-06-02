@@ -35,7 +35,6 @@ class visualParser(tk.Tk):
 
 
 
-
 ##-----------------------------XML Frame definition------------------------------------
 class uploadPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -166,6 +165,27 @@ class questionPage(tk.Frame):
         self.answerTextList.append((answerText,answerValue))
         self.save()
 
+
+##---------------------------------------------TEST----------------------------------
+    def deleteQuestion(self):
+        if self.nbQuest > 1:
+            self.nbQuest-=1
+            self.questionList.pop(self.index)
+            while self.index >= self.nbQuest:
+                self.index-=1
+            self.clear_question()
+            self.startEdition()
+
+    def addQuestion(self):
+        self.nbQuest+=1
+        defaultQuestion = p.questionClass("truefalse","")
+        defaultQuestion.addAnswer("true","100")
+        defaultQuestion.addAnswer("false","0")
+        defaultQuestion.setFeedback()
+        self.questionList.insert(self.index, defaultQuestion)
+        self.clear_question()
+        self.startEdition()
+
 ##-------initialise page at the current question index-------------------
     def startEdition(self):
         ##headers buttons
@@ -175,6 +195,12 @@ class questionPage(tk.Frame):
         previousButton.grid(row=0, column= 0)
         nextButton = tk.Button(self, text = "next", command = self.next)
         nextButton.grid(row=0, column= 2)
+        addQuestButton = tk.Button(self, text="add question", command= self.addQuestion)
+        addQuestButton.grid(row=0, column= 3)
+        removeQuestButton = tk.Button(self, text="delete question", command= self.deleteQuestion)
+        removeQuestButton.grid(row=0, column= 4)
+
+        ##---question----
         if self.nbQuest > 0:
 
             i = self.index
@@ -276,7 +302,7 @@ class questionPage(tk.Frame):
                     next = startfeedBack+4
                     self.feedbackTextList.append(correct)
                     self.feedbackTextList.append(incorrect)
-                    
+
             ##bottom buttons
             saveButton = tk.Button(self, text= "save", command=self.save)
             saveButton.grid(row = 25)
