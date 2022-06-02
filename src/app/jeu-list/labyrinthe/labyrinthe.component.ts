@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from "./service/level.service";
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { NumberValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-labyrinthe',
@@ -42,25 +41,21 @@ export class LabyrintheComponent implements OnInit {
   public currentMoves: number = 0;
   public doorsPosition: number[][];
   public keysPosition: number[][];
-  /*public targetMoves: number;
 
-  
-  
-  
-  
-  public hasWon: boolean = false;
-  public hasLost: boolean = false;*/
+  time: number = 0;
+  timebegin : boolean = false; 
 
   constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService ) { 
     this.manPosition = [];
     this.setHotKeys();
     this.doorsPosition = [];
     this.keysPosition = [];
-  }
-
+  }  
 
   ngOnInit(): void {
-      this.sub = this.route.params.subscribe((params) => {
+        this.id = JSON.parse( localStorage.getItem('num_niv') || "0" ) ;
+
+        this.sub = this.route.params.subscribe((params) => {
         //this.id = +params["id"];
         this.allLevels = this.LevelService.getAllLevels();
         console.log(this.id);
@@ -83,6 +78,20 @@ export class LabyrintheComponent implements OnInit {
         }
         this.board[0][0] = true;
       });
+    
+        if(localStorage.getItem('perso') != null)
+          this.manPosition = JSON.parse( localStorage.getItem('perso') || "" ) ;
+        if(localStorage.getItem('nbmove') != null)
+          this.currentMoves = JSON.parse( localStorage.getItem('nbmove') || "" ) ;
+        if(localStorage.getItem('doorsPosition') != null)
+          this.doorsPosition = JSON.parse( localStorage.getItem('doorsPosition') || "" ) ;
+        if(localStorage.getItem('keysPosition') != null)
+          this.keysPosition = JSON.parse( localStorage.getItem('keysPosition') || "" ) ;
+        if(localStorage.getItem('time') != null){
+          this.time = JSON.parse( localStorage.getItem('time') || "" ) ;
+          this.timebegin = true;
+          this.startTimer();
+        }
   }
   
   getvalue(h : number, w : number): number {
@@ -111,6 +120,14 @@ export class LabyrintheComponent implements OnInit {
       }
     }
     return -1;
+  }
+
+  isInventaire(i: number): boolean {
+    return this.keysPosition[i][2] == 1;
+  }
+
+  getNumberMove() : number{
+    return this.currentMoves;
   }
 
   moveLeft() {
@@ -192,16 +209,17 @@ export class LabyrintheComponent implements OnInit {
   }
 
   refresh(): void {
+    localStorage.clear();
     window.location.reload();
   }
 
   setHotKeys() {
     this._hotkeysService.add(new Hotkey(['up', 'down','left','right','space'], (event: KeyboardEvent, combo: string): boolean => {
-      if (combo === 'up') { this.moveUp(); }
-      if (combo === 'down') { this.moveDown(); }
-      if (combo === 'left') { this.moveLeft(); }
-      if (combo === 'right') { this.moveRight(); }
-      if (combo === 'space') { this.action(); }
+      if (combo === 'up') { this.moveUp(); this.onAction(); }
+      if (combo === 'down') { this.moveDown(); this.onAction();}
+      if (combo === 'left') { this.moveLeft(); this.onAction();}
+      if (combo === 'right') { this.moveRight(); this.onAction();}
+      if (combo === 'space') { this.action(); this.onAction();}
       return false; // Prevent bubbling
     }));
   }
@@ -215,5 +233,28 @@ export class LabyrintheComponent implements OnInit {
     if(n != -1){//take key
       this.keysPosition[n][2] = 1;
     }
+  }
+
+  startTimer():void {
+    this.timebegin = true;
+    setInterval(() => {
+      this.time++;
+    },1000);
+  }
+
+  gettime(): number{
+    return this.time;
+  }
+
+  onAction(){
+    if(!this.timebegin){
+      this.startTimer();
+    }
+    localStorage.setItem('num_niv', JSON.stringify(this.id) );
+    localStorage.setItem('perso', JSON.stringify(this.manPosition) );
+    localStorage.setItem('nbmove', JSON.stringify(this.currentMoves) );
+    localStorage.setItem('doorsPosition', JSON.stringify(this.doorsPosition) ); 
+    localStorage.setItem('keysPosition', JSON.stringify(this.keysPosition) ); 
+    localStorage.setItem('time', JSON.stringify(this.time) );  
   }
 }
