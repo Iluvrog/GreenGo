@@ -16,8 +16,9 @@
         </div>
     </div>
     <div style="margin-top: 2%;">
-        <button class="previous" (click)="previous ()">previous</button>
-        <button class="restart" (click)="restart()">restart</button>
-        <button class="next" (click)="next()">next</button>
+        <button mat-stroked-button class="previous" (click)="previous()"> previous <mat-icon>undo</mat-icon></button>
+        <button mat-stroked-button class="rules" (click)="openRules()"> rules <mat-icon>info_outline</mat-icon></button>
+        <button mat-stroked-button class="restart" (click)="restart()"> restart <mat-icon>restart_alt</mat-icon></button>
+        <button mat-stroked-button class="next" (click)="next()"> next <mat-icon>redo</mat-icon></button>
     </div>
 </div>

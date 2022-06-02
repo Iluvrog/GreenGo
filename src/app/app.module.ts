@@ -13,7 +13,9 @@ import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
 import { QuestionComponent } from './jeu-list/jeu2/Question/question.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
-import { MatIcon, MatIconModule } from '@angular/material/icon' ;
+import { MatIconModule } from '@angular/material/icon' ;
+import {MatDialogModule} from '@angular/material/dialog';
+import { RulesComponent } from './jeu-list/jeu2/rules/rules.component' ;
 
 
 
@@ -26,6 +28,7 @@ import { MatIcon, MatIconModule } from '@angular/material/icon' ;
     Jeu3Component,
     Jeu4Component,
     QuestionComponent,
+    RulesComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,10 @@ import { MatIcon, MatIconModule } from '@angular/material/icon' ;
     BrowserAnimationsModule,
     MatButtonModule, 
     MatIconModule,
+    MatDialogModule
+  ],
+  entryComponents : [
+    RulesComponent
   ],
   providers: [],
   bootstrap: [AppComponent],

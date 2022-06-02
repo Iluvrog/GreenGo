@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceService } from './service.service';
+import { MatDialog } from '@angular/material/dialog' ;
+import { RulesComponent } from './rules/rules.component';
 
 
 @Component({
@@ -25,7 +27,9 @@ export class Jeu2Component implements OnInit {
   currentPosition: number[] = new Array(2) ;
   exit:boolean[] = [] ;
 
-  constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) {
+  constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService,
+    private dialogue: MatDialog ) {
+
     this.exit = [false,false,false,false] ;
     //this.exit = [true,true,true,true] ;
 
@@ -322,6 +326,10 @@ export class Jeu2Component implements OnInit {
     this.plateau = this.niveaux[this.levelCounter] ;
     localStorage.setItem('niveaux', JSON.stringify(this.niveaux) );
     localStorage.setItem('exit', JSON.stringify(this.exit) ); 
+  }
+
+  openRules(){
+    this.dialogue.open(RulesComponent) ;
   }
    
 }
