@@ -58,7 +58,7 @@ export class QuestionService {
     return [is1, is2, is3, is4, isActivate];
   }
 
-  valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: number, q2: number, q3: number, q4: number, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null, time: number) :any[]{
+  valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: number, q2: number, q3: number, q4: number, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null, time: number, ruleM: boolean) :any[]{
     let b: boolean = true;
     let total = q1 + q2 + q3 + q4;
     let newScore = 0;
@@ -104,12 +104,17 @@ export class QuestionService {
           b = false;
         }
       }
+      if(ruleM){
+        if(newScore != total){
+          b = false;
+        }
+      }
       if(b){
         nbRepJuste = nbRepJuste + (newScore / total) ;
       }
       console.log(b);
       console.log(nbRepJuste);
-      return[colorQ1, colorQ2, colorQ3, colorQ4, true, nbRepJuste, false, false, false, false, 0];
+      return[colorQ1, colorQ2, colorQ3, colorQ4, true, nbRepJuste, false, false, false, false, false, 0, b];
     }else{
       alert("Vous devez choisir une réponse pour valider");
       return['nothing', 'nothing', 'nothing', 'nothing', false, nbRepJuste];
@@ -120,10 +125,10 @@ export class QuestionService {
     return [false, false, false, false, false, 0];
   }
 
-  questionSuivante(nbQuestion :number) :any[]{
+  questionSuivante(nbQuestion :number, rule2:boolean, nb: number) :any[]{
     nbQuestion++;
     let tab : any[];
-    if(nbQuestion == 4){
+    if(nbQuestion == (nb+1) && !rule2){
       tab = this.reset();
       return [nbQuestion, true, tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], false, 'nothing', 'nothing', 'nothing', 'nothing'];
     }else{

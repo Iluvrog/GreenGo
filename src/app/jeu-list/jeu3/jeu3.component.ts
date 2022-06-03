@@ -96,7 +96,7 @@ export class Jeu3Component implements OnInit {
   }
 
   valider(){
-    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, this.time);
+    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, this.time, false);
     this.colorQ1 = tab[0];
     this.colorQ2 = tab[1];
     this.colorQ3 = tab[2];
@@ -126,7 +126,7 @@ export class Jeu3Component implements OnInit {
   }
 
   questionSuivante(){
-    let tab = this.questionService.questionSuivante(this.nbQuestion);
+    let tab = this.questionService.questionSuivante(this.nbQuestion, false, 3);
 
     this.nbQuestion = tab[0];
     this.isFinish = tab[1];
