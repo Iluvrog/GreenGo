@@ -134,7 +134,7 @@ def XMLparser(filename):
 
 def Upload(questionList):
     JHOME = jpype.getDefaultJVMPath()
-    jpype.startJVM(JHOME, '-Djava.class.path=C:/Users/Shamaki/Desktop/bureau/cours/M1/TER/BD/ojdbc6.jar')
+    jpype.startJVM(classpath=['jar/ojdbc6.jar'])
     con = jaydebeapi.connect('oracle.jdbc.driver.OracleDriver',
                             'jdbc:oracle:thin:legoffad/47671b85b1@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag')
     cur = con.cursor()
