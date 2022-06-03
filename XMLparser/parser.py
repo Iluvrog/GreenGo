@@ -1,10 +1,13 @@
 import re
 from unicodedata import category
 import xml.etree.ElementTree as ET
-
+import jpype
+import jaydebeapi
 
 class questionClass:
     def __init__(self, type, quest):
+        self.single = None
+        self.feedback = None
         self.type = type
         self.quest = quest
         self.answers = []
@@ -47,22 +50,22 @@ def XMLparser(filename):
     root = tree.getroot()
     if root.tag != "quiz":
         print("wrong xml file, not a quiz")
-        exit
+        exit()
 
     questionList = []
     for question in root:
-        type = question.attrib.get("type")
-        if type == "category":
+        currentType = question.attrib.get("type")
+        if currentType == "category":
             pass
 
-        elif type == "multichoice":
+        elif currentType == "multichoice":
             for child in question:
                 if child.tag == "name":
                     pass
                 elif child.tag == "generalfeedback":
                     general = removeThingy(child[0].text)
                 elif child.tag == "questiontext":
-                    newQuestion = questionClass(type, removeThingy(child[0].text))
+                    newQuestion = questionClass(currentType, removeThingy(child[0].text))
                 elif child.tag == "defaultgrade":
                     pass
                 elif child.tag == "penalty":
@@ -93,7 +96,7 @@ def XMLparser(filename):
             newQuestion.setSingle(single)
             questionList.append(newQuestion)
 
-        elif type == "truefalse":
+        elif currentType == "truefalse":
             for child in question:
                 if child.tag == "name":
                     pass
@@ -101,7 +104,7 @@ def XMLparser(filename):
                     general = removeThingy(child[0].text)
                 elif child.tag == "questiontext":
                     newQuestion = questionClass(
-                        type, removeThingy(child[0].text))
+                        currentType, removeThingy(child[0].text))
                 ##elif child.tag == "defaultgrade":
                 ##    pass
                 ##elif child.tag == "penalty":
@@ -128,3 +131,100 @@ def XMLparser(filename):
             questionList.append(newQuestion)
 
     return questionList
+
+def Upload(questionList):
+    JHOME = jpype.getDefaultJVMPath()
+    jpype.startJVM(JHOME, '-Djava.class.path=C:/Users/Shamaki/Desktop/bureau/cours/M1/TER/BD/ojdbc6.jar')
+    con = jaydebeapi.connect('oracle.jdbc.driver.OracleDriver',
+                            'jdbc:oracle:thin:legoffad/47671b85b1@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag')
+    cur = con.cursor()
+    nbQst = 0
+    for question in questionList:
+        nbQst+=1
+        enonce = question.getQuestion()
+        reponses = question.getAnswers()
+        general = question.getFeedback()[0]
+        nbRep=0
+        for i in reponses:
+            nbRep+=1
+
+        if(nbRep == 2):
+            #Question vrai/faux
+            err = 0
+            if(reponses[0][0] == reponses[1][0]):
+                err = 1
+                print("probleme de reponses dupliquees pour la question "+enonce)
+            if err == 0:
+                stmt = "INSERT INTO Questions VALUES(NULL, 1, 'None','"+enonce+"','"+general+"')"
+                try:
+                    cur.execute(stmt)
+                    print("inserted :"+stmt)
+                except jaydebeapi.DatabaseError as e:
+                    print("Couldn't exec request "+stmt)
+                    err = 1
+                if(err == 0):
+                    stmt ="SELECT ID FROM Questions WHERE question='"+enonce+"'"
+                    cur.execute(stmt)
+
+                    for i in cur.fetchall():
+                        id = i[0]
+
+                    for rep in reponses:
+                        if int(rep[1]) == 100:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[1]+"')"
+                        elif int(rep[1]) == 0:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[3]+"')"
+                        else:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[2]+"')"
+
+                        try:
+                            cur.execute(stmt)
+                            print("inserted :"+stmt)
+                        except jaydebeapi.DatabaseError as e:
+                            print("Couldn't exec request "+stmt)
+        else:
+            #Question QCM avec 1 ou plusieurs reponses juste
+            nbRepJuste = 0
+            err = 0
+            previous = []
+            for rep in reponses:
+
+                for p in previous :
+                    if(p[0] == rep[0]):
+                        print("probleme de reponses dupliquees pour la question "+enonce)
+                        err = 1
+                previous.append(rep)
+
+                if(0<int(rep[1])<100):
+                    nbRepJuste = 2
+
+            if(err ==  0):
+                stmt = "INSERT INTO Questions VALUES(NULL, "+str(nbRepJuste)+", 'None','"+enonce+"','"+general+"')"
+                try:
+                    cur.execute(stmt)
+                    print("inserted :"+stmt)
+
+                except Exception as ex:
+                    print("Couldn't exec request "+stmt)
+                    err = 1
+
+                if err == 0:
+
+                    stmt = "SELECT ID FROM Questions WHERE question='"+enonce+"'"
+                    cur.execute(stmt)
+
+                    for i in cur.fetchall():
+                        id = i[0]
+
+                    for rep in reponses:
+                        if int(rep[1]) == 100:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[1]+"')"
+                        elif int(rep[1]) == 0 :
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[3]+"')"
+                        else:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[2]+"')"
+                        try:
+                            cur.execute(stmt)
+                            print("inserted :"+stmt)
+                        except jaydebeapi.DatabaseError as e:
+                            print("Couldn't exec request "+stmt)
