@@ -11,6 +11,7 @@
     color: white;
     width: 100%;
   }
+  
   .container {
     position: relative;
     display: block;
@@ -154,6 +155,18 @@
     background-color: rgba(206, 63, 151, 0.6);
   }
 
+  .case.books.yellow{
+    background-color: rgb(243, 243, 32);
+  }
+
+  .case.books.blue{
+    background-color: rgba(88, 133, 247, 0.6);
+  }
+
+  .case.books.purple{
+    background-color: rgba(206, 63, 151, 0.6);
+  }
+
   .case.doors.yellow{
     border-top: 5px solid rgb(243, 243, 32);
   }
@@ -173,6 +186,13 @@
     pointer-events: none;
   }
   
+  .case.exit{
+    background-color: rgb(113, 230, 142);
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+  }
+
   .level {
     color: rgb(241, 32, 67);
   }

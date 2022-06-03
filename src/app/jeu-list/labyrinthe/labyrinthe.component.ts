@@ -17,6 +17,8 @@ export class LabyrintheComponent implements OnInit {
       man: number[];
       doors: number[][];
       keys: number[][];
+      books: number[][];
+      exit : number[];
     };
     cases: number[][];
   }[];
@@ -27,6 +29,8 @@ export class LabyrintheComponent implements OnInit {
       man: number[];
       doors: number[][];
       keys: number[][];
+      books: number[][];
+      exit : number[];
     };
     cases: number[][];
   };
@@ -41,6 +45,8 @@ export class LabyrintheComponent implements OnInit {
   public currentMoves: number = 0;
   public doorsPosition: number[][];
   public keysPosition: number[][];
+  public booksPosition : number[][];
+  public exitPosition: number[];
 
   time: number = 0;
   timebegin : boolean = false; 
@@ -50,6 +56,8 @@ export class LabyrintheComponent implements OnInit {
     this.setHotKeys();
     this.doorsPosition = [];
     this.keysPosition = [];
+    this.booksPosition = [];
+    this.exitPosition = [];
   }  
 
   ngOnInit(): void {
@@ -65,6 +73,8 @@ export class LabyrintheComponent implements OnInit {
         this.manPosition = this.currentLevel.positions.man;
         this.doorsPosition = this.currentLevel.positions.doors;
         this.keysPosition = this.currentLevel.positions.keys;
+        this.booksPosition = this.currentLevel.positions.books;
+        this.exitPosition = this.currentLevel.positions.exit;
         /*this.boxesPosition = this.currentLevel.positions.boxes;
         this.targetsPosition = this.currentLevel.positions.target;
         this.targetMoves = this.currentLevel["target-moves"];*/
@@ -112,6 +122,20 @@ export class LabyrintheComponent implements OnInit {
     return [];
   }
 
+  exit(h : number, w : number): boolean {
+    return this.exitPosition[0] == h && this.exitPosition[1] == w;
+  }
+
+  getBooks(h : number, w : number): number {
+    i:Number ;
+    for (var i = 0 ; i < this.booksPosition.length; i++){
+      if(this.booksPosition[i][0] == h && this.booksPosition[i][1] == w){
+        return i;
+      }
+    }
+    return -1;
+  }
+
   getKeys(h : number, w : number): number {
     i:Number ;
     for (var i = 0 ; i < this.keysPosition.length; i++){
@@ -135,6 +159,7 @@ export class LabyrintheComponent implements OnInit {
       this.manPosition[1] = this.manPosition[1] - 1;
       this.increaseMoves();
     }
+    this.checkObj();
   }
 
   not_door(h : number, w : number , dir : number): boolean {
@@ -156,6 +181,7 @@ export class LabyrintheComponent implements OnInit {
       this.manPosition[1] = this.manPosition[1] + 1;
       this.increaseMoves();
     }
+    this.checkObj();
   }
 
   pas_a_droite(l:number, c:number) : boolean{
@@ -175,6 +201,7 @@ export class LabyrintheComponent implements OnInit {
       this.manPosition[0] = this.manPosition[0] - 1;
       this.increaseMoves();
     }
+    this.checkObj();
   }
 
   moveDown() {
@@ -182,6 +209,7 @@ export class LabyrintheComponent implements OnInit {
       this.manPosition[0] = this.manPosition[0] + 1;
       this.increaseMoves();
     }
+    this.checkObj();
   }
 
   pas_a_bas(l:number, c:number) : boolean{
@@ -256,5 +284,9 @@ export class LabyrintheComponent implements OnInit {
     localStorage.setItem('doorsPosition', JSON.stringify(this.doorsPosition) ); 
     localStorage.setItem('keysPosition', JSON.stringify(this.keysPosition) ); 
     localStorage.setItem('time', JSON.stringify(this.time) );  
+  }
+
+  checkObj() : void{
+
   }
 }

@@ -71,7 +71,11 @@
                   {{ (getDoors(i,j)[0] == 0 ? 'doors yellow' : '')}}
                   {{ (getDoors(i,j)[0] == 1 ? 'doors blue' : '')}}
                   {{ (getDoors(i,j)[0] == 2 ? 'doors purple' : '')}}
+                  {{ (getBooks(i,j) == 0 ? 'books yellow' : '')}}
+                  {{ (getBooks(i,j) == 1 ? 'books blue' : '')}}
+                  {{ (getBooks(i,j) == 2 ? 'books purple' : '')}}
                   {{ (perso(i,j) ? 'perso' : '')}}
+                  {{ (exit(i,j) ? 'exit' : '')}}
                   "
                   >
               </button>
