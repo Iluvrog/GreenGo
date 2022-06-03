@@ -35,13 +35,19 @@ class questionClass:
 
 
 def XMLparser(filename):
+    def removeThingy(text):
+        HTMLTag = re.compile('<.*?>')
+        insecTag = re.compile('-?&nbsp;?')
+        text = re.sub(HTMLTag, '', str(text))
+        text = re.sub(insecTag, '', str(text))
+        return text
+
+
     tree = ET.parse(filename)
     root = tree.getroot()
     if root.tag != "quiz":
         print("wrong xml file, not a quiz")
         exit
-
-    HTMLTag = re.compile('<.*?>')
 
     questionList = []
     for question in root:
@@ -54,10 +60,9 @@ def XMLparser(filename):
                 if child.tag == "name":
                     pass
                 elif child.tag == "generalfeedback":
-                    general = re.sub(HTMLTag, '', str(child[0].text))
+                    general = removeThingy(child[0].text)
                 elif child.tag == "questiontext":
-                    newQuestion = questionClass(
-                        type, re.sub(HTMLTag, '', str(child[0].text)))
+                    newQuestion = questionClass(type, removeThingy(child[0].text))
                 elif child.tag == "defaultgrade":
                     pass
                 elif child.tag == "penalty":
@@ -75,15 +80,15 @@ def XMLparser(filename):
                 elif child.tag == "showstandardinstruction":
                     pass
                 elif child.tag == "correctfeedback":
-                    correct = re.sub(HTMLTag, '', str(child[0].text))
+                    correct = removeThingy(child[0].text)
                 elif child.tag == "partiallycorrectfeedback":
-                    partial = re.sub(HTMLTag, '', str(child[0].text))
+                    partial = removeThingy(child[0].text)
                 elif child.tag == "incorrectfeedback":
-                    incorrect = re.sub(HTMLTag, '', str(child[0].text))
+                    incorrect = removeThingy(child[0].text)
                 elif child.tag == "answer":
                     fraction = child.attrib.get("fraction")
                     newQuestion.addAnswer(
-                        re.sub(HTMLTag, '', str(child[0].text)), fraction)
+                        removeThingy(child[0].text), fraction)
             newQuestion.setFeedback(general, correct, partial, incorrect)
             newQuestion.setSingle(single)
             questionList.append(newQuestion)
@@ -93,10 +98,10 @@ def XMLparser(filename):
                 if child.tag == "name":
                     pass
                 elif child.tag == "generalfeedback":
-                    general = re.sub(HTMLTag, '', str(child[0].text))
+                    general = removeThingy(child[0].text)
                 elif child.tag == "questiontext":
                     newQuestion = questionClass(
-                        type, re.sub(HTMLTag, '', str(child[0].text)))
+                        type, removeThingy(child[0].text))
                 ##elif child.tag == "defaultgrade":
                 ##    pass
                 ##elif child.tag == "penalty":
@@ -112,13 +117,13 @@ def XMLparser(filename):
                 ##elif child.tag == "showstandardinstruction":
                 ##    pass
                 elif child.tag == "correctfeedback":
-                    correct = re.sub(HTMLTag, '', str(child[0].text))
+                    correct = removeThingy(child[0].text)
                 elif child.tag == "incorrectfeedback":
-                    incorrect = re.sub(HTMLTag, '', str(child[0].text))
+                    incorrect = removeThingy(child[0].text)
                 elif child.tag == "answer":
                     fraction = child.attrib.get("fraction")
                     newQuestion.addAnswer(
-                        re.sub(HTMLTag, '', str(child[0].text)), fraction)
+                        removeThingy(child[0].text), fraction)
             newQuestion.setFeedback(general = general,correct =  correct, incorrect = incorrect)
             questionList.append(newQuestion)
 
