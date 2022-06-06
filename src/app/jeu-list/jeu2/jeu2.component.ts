@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServiceService } from './service.service';
 import { MatDialog } from '@angular/material/dialog' ;
 import { RulesComponent } from './rules/rules.component';
+import { GameOverComponent } from './game-over/game-over.component';
+import { getLocaleEraNames } from '@angular/common';
 
 
 @Component({
@@ -225,21 +227,51 @@ export class Jeu2Component implements OnInit {
       this.exit = JSON.parse( localStorage.getItem('exit') || "" ) ;
 
     this.plateau = this.niveaux[this.levelCounter] ;
+
+    var Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter == 0)
+      Button.disabled = true;
+    else
+      Button.disabled = false;
+
+    var Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter == 3)
+      Button.disabled = true;
+    else
+      Button.disabled = false;
   }
 
   next (){
     this.levelCounter++ ;
     this.plateau = this.niveaux[this.levelCounter] ;
+    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
 
-    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) ); 
+    var Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter > 0)
+      Button.disabled = false;
+
+    Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter == 3)
+      Button.disabled = true;
+     
   }
 
   previous (){
-    if (this.levelCounter > 0)
-      this.levelCounter-- ;
+
+    this.levelCounter-- ;
     this.plateau = this.niveaux[this.levelCounter] ;
 
     localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
+
+    var Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter < 3)
+      Button.disabled = false;
+
+    Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter == 0)
+      Button.disabled = true;
+
+    
   }
 
   async click(i:number, j:number){
@@ -248,6 +280,14 @@ export class Jeu2Component implements OnInit {
 
     if(this.plateau){ 
       if(this.plateau[this.currentPosition[0]][this.currentPosition[1]] == 5){
+        if(this.levelCounter == 3){
+          this.dialogue.open(GameOverComponent) ;
+          return;
+        }
+        if(this.levelCounter == 0){
+          var Button = <HTMLInputElement> document.getElementById("previous") ;
+          Button.disabled = false;
+        }
         this.levelCounter++ ;
         this.plateau = this.niveaux[this.levelCounter] ;
         return ;

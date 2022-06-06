@@ -60,13 +60,13 @@
     width: 10%;
     align-self: flex-start;
     background-color:rgba(70, 161, 78, 0.71);
-    margin-right: 30%;
+    margin-right: 29.75%;
 }
 
 .restart {
     width: 10%;
     background-color:rgba(70, 161, 78, 0.71);
-    margin-right: 30%;
+    margin-right: 29.75%;
 }
 
 .next {
@@ -77,6 +77,7 @@
 .rules {
     width: 10%;
     background-color:rgba(70, 161, 78, 0.71);
+    margin-right: 0.5%;
 }
 
 .level {

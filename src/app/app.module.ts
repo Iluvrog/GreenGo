@@ -15,7 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon' ;
 import {MatDialogModule} from '@angular/material/dialog';
-import { RulesComponent } from './jeu-list/jeu2/rules/rules.component' ;
+import { RulesComponent } from './jeu-list/jeu2/rules/rules.component';
+import { GameOverComponent } from './jeu-list/jeu2/game-over/game-over.component' ;
 
 
 
@@ -29,6 +30,7 @@ import { RulesComponent } from './jeu-list/jeu2/rules/rules.component' ;
     Jeu4Component,
     QuestionComponent,
     RulesComponent,
+    GameOverComponent,
   ],
   imports: [
     BrowserModule,
