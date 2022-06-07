@@ -445,7 +445,7 @@ export class Jeu2Component implements OnInit {
   }
 
   clickReponseM(nb: number){
-    let tab = this.questionService.clickReponseM(nb, this.previousNb, this.is1, this.is2, this.is3, this.is4, this.isActivate)
+    let tab = this.questionService.clickReponseM(nb, this.previousNb, this.is1, this.is2, this.is3, this.is4, this.isActivate, this.isValidate);
     this.is1 = tab[0];
     this.is2 = tab[1];
     this.is3 = tab[2];
@@ -617,6 +617,6 @@ export class Jeu2Component implements OnInit {
         i++;
       }
       console.log('plateau : ' + this.plateau);
-    } 
+    }
   }
 }

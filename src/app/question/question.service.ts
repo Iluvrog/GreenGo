@@ -1,11 +1,54 @@
 import { Injectable } from '@angular/core';
+import { Question } from '../question';
+import fileQuestionsJSON from '../../assets/questions.json'
+import fileAnswerJSON from '../../assets/answers.json'
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
 
-  constructor() { }
+  questionsJSON = fileQuestionsJSON//Actuellement se trouve dans src/assets/question, plus tard sera recuperer par requete http
+  answersJSON = fileAnswerJSON//Pareil
+
+  numberOfQuestions : number | undefined //a initialiser dans le constructeur peut etre selon le type de jeu
+  allQuestions : Question[]  = [] //Variable a utiliser contenant la liste de toutes les questions
+  
+  currentQuestionsList: Question[] | undefined //Liste de n questions courante
+
+  constructor() {
+    this.allQuestions = []
+    this.currentQuestionsList  = []
+    this.parseJSONToModel()//On remplit allQuestions ici
+  }
+
+  parseJSONToModel(){
+    this.questionsJSON.forEach(element => {
+      let quest: Question = new Question(element.QUESTION)
+      quest.questionType = +element.FORMAT //+ pour cast en number
+      
+      
+      this.answersJSON.forEach(ans =>{
+        if(ans.IDQ === element.ID){
+          quest.answers?.push(ans.ANSWER)
+          quest.answerValue?.push(+ans.VALUE)
+        }
+        
+      });
+      this.allQuestions?.push(quest)
+      quest.feedback = element.FEEDBACK;
+    });
+  }
+  /* Choisis àléatoirement n questions parmis l'array questions, A FAIRE : FAIRE EN SORTE QUE PAS DE REPETITION*/
+  getNQuestions(n:number){
+    let lesQuestions =  []
+    
+    for (var a = [...Array(this.allQuestions?.length).keys()], i = n; i--; ) {
+      var random = Math.floor(Math.random()*this.allQuestions?.length);
+      lesQuestions.push(this.allQuestions[random])
+    }
+     return lesQuestions 
+  }
 
   clickReponse(nb: number, previousNb: number, is1: boolean, is2: boolean, is3: boolean, is4: boolean, isValidate: boolean, isActivate: boolean) :any[]{
     if(!isValidate){
@@ -39,21 +82,23 @@ export class QuestionService {
     return [is1, is2, is3, is4, isActivate, previousNb];
    }
 
-  clickReponseM(nb: number, previousNb: number, is1: boolean, is2: boolean, is3: boolean, is4: boolean, isActivate: boolean):any[]{
-    if(!isActivate){
-      isActivate = true;
-    }
-    if(nb == 1 && !(previousNb == 1)){
-      is1 = !is1;
-    }
-    if(nb == 2 && !(previousNb == 2)){
-      is2 = !is2;
-    }
-    if(nb == 3 && !(previousNb == 3)){
-      is3 = !is3;
-    }
-    if(nb == 4 && !(previousNb == 4)){
-      is4 = !is4;
+  clickReponseM(nb: number, previousNb: number, is1: boolean, is2: boolean, is3: boolean, is4: boolean, isActivate: boolean, isValidate: boolean):any[]{
+    if(!isValidate){
+      if(!isActivate){
+        isActivate = true;
+      }
+      if(nb == 1 && !(previousNb == 1)){
+        is1 = !is1;
+      }
+      if(nb == 2 && !(previousNb == 2)){
+        is2 = !is2;
+      }
+      if(nb == 3 && !(previousNb == 3)){
+        is3 = !is3;
+      }
+      if(nb == 4 && !(previousNb == 4)){
+        is4 = !is4;
+      }
     }
     return [is1, is2, is3, is4, isActivate];
   }
@@ -61,6 +106,10 @@ export class QuestionService {
   valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: number, q2: number, q3: number, q4: number, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null, time: number, ruleM: boolean) :any[]{
     let b: boolean = true;
     let total = q1 + q2 + q3 + q4;
+    console.log('q1 : ' + q1);
+    console.log('q2 : ' + q2);
+    console.log('q3 : ' + q3);
+    console.log('q4 : ' + q4);
     let newScore = 0;
     if(isActivate || time == 0){
       colorQ1 = (q1 > 0) ? 'blue' : 'nothing';
@@ -112,7 +161,7 @@ export class QuestionService {
       if(b){
         nbRepJuste = nbRepJuste + (newScore / total) ;
       }
-      console.log(b);
+      console.log("le total " +total);
       console.log(nbRepJuste);
       return[colorQ1, colorQ2, colorQ3, colorQ4, true, nbRepJuste, false, false, false, false, false, 0, b];
     }else{
@@ -138,8 +187,6 @@ export class QuestionService {
   }
 
   nouvellePartie() :any[]{
-    alert("Vous avez commencez une nouvelle partie");
-    
     let tab = this.reset();
     return [tab[0], tab[1], tab[2], tab[3], tab[4], tab[5], false, 'nothing', 0, 1, false];
   }
