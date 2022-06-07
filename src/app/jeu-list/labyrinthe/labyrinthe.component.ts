@@ -95,8 +95,11 @@ export class LabyrintheComponent implements OnInit {
     
         if(localStorage.getItem('perso') != null)
           this.manPosition = JSON.parse( localStorage.getItem('perso') || "" ) ;
-        if(localStorage.getItem('nbmove') != null)
+        if(localStorage.getItem('nbmove') != null){
           this.currentMoves = JSON.parse( localStorage.getItem('nbmove') || "" ) ;
+        }else{
+          this.currentMoves = 0;
+        }
         if(localStorage.getItem('doorsPosition') != null)
           this.doorsPosition = JSON.parse( localStorage.getItem('doorsPosition') || "" ) ;
         if(localStorage.getItem('keysPosition') != null)
@@ -105,6 +108,8 @@ export class LabyrintheComponent implements OnInit {
           this.time = JSON.parse( localStorage.getItem('time') || "" ) ;
           this.timebegin = true;
           this.startTimer();
+        }else{
+          this.time = 0;
         }
   }
   
@@ -283,6 +288,21 @@ export class LabyrintheComponent implements OnInit {
   nextLevel() : void{
     this.reinitStorage();
     this.id = this.id + 1;
+    this.timebegin = false;
+    this.ngOnInit();
+    this.saveState();
+  }
+
+  previousLevel() : void{
+    this.reinitStorage();
+    this.id = this.id - 1;
+    this.timebegin = false;
+    this.ngOnInit();
+    this.saveState();
+  }
+
+  retry() : void{
+    this.reinitStorage();
     this.timebegin = false;
     this.ngOnInit();
     this.saveState();

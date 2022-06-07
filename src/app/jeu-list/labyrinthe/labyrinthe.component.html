@@ -136,16 +136,17 @@
         <div class="buttons">
           <button
             mat-button
-            [disabled]="id - 1 <= 0"
-            [routerLink]="['/levels', id - 1]"
+            [disabled]="id <= 0"
+            (click)="previousLevel()"
           >
             Previous Level
           </button>
-          <button mat-button (click)="refresh()">
+          <button mat-button (click)="retry()">
             <i class="material-icons">Retry</i>
           </button>
   
           <button
+          [disabled]="id  >= 1"
             mat-button (click)="nextLevel()"
           >
             Next Level
