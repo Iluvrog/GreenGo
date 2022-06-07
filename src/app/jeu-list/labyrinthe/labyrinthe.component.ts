@@ -61,8 +61,12 @@ export class LabyrintheComponent implements OnInit {
   }  
 
   ngOnInit(): void {
-        this.id = JSON.parse( localStorage.getItem('num_niv') || "0" ) ;
+      if(localStorage.getItem('num_niv') != null)
+        this.id = JSON.parse( localStorage.getItem('num_niv') || "" ) ;
 
+      if(this.id > 1){
+        this.id = 0;
+      }
         this.sub = this.route.params.subscribe((params) => {
         //this.id = +params["id"];
         this.allLevels = this.LevelService.getAllLevels();
@@ -237,7 +241,7 @@ export class LabyrintheComponent implements OnInit {
   }
 
   refresh(): void {
-    localStorage.clear();
+    this.reinitStorage();
     window.location.reload();
   }
 
@@ -254,6 +258,8 @@ export class LabyrintheComponent implements OnInit {
 
   action(){
     this.on_and_take_keys();
+    this.checkBook();
+    this.checkObj();
   }
 
   on_and_take_keys() : void{
@@ -274,10 +280,19 @@ export class LabyrintheComponent implements OnInit {
     return this.time;
   }
 
-  onAction(){
-    if(!this.timebegin){
-      this.startTimer();
-    }
+  nextLevel() : void{
+    this.reinitStorage();
+    this.id = this.id + 1;
+    this.timebegin = false;
+    this.ngOnInit();
+    this.saveState();
+  }
+
+  reinitStorage() : void{
+    localStorage.clear();
+  }
+
+  saveState() : void{
     localStorage.setItem('num_niv', JSON.stringify(this.id) );
     localStorage.setItem('perso', JSON.stringify(this.manPosition) );
     localStorage.setItem('nbmove', JSON.stringify(this.currentMoves) );
@@ -286,7 +301,20 @@ export class LabyrintheComponent implements OnInit {
     localStorage.setItem('time', JSON.stringify(this.time) );  
   }
 
+  onAction(){
+    if(!this.timebegin){
+      this.startTimer();
+    }
+    this.saveState();
+  }
+
   checkObj() : void{
+    if(this.manPosition[0] == this.exitPosition[0] && this.manPosition[1] == this.exitPosition[1]){
+      this.nextLevel();
+    }
+  }
+
+  checkBook() : void{
 
   }
 }

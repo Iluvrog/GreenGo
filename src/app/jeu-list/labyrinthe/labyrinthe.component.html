@@ -146,9 +146,7 @@
           </button>
   
           <button
-            mat-button
-            [disabled]="id + 1 > allLevels.length"
-            [routerLink]="['/labyrinthe', id + 1]"
+            mat-button (click)="nextLevel()"
           >
             Next Level
           </button>
