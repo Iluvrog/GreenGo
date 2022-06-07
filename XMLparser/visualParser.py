@@ -2,6 +2,7 @@ import parser as p
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
+from tkinter.scrolledtext import ScrolledText
 
 
 ##---------------------------unique window------------------------------------
@@ -9,6 +10,7 @@ class visualParser(tk.Tk):
   def __init__(self, *args, **kwargs):
     tk.Tk.__init__(self, *args, **kwargs)
     container = tk.Frame(self)
+    self.title('Parser')
     container.pack(side="top", fill="both", expand=True)
     container.grid_rowconfigure(0, weight=1)
     container.grid_columnconfigure(0, weight=1)
@@ -85,6 +87,7 @@ class questionPage(tk.Frame):
       self.clear_question()
       self.startEdition()
     else:
+      tk.messagebox.showinfo(title = None, message = "no more questions")
       print("no more question")
 
   ##----------show previous question if any---------
@@ -94,6 +97,7 @@ class questionPage(tk.Frame):
       self.clear_question()
       self.startEdition()
     else:
+      tk.messagebox.showinfo(title = None, message ="no previous question")
       print("already first question")
 
   ##----------to get QuestionList from xml---------
@@ -121,6 +125,9 @@ class questionPage(tk.Frame):
     else:
       newQuestion = p.questionClass("truefalse", self.questEntry.get())
 
+    if self.questEntry.get()=="":
+      tk.messagebox.showwarning(title="Warning", message="make sure all the informations are filled")
+      return
     fbackList = []
     for fback in self.feedbackTextList:
       fbackList.append(fback.get())
@@ -137,8 +144,15 @@ class questionPage(tk.Frame):
     elif type == "truefalse":
       incorrect = fbackList[2]
       newQuestion.setFeedback(general=general, correct=correct, incorrect=incorrect)
-
+    
+    for i in fbackList:
+      if i == "":
+        tk.messagebox.showwarning(title="Warning", message="make sure all the informations are filled")
+        return
     for quest in self.answerTextList:
+      if quest[0].get()=="" or quest[1].get()=="":
+        tk.messagebox.showwarning(title="Warning", message="make sure all the informations are filled")
+        return
       newQuestion.addAnswer(quest[0].get(), quest[1].get())
     self.questionList[self.index] = newQuestion
     self.clear_question()
@@ -187,6 +201,8 @@ class questionPage(tk.Frame):
   ##--------------------final function to import question-------------
   def checking(self):
     ##TODO
+    
+
     return self.questionList
 
   def importQuest(self):
@@ -231,7 +247,7 @@ class questionPage(tk.Frame):
       typeText = tk.Label(self, text="type: ")
 
       ##question text
-      self.questEntry = tk.Entry(self)
+      self.questEntry = tk.Entry(self, width = 70)
       self.questEntry.insert('end', currentQuestion.getQuestion())
 
       questText = tk.Label(self, text="question: ")
@@ -251,8 +267,8 @@ class questionPage(tk.Frame):
       if type != "truefalse":
         answers = currentQuestion.getAnswers()
         for j in range(len(answers)):
-          answerText = tk.Entry(self)
-          answerValue = tk.Entry(self, validate="key", validatecommand=onlyInt)
+          answerText = tk.Entry(self, width = 70)
+          answerValue = tk.Entry(self,validate="key", validatecommand=onlyInt)
           answerText.insert('end', answers[j][0])
           answerValue.insert('end', answers[j][1])
 
@@ -277,7 +293,7 @@ class questionPage(tk.Frame):
       ##feedbacks
       feedbackList = currentQuestion.getFeedback()
       self.feedbackTextList = []
-      general = tk.Entry(self)
+      general = tk.Entry(self, width =50)
       general.insert('end', feedbackList[0])
       startfeedBack = 4 + len(answers)
       feedbackLabel = tk.Label(self, text="Feedback:")
@@ -286,9 +302,9 @@ class questionPage(tk.Frame):
       self.feedbackTextList.append(general)
       if type != "":
         if type == "multichoice":
-          correct = tk.Entry(self)
-          partial = tk.Entry(self)
-          incorrect = tk.Entry(self)
+          correct = tk.Entry(self, width =50)
+          partial = tk.Entry(self,width =50)
+          incorrect = tk.Entry(self,width =50)
           correct.insert('end', feedbackList[1])
           partial.insert('end', feedbackList[2])
           incorrect.insert('end', feedbackList[3])
