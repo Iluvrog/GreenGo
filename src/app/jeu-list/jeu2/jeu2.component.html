@@ -1,5 +1,8 @@
 <div class="level">
-    <p> Level : {{ levelCounter }} </p>
+    <p> Level : {{ service.levelCounter +1 }} &#160;&#160;&#160;
+        TotalScore : {{ sum(service.scores) }} &nbsp;&#160;&#160;
+        Score : {{ service.scores[service.levelCounter] }}
+    </p>
 </div>
 <div class="frame">  
    <div class="plateau" *ngFor="let Array of plateau; let i = index;">
@@ -10,9 +13,9 @@
                 {{ (case == 2 ? 'impty' : '')}}
                 {{ (case == 3 ? 'correct' : '')}}
                 {{ (case == 4 ? 'incorrect' : '')}}
-                {{ (exit[levelCounter] && case == 5 ? 'exit' : 'closeC')}}"
+                {{ (exit[service.levelCounter] && case == 5 ? 'exit' : 'closeC')}}"
                 (click)="click(i,j)"
-            ><img src="../../../assets/img_jeu2/icone{{ case != 5 ? case: (exit[levelCounter] && case == 5  ? case:0) }}.png" [style.display]="case == 2 ? 'none':'flex'" class="icon"></button>
+            ><img src="../../../assets/img_jeu2/icone{{ case != 5 ? case: (exit[service.levelCounter] && case == 5  ? case:0) }}.png" [style.display]="case == 2 ? 'none':'flex'" class="icon"></button>
         </div>
     </div>
     <div style="margin-top: 2%;">

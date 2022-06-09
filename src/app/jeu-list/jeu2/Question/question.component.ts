@@ -13,7 +13,7 @@ export class QuestionComponent implements OnInit {
   questions: question[] = [];
   currentQuestion: question | undefined;
   counter:number = 0 ;
-  score:number = 0 ;
+  //score:number = 0 ;
   reponse:string | undefined;
 
   constructor(private route: ActivatedRoute, private router:Router, public service:ServiceService ) { }
@@ -21,10 +21,12 @@ export class QuestionComponent implements OnInit {
   ngOnInit(): void {
     
     this.counter = JSON.parse( localStorage.getItem('counter') || "0" ) ;
-    this.score = JSON.parse( localStorage.getItem('score') || "0" ) ;
+    if(localStorage.getItem('score') != null )
+      //this.service.scores = JSON.parse( localStorage.getItem('score') || "" ) ;
+
     if(this.counter >= 5){
       this.counter = 0 ;
-      this.score = 0 ;
+      //this.service.scores[this.service.levelCounter] = 0 ;
     }
 
     this.questions = [
@@ -70,7 +72,7 @@ export class QuestionComponent implements OnInit {
   respond (resp:string, id:number){
     this.reponse = resp ;
     if(resp == this.currentQuestion?.reponse){
-      this.score++ ;
+      this.service.scores[this.service.levelCounter]++ ;
       this.service.correctAnswer = true ;
     }
     else{
@@ -81,7 +83,7 @@ export class QuestionComponent implements OnInit {
     this.service.answer = true ;
 
     localStorage.setItem('counter', JSON.stringify(this.counter) );
-    localStorage.setItem('score', JSON.stringify(this.score) );
+    localStorage.setItem('score', JSON.stringify(this.service.scores) );
     /*
     for(var i=0; i <4; i++){
       var Button = <HTMLInputElement> document.getElementById(i.toString()) ;
