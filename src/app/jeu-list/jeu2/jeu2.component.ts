@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { ServiceService } from './service.service';
 import { question } from 'src/app/models/question';
 import { QuestionService } from 'src/app/question/question.service';
 
@@ -9,10 +8,6 @@ import { QuestionService } from 'src/app/question/question.service';
   selector: 'app-jeu2',
   templateUrl: './jeu2.component.html',
   styleUrls: ['./jeu2.component.css'],
-  /*
-  template:`
-    <app-question (messageEvent)="receiveMessage($event)"></app-question>`
-    */
 })
 
 export class Jeu2Component implements OnInit {
@@ -40,6 +35,8 @@ export class Jeu2Component implements OnInit {
   counter:number = 0 ;
   score:number = 0 ;
   reponse:string | undefined;
+  scores: number[] = [0,0,0,0];
+  maxLevel:number = 0 ;
 
 
   constructor(private route: ActivatedRoute, private router:Router, public questionService: QuestionService) {
@@ -242,6 +239,18 @@ export class Jeu2Component implements OnInit {
       this.exit = JSON.parse( localStorage.getItem('exit-J2') || "" ) ;
 
     this.plateau = this.niveaux[this.levelCounter] ;
+
+    var Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter == 0)
+      Button.disabled = true;
+    else
+      Button.disabled = false;
+
+    var Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter == this.maxLevel)
+      Button.disabled = true;
+    else
+      Button.disabled = false;
   
     this.counter = JSON.parse( localStorage.getItem('counter-J2') || "0" ) ;
     this.score = JSON.parse( localStorage.getItem('score-J2') || "0" ) ;
@@ -285,32 +294,58 @@ export class Jeu2Component implements OnInit {
   }
 
   next(){
-    this.levelCounter++;
-    this.plateau = this.niveaux[this.levelCounter];
-    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) ); 
+    this.levelCounter++ ;
+    this.plateau = this.niveaux[this.levelCounter] ;
+    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
+
+    var Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter > 0)
+      Button.disabled = false;
+
+    Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter == this.maxLevel)
+      Button.disabled = true; 
   }
 
   previous(){
-    if (this.levelCounter > 0)
-      this.levelCounter--;
+    this.levelCounter-- ;
     this.plateau = this.niveaux[this.levelCounter] ;
 
     localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
+
+    var Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter < 3)
+      Button.disabled = false;
+
+    Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter == 0)
+      Button.disabled = true;
   }
 
   async click(i:number, j:number){
-
+    
     this.currentPosition = [i,j] ;
 
     if(this.plateau){ 
       if(this.plateau[this.currentPosition[0]][this.currentPosition[1]] == 5){
+        if(this.levelCounter == 3){
+          //this.dialogue.open(GameOverComponent) ;
+          return;
+        }
+        if(this.levelCounter == 0){
+          var Button = <HTMLInputElement> document.getElementById("previous") ;
+          Button.disabled = false;
+        }
         this.levelCounter++ ;
         this.plateau = this.niveaux[this.levelCounter] ;
+        this.maxLevel++ ;
+        localStorage.setItem('maxLevel', JSON.stringify(this.maxLevel) );
         return ;
       }
     }
 
-    this.isQuestion = true;
+    //this.router.navigate(['que']) ;
+    this.isQuestion = true ;
 
     this.answer = false ;
 
@@ -326,7 +361,7 @@ export class Jeu2Component implements OnInit {
       else
         this.plateau[this.currentPosition[0]][this.currentPosition[1]] = 4 ;
     }
-    localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux));
+    localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux) );
     localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
     localStorage.setItem('currentPosition-J2', JSON.stringify(this.currentPosition) );
     localStorage.setItem('exit-J2', JSON.stringify(this.exit) ); 
@@ -375,16 +410,31 @@ export class Jeu2Component implements OnInit {
   }
   
   restart(){
-    this.exit[this.levelCounter] = false;
+    localStorage.removeItem('plateau') ;
+    this.exit[this.levelCounter] = false ;
     this.niveaux[this.levelCounter] = this.niveauxBase[this.levelCounter] ;
     this.plateau = this.niveaux[this.levelCounter] ;
+    this.scores[this.levelCounter] = 0 ;
     
     localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux));
     localStorage.setItem('exit-J2', JSON.stringify(this.exit));
-    localStorage.setItem('plateau-J2', JSON.stringify(this.plateau));
+    localStorage.setItem('score', JSON.stringify(this.scores) );
     
     this.nouvellePartie();
   }
+
+  openRules(){
+    //this.dialogue.open(RulesComponent) ;
+  }
+
+  sum(list:number[]):number{
+    var s = 0 ;
+    for(var i = 0; i<list.length; i++){
+      s+=list[i] ;
+    }
+    return s ;
+  }
+   
 
   respond (resp:string, id:number){
     this.reponse = resp ;
