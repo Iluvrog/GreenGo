@@ -103,7 +103,7 @@ export class QuestionService {
     return [is1, is2, is3, is4, isActivate];
   }
 
-  valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: number, q2: number, q3: number, q4: number, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null, time: number, ruleM: boolean) :any[]{
+  valider(is1: boolean, is2: boolean, is3: boolean, is4: boolean, q1: number, q2: number, q3: number, q4: number, isActivate: boolean, nbRepJuste: number, colorQ1: string|null, colorQ2: string|null, colorQ3: string|null, colorQ4: string|null, time: number, ruleM: boolean, ruleJ3: boolean) :any[]{
     let b: boolean = true;
     let total = q1 + q2 + q3 + q4;
     console.log('q1 : ' + q1);
@@ -159,7 +159,17 @@ export class QuestionService {
         }
       }
       if(b){
-        nbRepJuste = nbRepJuste + (newScore / total) ;
+        if(ruleJ3){
+          if(nbRepJuste < 10 && newScore == total){
+            nbRepJuste++;
+          }else if(newScore != total){
+            nbRepJuste--;
+          }
+        }else{
+          nbRepJuste = nbRepJuste + (newScore / total) ;
+        }
+      }else if(!b && ruleJ3 && nbRepJuste > 1){
+        nbRepJuste--;
       }
       console.log("le total " +total);
       console.log(nbRepJuste);

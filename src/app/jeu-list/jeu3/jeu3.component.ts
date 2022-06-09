@@ -30,7 +30,7 @@ export class Jeu3Component implements OnInit {
     this.nbQuestion = (val == null) ? 1 : +val;
 
     val = localStorage.getItem("nbRepJuste-J3");
-    this.nbRepJuste = (val == null) ? 0 : +val;
+    this.nbRepJuste = (val == null) ? 6 : +val;
 
     val = localStorage.getItem("Timer-J3");
     this.time = (val == null) ? 30 : +val;
@@ -72,6 +72,9 @@ export class Jeu3Component implements OnInit {
     
     val = localStorage.getItem('feedback-J3'); 
     this.currentQuestion.feedback = (val == undefined) ? '' : val;
+
+    val = localStorage.getItem('isRep4-J3');
+    this.isRep4 = (val == 'false') ? false : true;
   }
 
   currentQuestionsList : Question[] | undefined;
@@ -92,8 +95,8 @@ export class Jeu3Component implements OnInit {
   isFinish = false;
   previousNb = 0;
   nbQuestion = 1;
-  nbRepJuste = 0;
-  numberQuestion = 4;
+  nbRepJuste = 6;
+  numberQuestion = 11;
 
   //besoin
   //0 : 4 réponse / 1 choix
@@ -124,6 +127,8 @@ export class Jeu3Component implements OnInit {
   textRep3 :string|null = '';
   textRep4 :string|null = '';
 
+  isRep4 :boolean = true;
+
   feedback :string|null = '';
 
   clickReponse(nb: number){
@@ -152,7 +157,7 @@ export class Jeu3Component implements OnInit {
     if(this.q4 == undefined){
       this.q4 = 0;
     }
-    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, this.time, false);
+    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, this.time, false, true);
     this.colorQ1 = tab[0];
     this.colorQ2 = tab[1];
     this.colorQ3 = tab[2];
@@ -160,6 +165,7 @@ export class Jeu3Component implements OnInit {
     this.isValidate = tab[4];
     if(this.isValidate){
       this.nbRepJuste = tab[5];
+      console.log("nb Rep Juste : " + this.nbRepJuste);
       this.is1 = tab[6];
       this.is2 = tab[7];
       this.is3 = tab[8];
@@ -182,7 +188,7 @@ export class Jeu3Component implements OnInit {
   }
 
   questionSuivante(){
-    let tab = this.questionService.questionSuivante(this.nbQuestion, false, 3);
+    let tab = this.questionService.questionSuivante(this.nbQuestion, false, 10);
     this.genererQuestion(this.nbQuestion);
     this.nbQuestion = tab[0];
     this.isFinish = tab[1];
@@ -220,7 +226,8 @@ export class Jeu3Component implements OnInit {
     this.previousNb = tab[5];
     this.isValidate = tab[6];
     this.colorQ1 = this.colorQ2 = this.colorQ3 = this.colorQ4 = tab[7];
-    this.nbRepJuste = tab[8];
+    //Pour remettre le score à 0 mettre nbRepJuste = tab[8]
+    this.nbRepJuste = 6;
     this.nbQuestion = tab[9];
     this.isFinish = tab[10];
     this.isSauvegarde = true;
@@ -303,6 +310,8 @@ export class Jeu3Component implements OnInit {
     }else{
       localStorage.setItem('feedback-J3', '');
     } 
+
+    localStorage.setItem('isRep4-J3', this.isRep4.toString());
   }
 
   startTimer(val: number) {
@@ -356,11 +365,13 @@ export class Jeu3Component implements OnInit {
     this.currentQuestion = this.currentQuestionsList[nb];
     this.typeQuestion = this.currentQuestion.questionType;
     if(this.currentQuestion?.answers != undefined){
-      this.textRep1 = this.currentQuestion?.answers[0]
-      this.textRep2 = this.currentQuestion?.answers[1]
-      this.textRep3 = this.currentQuestion?.answers[2]
-      this.textRep4 = this.currentQuestion?.answers[3]
+      this.textRep1 = this.currentQuestion?.answers[0];
+      this.textRep2 = this.currentQuestion?.answers[1];
+      this.textRep3 = this.currentQuestion?.answers[2];
+      this.textRep4 = this.currentQuestion?.answers[3];
+      this.isRep4 = (this.currentQuestion?.answers[3] != null);
     }
+    
     if(this.currentQuestion?.answerValue != undefined){
       this.q1 = this.currentQuestion?.answerValue[0];
       this.q2 = this.currentQuestion?.answerValue[1];

@@ -454,7 +454,7 @@ export class Jeu2Component implements OnInit {
   }
 
   valider(){
-    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, 0, true);
+    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, 0, true, false);
     this.colorQ1 = tab[0];
     this.colorQ2 = tab[1];
     this.colorQ3 = tab[2];
