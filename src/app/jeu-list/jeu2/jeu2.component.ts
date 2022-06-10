@@ -1,18 +1,14 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { ServiceService } from './service.service';
-import { question } from 'src/app/models/question';
+//import { question } from 'src/app/models/question';
 import { QuestionService } from 'src/app/question/question.service';
+import {Question} from "../../question"
 
 
 @Component({
   selector: 'app-jeu2',
   templateUrl: './jeu2.component.html',
   styleUrls: ['./jeu2.component.css'],
-  /*
-  template:`
-    <app-question (messageEvent)="receiveMessage($event)"></app-question>`
-    */
 })
 
 export class Jeu2Component implements OnInit {
@@ -35,11 +31,13 @@ export class Jeu2Component implements OnInit {
   levelCounter:number = 0 ;
   currentPosition: number[] = new Array(2) ;
   exit:boolean[] = [] ;
-  questions: question[] = [];
-  currentQuestion: question | undefined;
+  questions: Question[] = [];
+  currentQuestion: Question = new Question();
   counter:number = 0 ;
   score:number = 0 ;
   reponse:string | undefined;
+  scores: number[] = [0,0,0,0];
+  maxLevel:number = 0 ;
 
 
   constructor(private route: ActivatedRoute, private router:Router, public questionService: QuestionService) {
@@ -219,6 +217,16 @@ export class Jeu2Component implements OnInit {
 
     this.niveaux[3] = this.plateau ;
     this.niveauxBase = this.niveaux ;
+
+    this.questions = this.questionService.getNQuestions(20) ;
+    this.currentQuestion = this.questions[0];
+    if(this.currentQuestion.answerValue != undefined){
+      this.q1 = this.currentQuestion.answerValue[0];
+      this.q2 = this.currentQuestion.answerValue[1];
+      this.q3 = this.currentQuestion.answerValue[2];
+      this.q4 = this.currentQuestion.answerValue[3];
+    }
+    this.typeQuestion = this.currentQuestion.questionType;
   }
   
   ngOnInit(): void {
@@ -231,7 +239,7 @@ export class Jeu2Component implements OnInit {
     if(localStorage.getItem('plateau-J2') != null)
       this.plateau = JSON.parse(localStorage.getItem('plateau-J2') || "")
 
-    let val = localStorage.getItem('levelCounter');
+    let val = localStorage.getItem('levelCounter-J2');
     this.levelCounter = (val == null) ? 0 : +val;
     console.log('levelCounter : '+this.levelCounter);
 
@@ -242,75 +250,84 @@ export class Jeu2Component implements OnInit {
       this.exit = JSON.parse( localStorage.getItem('exit-J2') || "" ) ;
 
     this.plateau = this.niveaux[this.levelCounter] ;
-  
+    /*
+    var Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter == 0)
+      Button.disabled = true;
+    else
+      Button.disabled = false;
+
+    var Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter == this.maxLevel)
+      Button.disabled = true;
+    else
+      Button.disabled = false;
+    */
     this.counter = JSON.parse( localStorage.getItem('counter-J2') || "0" ) ;
     this.score = JSON.parse( localStorage.getItem('score-J2') || "0" ) ;
-    if(this.counter >= 4){
+    if(this.counter >= 20){
       this.counter = 0 ;
       this.score = 0 ;
     }
 
-    this.questions = [
-      {
-        question: 'question1...',
-        reponse: 'A',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 0 
-      },
-      {
-        question: 'question2...',
-        reponse: 'B',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 1
-      },
-      {
-        question: 'question3...',
-        reponse: 'C',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 2
-      },
-      {
-        question: 'question4...',
-        reponse: 'D',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 3
-      }
-    ]
     this.currentQuestion = this.questions[this.counter] ;
     this.charger();
+    console.log(this.questions)
   }
 
   next(){
-    this.levelCounter++;
-    this.plateau = this.niveaux[this.levelCounter];
-    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) ); 
+    this.levelCounter++ ;
+    this.plateau = this.niveaux[this.levelCounter] ;
+    localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
+
+    var Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter > 0)
+      Button.disabled = false;
+
+    Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter == this.maxLevel)
+      Button.disabled = true; 
   }
 
   previous(){
-    if (this.levelCounter > 0)
-      this.levelCounter--;
+    this.levelCounter-- ;
     this.plateau = this.niveaux[this.levelCounter] ;
 
-    localStorage.setItem('levelCounter', JSON.stringify(this.levelCounter) );
+    localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
+
+    var Button = <HTMLInputElement> document.getElementById("next") ;
+    if(this.levelCounter < 3)
+      Button.disabled = false;
+
+    Button = <HTMLInputElement> document.getElementById("previous") ;
+    if(this.levelCounter == 0)
+      Button.disabled = true;
   }
 
   async click(i:number, j:number){
-
+    
     this.currentPosition = [i,j] ;
 
     if(this.plateau){ 
       if(this.plateau[this.currentPosition[0]][this.currentPosition[1]] == 5){
+        if(this.levelCounter == 3){
+          //this.dialogue.open(GameOverComponent) ;
+          return;
+        }
+        if(this.levelCounter == 0){
+          var Button = <HTMLInputElement> document.getElementById("previous") ;
+          Button.disabled = false;
+        }
         this.levelCounter++ ;
         this.plateau = this.niveaux[this.levelCounter] ;
+        this.maxLevel++ ;
+        localStorage.setItem('maxLevel-J2', JSON.stringify(this.maxLevel) );
         return ;
       }
     }
 
-    this.isQuestion = true;
+    //this.router.navigate(['que']) ;
+    this.isQuestion = true ;
 
     this.answer = false ;
 
@@ -326,7 +343,7 @@ export class Jeu2Component implements OnInit {
       else
         this.plateau[this.currentPosition[0]][this.currentPosition[1]] = 4 ;
     }
-    localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux));
+    localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux) );
     localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
     localStorage.setItem('currentPosition-J2', JSON.stringify(this.currentPosition) );
     localStorage.setItem('exit-J2', JSON.stringify(this.exit) ); 
@@ -375,30 +392,51 @@ export class Jeu2Component implements OnInit {
   }
   
   restart(){
-    this.exit[this.levelCounter] = false;
+    localStorage.removeItem('plateau-J2') ;
+    this.exit[this.levelCounter] = false ;
     this.niveaux[this.levelCounter] = this.niveauxBase[this.levelCounter] ;
     this.plateau = this.niveaux[this.levelCounter] ;
+    this.scores[this.levelCounter] = 0 ;
     
     localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux));
     localStorage.setItem('exit-J2', JSON.stringify(this.exit));
-    localStorage.setItem('plateau-J2', JSON.stringify(this.plateau));
+    localStorage.setItem('score-J2', JSON.stringify(this.scores) );
     
     this.nouvellePartie();
   }
 
+  openRules(){
+    //this.dialogue.open(RulesComponent) ;
+  }
+
+  sum(list:number[]):number{
+    var s = 0 ;
+    for(var i = 0; i<list.length; i++){
+      s+=list[i] ;
+    }
+    return s ;
+  }
+   
+
   respond (resp:string, id:number){
     this.reponse = resp ;
-    if(resp == this.currentQuestion?.reponse){
-      this.score++ ;
-      this.correctAnswer = true ;
+    //if(resp == this.currentQuestion?.reponse){
+    if(this.currentQuestion?.answerValue){
+       if(this.currentQuestion?.answerValue[id] != 0){
+        this.score++ ;
+        this.correctAnswer = true ;
+        console.log(this.currentQuestion?.answerValue[id])
+      }
+      else{
+        this.correctAnswer = false ;
+      }
     }
-    else{
-      this.correctAnswer = false ;
-    }
+    console.log("resp : ", resp);
+        
 
     this.counter++ ;
     this.answer = true ;
-
+    this.currentQuestion = this.questions[this.counter] ;
     localStorage.setItem('counter-J2', JSON.stringify(this.counter) );
     localStorage.setItem('score-J2', JSON.stringify(this.score) );
     
@@ -406,18 +444,32 @@ export class Jeu2Component implements OnInit {
 
   countinue(){
     this.isQuestion = false;
-    this.currentQuestion = this.questions[this.counter] ;
+    this.counter++;
+    if(this.counter >= 20){
+      this.counter = 0;
+    }
+    this.currentQuestion = this.questions[this.counter];
+    if(this.currentQuestion.answerValue != undefined){
+      this.q1 = this.currentQuestion.answerValue[0];
+      this.q2 = this.currentQuestion.answerValue[1];
+      this.q3 = this.currentQuestion.answerValue[2];
+      this.q4 = this.currentQuestion.answerValue[3];
+    }
+    this.typeQuestion = this.currentQuestion.questionType;
     this.questionSuivante();
   }
+
+  idCurrentQuestion : number | undefined;
 
   isActivate = false;
   isValidate = false;
   isFinish = false;
+  isGenerate = false;
   previousNb = 0;
   nbQuestion = 1;
   nbRepJuste = 0;
 
-  typeQuestion = 2;
+  typeQuestion: number|undefined;
 
   is1 = false;
   is2 = false;
@@ -454,14 +506,20 @@ export class Jeu2Component implements OnInit {
   }
 
   valider(){
-    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.nbRepJuste, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, 0, true, false);
+    if(this.q3 == undefined){
+      this.q3 = 0;
+    }
+    if(this.q4 == undefined){
+      this.q4 = 0;
+    }
+    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, this.scores[this.levelCounter], this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, 0, true, false);
     this.colorQ1 = tab[0];
     this.colorQ2 = tab[1];
     this.colorQ3 = tab[2];
     this.colorQ4 = tab[3];
     this.isValidate = tab[4];
     if(this.isValidate){
-      this.nbRepJuste = tab[5];
+      this.scores[this.levelCounter] = tab[5];
       this.is1 = tab[6];
       this.is2 = tab[7];
       this.is3 = tab[8];
@@ -494,13 +552,10 @@ export class Jeu2Component implements OnInit {
   questionSuivante(){
     let tab = this.questionService.questionSuivante(this.nbQuestion, true, 1);
 
-    this.nbQuestion = tab[0];
-    this.isFinish = tab[1];
     this.is1 = tab[2];
     this.is2 = tab[3];
     this.is3 = tab[4];
     this.is4 = tab[5];
-    this.isActivate = tab[6];
     this.previousNb = tab[7];
     this.isValidate = tab[8];
     this.colorQ1 = tab[9];
@@ -512,7 +567,7 @@ export class Jeu2Component implements OnInit {
 
   nouvellePartie(){
     let tab = this.questionService.nouvellePartie();
-
+    //this.genererQuestion(20);
     this.is1 = tab[0];
     this.is2 = tab[1];
     this.is3 = tab[2];

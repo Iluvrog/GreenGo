@@ -1,6 +1,9 @@
 <div *ngIf="!isQuestion">
     <div class="level">
-        <p> Level : {{ levelCounter+1 }} </p>
+        <p> Level : {{ levelCounter +1 }} &#160;&#160;&#160;
+            TotalScore : {{ sum(scores) }} &nbsp;&#160;&#160;
+            Score : {{ scores[levelCounter] }}
+        </p>
     </div>
     <div class="frame">  
        <div class="plateau" *ngFor="let Array of plateau; let i = index;">
@@ -13,13 +16,14 @@
                     {{ (case == 4 ? 'incorrect' : '')}}
                     {{ (exit[levelCounter] && case == 5 ? 'exit' : 'closeC')}}"
                     (click)="click(i,j)"
-                ><br></button>
+                ><img src="../../../assets/img_jeu2/icone{{ case != 5 ? case: (exit[levelCounter] && case == 5  ? case:0) }}.png" [style.display]="case == 2 ? 'none':'flex'" class="icon"></button>
             </div>
         </div>
         <div style="margin-top: 2%;">
-            <button class="previous" (click)="previous ()">previous</button>
-            <button class="restart" (click)="restart()">Reset</button>
-            <button class="next" (click)="next()"> Next</button>
+            <button class="previous" id="previous" (click)="previous()" > previous </button>
+            <button class="rules" (click)="openRules()"> rules </button>
+            <button class="restart" (click)="restart()"> restart </button>
+            <button class="next" id="next" (click)="next()"> next </button>
         </div>
     </div>
 </div>
@@ -30,13 +34,13 @@
     </div>
     <div class="container">
         <div class="question">
-            <p>Question : Ceci est la question ?</p>
+            <p>{{currentQuestion?.text}}</p>
         </div>
     </div>
 
     <div class="container">
-        <div *ngIf="typeQuestion == 0">
-            <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
+        <div *ngIf="typeQuestion == 0 || typeQuestion == 1">
+            <div *ngFor="let choice of currentQuestion?.answers; let i = index;">
                 <button class="choix 
                 {{ ((i == 0) ? is1 : '')}}
                 {{ ((i == 1) ? is2 : '')}}
@@ -51,15 +55,8 @@
                 >{{choice}}</button>
             </div>
         </div>
-
-        <div *ngIf="typeQuestion == 1">
-            <div>
-                <button class="choix {{ is1 }} {{ colorQ1 }}" (click)="clickReponse(1)">Vrai</button>
-                <button class="choix {{ is2 }} {{ colorQ2 }}" (click)="clickReponse(2)">Faux</button>
-            </div>
-        </div>
         <div *ngIf="typeQuestion == 2">
-            <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
+            <div *ngFor="let choice of currentQuestion?.answers; let i = index;">
                 <button class="choix
                 {{ ((i == 0) ? is1 : '')}}
                 {{ ((i == 1) ? is2 : '')}}
