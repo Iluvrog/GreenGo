@@ -1,0 +1,26 @@
+.image{
+    width: 30vh;
+    height: 30vh;
+    margin-bottom: 3vh;
+}
+
+.conteneur{
+    width: 80vw;
+}
+
+.menu{
+    width: 80vw;
+    height: 60vh;
+}
+
+.title{
+    display: flex;
+    font-size: 5vw;
+    font-weight: bold;
+}
+
+.titleMenu{
+    text-align: center;
+    width: 100%;
+    padding-top: 6vh;
+}

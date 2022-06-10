@@ -88,6 +88,7 @@ export class Jeu3Component implements OnInit {
   colorTimer: string|null = 'textVert';
   time: number = 15;
   isStart = false;
+  isGenerate = false;
 
   //pas besoin
   isActivate = false;
@@ -215,7 +216,18 @@ export class Jeu3Component implements OnInit {
     }
   }
 
+  /**
+   * nouvellePartie() appelle la fonction nouvellePartie() du service Question.
+   * Cette dernière renvoie un tableau pour remplir les variables dont on a besoin.
+   * Les variables :
+   *    tab[0] -> contient is1 (Savoir si la première réponse est activé ou non)
+   *    tab[1] -> contient is2 (Savoir si la deuxième réponse est activé ou non)
+   *    tab[2] -> contient is3 (Savoir si la troisième réponse est activé ou non)
+   *    tab[3] -> contient is4 (Savoir si la quatrième réponse est activé ou non)
+   *    tab[4] -> contient 
+   */
   nouvellePartie(){
+    this.isGenerate = false;
     let tab = this.questionService.nouvellePartie();
     this.genererQuestion(0);
     this.is1 = tab[0];
@@ -361,8 +373,15 @@ export class Jeu3Component implements OnInit {
   }
 
   genererQuestion(nb: number){
-    this.currentQuestionsList = this.questionService.getNQuestions(this.numberQuestion);
-    this.currentQuestion = this.currentQuestionsList[nb];
+    console.log(this.isGenerate);
+    if(!this.isGenerate){
+      this.currentQuestionsList = this.questionService.getNQuestions(this.numberQuestion);
+      this.isGenerate = true;
+      console.log(this.currentQuestionsList);
+    }
+    if(this.currentQuestionsList != undefined){
+      this.currentQuestion = this.currentQuestionsList[nb];
+    }
     this.typeQuestion = this.currentQuestion.questionType;
     if(this.currentQuestion?.answers != undefined){
       this.textRep1 = this.currentQuestion?.answers[0];
