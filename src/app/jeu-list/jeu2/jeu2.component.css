@@ -1,0 +1,183 @@
+.frame {
+    width: 400%;
+    height: 60%;
+    margin-top: 5%;
+    margin-left: -150%;
+    border: 2px solid rgba(66, 8, 55, 0.71);
+    background-color: rgba(111, 41, 97, 0.3);
+    padding: 1%;
+}
+
+.Array {
+    width: 9.091%;   
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.case{
+    margin-top: 5% ;
+    pointer-events: none;
+    border-color: aquamarine ;
+    padding: 15% 45%;
+    border-radius:10px;
+}
+
+.case.closeC {
+    background-color: rgba(71, 58, 68, 0.71);
+
+}
+
+.case.open {
+    background-color: rgba(148, 11, 123, 0.71);
+    pointer-events: all;
+}
+
+.case.impty {
+    background-color: rgba(111, 41, 97, 0);
+    border: none ;
+}
+
+.case.correct {
+    background-color: rgba(70, 161, 78, 0.71);
+}
+
+.case.incorrect {
+    background-color: rgba(182, 71, 95, 0.71);
+}
+
+.case.exit {
+    background-color: rgba(71, 132, 182, 0.945);
+    pointer-events: all;
+}
+
+.p {
+    background-color: black;
+}
+
+.previous {
+    width: 20%;
+    align-self: flex-start;
+    background-color:rgba(70, 161, 78, 0.71);
+    margin-right: 20%;
+}
+
+.restart {
+    width: 20%;
+    background-color:rgba(70, 161, 78, 0.71);
+    margin-right: 20%;
+}
+
+.next {
+    width: 20%;
+    background-color:rgba(70, 161, 78, 0.71);
+}
+
+.level {
+    font-size: 200%;
+    border-color: black;
+    text-align: center;
+}
+
+.body {
+    width: 400%;
+    height: 60%;
+    margin-top: 1%;
+    margin-left: -150%;
+    border: 2px solid rgba(66, 8, 55, 0.71);
+    background-color: rgba(111, 41, 97, 0.3);
+}
+
+.question.question{
+    display: block;
+	width: 100%;
+	padding: 10px 15px;
+	appearance: none;
+	border: none;
+	margin-top: 15px;
+	font-size: 20px;
+	outline: none;
+}
+
+.choix{
+    background-color: rgba(156, 51, 135, 0.721);
+    border: none;
+    padding: 5% 48%;
+    font-size: 80%;
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-bottom: 2%;
+    border-radius:10px;
+}
+
+.score {
+    font-size: 200%;
+    border-color: black;
+    text-align: center;
+
+
+}
+
+.countinue {
+    width: 20%;
+    background-color:rgba(70, 161, 78, 0.71);
+    margin-left: 40%;
+}
+
+.choix.correct {
+    background-color:rgba(70, 161, 78, 0.71);
+}
+
+.choix.incorrect {
+    background-color:rgba(161, 70, 70, 0.71); 
+}
+
+.choix.respond {
+    pointer-events: none; 
+}
+
+
+.feedback {
+    text-align: center;
+    font-size: large;
+}
+
+.boutonDroit{
+    position: relative!important;
+    display: inline-block!important;
+    float: right!important;
+    display: flex;
+    justify-content: end;
+    background-color:rgba(70, 161, 78, 0.71);
+}
+
+.true{
+    background-color: orange!important;
+}
+
+.green{
+    background-color: #28a745!important;
+}
+
+.red{
+    background-color: red!important;
+}
+
+.blue{
+    background-color: rgb(86, 86, 233)!important; 
+}
+
+.nouvellePartie{
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+}
+
+.bouton{
+    display: flex;
+    justify-content:space-between;
+}
+
+.rose{
+    background-color: rgba(111, 41, 97, 0.3)!important;
+    border: 2px solid rgba(66, 8, 55, 0.71);
+}

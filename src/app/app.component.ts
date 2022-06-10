@@ -1,4 +1,7 @@
+import { Question } from './question';
 import { Component, OnInit } from '@angular/core';
+import fileQuestionsJSON from '../assets/questions.json'
+import fileAnswerJSON from '../assets/answers.json'
 
 @Component({
   selector: 'app-root',
@@ -10,18 +13,7 @@ export class AppComponent implements OnInit {
   gameSelected: string | undefined;
   gameList: string[] | undefined
   
-  
   ngOnInit(): void {
     this.gameList = ["Labyrinthe","Trivial poursuit", "Incollables", "Qui veut gagner des millions"];
-    console.log(this.gameList)
   }
-
-  // selectGame(game : string){
-  //   console.log(`Vous souhaitez jouer a ${game}`)
-  //   this.goToLink(`localhost:4200/${game}`)
-  // }
-
-  // goToLink(url : string){
-  //   window.open(url,"_blank")
-  // }
 }

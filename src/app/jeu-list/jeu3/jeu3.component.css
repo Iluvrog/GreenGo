@@ -1,0 +1,167 @@
+.row .colonne{
+    float: left;
+    box-sizing: border-box;
+    padding: 0 0.75rem;
+    min-height: 1px;
+}
+
+.m6{
+    width: 50%;
+    left: auto;
+    right: auto;
+}
+
+.m8{
+    width: 75%;
+    left: auto;
+    right: auto;
+}
+
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.rep{
+    background-color: darkgray;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.rep:hover{
+    background-color: #777777;
+}
+
+.question{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background-color: #28a745!important;
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.boutonDroit{
+    position: relative;
+    display: inline-block;
+    float: right;
+}
+
+.true{
+    background-color: orange!important;
+}
+
+.green{
+    background-color: #28a745!important;
+}
+
+.red{
+    background-color: red!important;
+}
+
+.blue{
+    background-color: rgb(86, 86, 233)!important; 
+}
+
+.nouvellePartie{
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+}
+
+.bouton{
+    display: flex;
+    justify-content:space-between;
+}
+
+.feedback{
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 100%;
+}
+
+.terre{
+    width: 40vw;
+    height: 30vw;
+    margin-top: 10px;
+    margin-bottom: auto;
+    margin-left: 20vw;
+    border-radius: 2%;
+}
+
+.timer{
+    width: 7.5vw;
+    height: 7.5vw;
+    border: 1vw solid #28a745;
+    border-radius: 100%;
+    position: absolute;
+    text-align: center;
+}
+
+.text{
+    font-size: 3.5vw;
+    font-weight: bold;
+    color: #28a745;
+    vertical-align: middle;
+}
+
+.textVert{
+    color: #28a745!important;
+    transition: 1s;
+    border-color: #28a745!important;
+}
+
+.textOrange{
+    color: orange;
+    transition: 1s!important;
+    border-color: orange!important;
+}
+
+.textRouge{
+    transition: 1s;
+    color: red!important;
+    border-color :red!important;
+}
+
+.menu{
+    width: 80vw;
+    height: 60vh;
+}
+
+.title{
+    display: flex;
+    font-size: 5vw;
+    font-weight: bold;
+}
+
+.titleMenu{
+    text-align: center;
+    width: 100%;
+    padding-top: 6vh;
+}
+
+.image{
+    width: 30vh;
+    height: 30vh;
+    margin-bottom: 3vh;
+}
+
+.conteneur{
+    width: 80vw;
+}
+
+@media screen and (min-width: 900px) {
+    .flex{
+        display: inline-flex;
+    }
+}
