@@ -19,15 +19,15 @@ export class Jeu2Component implements OnInit {
   // 0: close, 1: open, 2:impty, 3:correct, 4:false, 5:exit
   niveauxBase: number[][][] = [] ;
   niveaux: number[][][] = [] ;
-  plateau: number[][];
-  hight_lvl1:number;
-  width_lvl1:number;
-  hight_lvl2:number;
-  width_lvl2:number;
-  hight_lvl3:number;
-  width_lvl3:number;
-  hight_lvl4:number;
-  width_lvl4:number;
+  plateau: number[][]|undefined;
+  hight_lvl1:number|undefined;
+  width_lvl1:number|undefined;
+  hight_lvl2:number|undefined;
+  width_lvl2:number|undefined;
+  hight_lvl3:number|undefined;
+  width_lvl3:number|undefined;
+  hight_lvl4:number|undefined;
+  width_lvl4:number|undefined;
   levelCounter:number = 0 ;
   currentPosition: number[] = new Array(2) ;
   exit:boolean[] = [] ;
@@ -37,10 +37,56 @@ export class Jeu2Component implements OnInit {
   score:number = 0 ;
   reponse:string | undefined;
   scores: number[] = [0,0,0,0];
-  maxLevel:number = 0 ;
+  maxLevel:number = 3;
 
 
   constructor(private route: ActivatedRoute, private router:Router, public questionService: QuestionService) {
+    this.questions = this.questionService.getNQuestions(20) ;
+    this.currentQuestion = this.questions[0];
+    if(this.currentQuestion.answerValue != undefined){
+      this.q1 = this.currentQuestion.answerValue[0];
+      this.q2 = this.currentQuestion.answerValue[1];
+      this.q3 = this.currentQuestion.answerValue[2];
+      this.q4 = this.currentQuestion.answerValue[3];
+    }
+    this.typeQuestion = this.currentQuestion.questionType;
+  }
+  
+  ngOnInit(): void {
+    this.genererNiveau();
+    this.isQuestion = false;
+
+    if(localStorage.getItem('niveaux-J2') != null)
+      this.niveaux = JSON.parse( localStorage.getItem('niveaux-J2') || "" ) ;
+
+    if(localStorage.getItem('plateau-J2') != null)
+      this.plateau = JSON.parse(localStorage.getItem('plateau-J2') || "")
+
+    let val = localStorage.getItem('levelCounter-J2');
+    this.levelCounter = (val == null) ? 0 : +val;
+    console.log('levelCounter : '+this.levelCounter);
+
+    if(localStorage.getItem('currentPosition-J2') != null)
+      this.currentPosition = JSON.parse( localStorage.getItem('currentPosition-J2') || "" ) ; 
+    
+    if(localStorage.getItem('exit-J2') != null)
+      this.exit = JSON.parse( localStorage.getItem('exit-J2') || "" ) ;
+
+    this.plateau = this.niveaux[this.levelCounter] ;
+    
+    this.counter = JSON.parse( localStorage.getItem('counter-J2') || "0" ) ;
+    this.score = JSON.parse( localStorage.getItem('score-J2') || "0" ) ;
+    if(this.counter >= 20){
+      this.counter = 0;
+      this.score = 0;
+    }
+
+    this.currentQuestion = this.questions[this.counter] ;
+    this.charger();
+  }
+
+
+  genererNiveau(){
     this.exit = [false,false,false,false];
 
     this.width_lvl1 = 5 ;
@@ -217,68 +263,12 @@ export class Jeu2Component implements OnInit {
 
     this.niveaux[3] = this.plateau ;
     this.niveauxBase = this.niveaux ;
-
-    this.questions = this.questionService.getNQuestions(20) ;
-    this.currentQuestion = this.questions[0];
-    if(this.currentQuestion.answerValue != undefined){
-      this.q1 = this.currentQuestion.answerValue[0];
-      this.q2 = this.currentQuestion.answerValue[1];
-      this.q3 = this.currentQuestion.answerValue[2];
-      this.q4 = this.currentQuestion.answerValue[3];
-    }
-    this.typeQuestion = this.currentQuestion.questionType;
-  }
-  
-  ngOnInit(): void {
-
-    this.isQuestion = false;
-
-    if(localStorage.getItem('niveaux-J2') != null)
-      this.niveaux = JSON.parse( localStorage.getItem('niveaux-J2') || "" ) ;
-
-    if(localStorage.getItem('plateau-J2') != null)
-      this.plateau = JSON.parse(localStorage.getItem('plateau-J2') || "")
-
-    let val = localStorage.getItem('levelCounter-J2');
-    this.levelCounter = (val == null) ? 0 : +val;
-    console.log('levelCounter : '+this.levelCounter);
-
-    if(localStorage.getItem('currentPosition-J2') != null)
-      this.currentPosition = JSON.parse( localStorage.getItem('currentPosition-J2') || "" ) ; 
-    
-    if(localStorage.getItem('exit-J2') != null)
-      this.exit = JSON.parse( localStorage.getItem('exit-J2') || "" ) ;
-
-    this.plateau = this.niveaux[this.levelCounter] ;
-    /*
-    var Button = <HTMLInputElement> document.getElementById("previous") ;
-    if(this.levelCounter == 0)
-      Button.disabled = true;
-    else
-      Button.disabled = false;
-
-    var Button = <HTMLInputElement> document.getElementById("next") ;
-    if(this.levelCounter == this.maxLevel)
-      Button.disabled = true;
-    else
-      Button.disabled = false;
-    */
-    this.counter = JSON.parse( localStorage.getItem('counter-J2') || "0" ) ;
-    this.score = JSON.parse( localStorage.getItem('score-J2') || "0" ) ;
-    if(this.counter >= 20){
-      this.counter = 0 ;
-      this.score = 0 ;
-    }
-
-    this.currentQuestion = this.questions[this.counter] ;
-    this.charger();
-    console.log(this.questions)
   }
 
   next(){
     this.levelCounter++ ;
     this.plateau = this.niveaux[this.levelCounter] ;
-    localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
+    localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter));
 
     var Button = <HTMLInputElement> document.getElementById("previous") ;
     if(this.levelCounter > 0)
@@ -290,7 +280,7 @@ export class Jeu2Component implements OnInit {
   }
 
   previous(){
-    this.levelCounter-- ;
+    this.levelCounter--;
     this.plateau = this.niveaux[this.levelCounter] ;
 
     localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
@@ -300,7 +290,7 @@ export class Jeu2Component implements OnInit {
       Button.disabled = false;
 
     Button = <HTMLInputElement> document.getElementById("previous") ;
-    if(this.levelCounter == 0)
+    if(this.levelCounter <= 0)
       Button.disabled = true;
   }
 
@@ -392,11 +382,15 @@ export class Jeu2Component implements OnInit {
   }
   
   restart(){
+    this.genererNiveau();
     localStorage.removeItem('plateau-J2') ;
     this.exit[this.levelCounter] = false ;
     this.niveaux[this.levelCounter] = this.niveauxBase[this.levelCounter] ;
     this.plateau = this.niveaux[this.levelCounter] ;
     this.scores[this.levelCounter] = 0 ;
+
+    console.log("plateau !!! : " + this.plateau);
+    console.log("plateau niveaux de base  : " + this.niveauxBase[this.levelCounter])
     
     localStorage.setItem('niveaux-J2', JSON.stringify(this.niveaux));
     localStorage.setItem('exit-J2', JSON.stringify(this.exit));
@@ -613,8 +607,8 @@ export class Jeu2Component implements OnInit {
     val = localStorage.getItem("nbRepJuste-J2");
     this.nbRepJuste = (val == null) ? 0 : +val;
     
-    let width: number;
-    let height: number;
+    let width: number|undefined;
+    let height: number|undefined;
     if(this.levelCounter == 0){
       width = this.width_lvl1;
       height = this.hight_lvl1;
@@ -640,36 +634,38 @@ export class Jeu2Component implements OnInit {
       var i = 0;
       var j = 0;
       let b = true;
-      while(i < width){
-        while(j < height){
-          if(tab?.charAt(cpt) == '0'){
-            this.plateau[i][j] = 0;
-            b = true;
-          }else if(tab?.charAt(cpt) == '1'){
-            this.plateau[i][j] = 1;
-            b = true;
-          }else if(tab?.charAt(cpt) == '2'){
-            this.plateau[i][j] = 2;
-            b = true;
-          }else if(tab?.charAt(cpt) == '3'){
-            this.plateau[i][j] = 3;
-            b = true;
-          }else if(tab?.charAt(cpt) == '4'){
-            this.plateau[i][j] = 4;
-            b = true;
-          }else if(tab?.charAt(cpt) == '5'){
-            this.plateau[i][j] = 5;
-            b = true;
-          }else{
-            b = false;
+      if(width != undefined && height != undefined){
+        while(i < width){
+          while(j < height){
+            if(tab?.charAt(cpt) == '0' && this.plateau != undefined){
+              this.plateau[i][j] = 0;
+              b = true;
+            }else if(tab?.charAt(cpt) == '1' && this.plateau != undefined){
+              this.plateau[i][j] = 1;
+              b = true;
+            }else if(tab?.charAt(cpt) == '2' && this.plateau != undefined){
+              this.plateau[i][j] = 2;
+              b = true;
+            }else if(tab?.charAt(cpt) == '3' && this.plateau != undefined){
+              this.plateau[i][j] = 3;
+              b = true;
+            }else if(tab?.charAt(cpt) == '4' && this.plateau != undefined){
+              this.plateau[i][j] = 4;
+              b = true;
+            }else if(tab?.charAt(cpt) == '5' && this.plateau != undefined){
+              this.plateau[i][j] = 5;
+              b = true;
+            }else{
+              b = false;
+            }
+            cpt++;
+            if(b){
+              j++;
+            }
           }
-          cpt++;
-          if(b){
-            j++;
-          }
+          j = 0;
+          i++;
         }
-        j = 0;
-        i++;
       }
       console.log('plateau : ' + this.plateau);
     }
