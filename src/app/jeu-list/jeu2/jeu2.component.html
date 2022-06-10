@@ -34,13 +34,13 @@
     </div>
     <div class="container">
         <div class="question">
-            <p>Question : Ceci est la question ?</p>
+            <p>{{currentQuestion?.text}}</p>
         </div>
     </div>
 
     <div class="container">
-        <div *ngIf="typeQuestion == 0">
-            <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
+        <div *ngIf="typeQuestion == 0 || typeQuestion == 1">
+            <div *ngFor="let choice of currentQuestion?.answers; let i = index;">
                 <button class="choix 
                 {{ ((i == 0) ? is1 : '')}}
                 {{ ((i == 1) ? is2 : '')}}
@@ -55,15 +55,8 @@
                 >{{choice}}</button>
             </div>
         </div>
-
-        <div *ngIf="typeQuestion == 1">
-            <div>
-                <button class="choix {{ is1 }} {{ colorQ1 }}" (click)="clickReponse(1)">Vrai</button>
-                <button class="choix {{ is2 }} {{ colorQ2 }}" (click)="clickReponse(2)">Faux</button>
-            </div>
-        </div>
         <div *ngIf="typeQuestion == 2">
-            <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
+            <div *ngFor="let choice of currentQuestion?.answers; let i = index;">
                 <button class="choix
                 {{ ((i == 0) ? is1 : '')}}
                 {{ ((i == 1) ? is2 : '')}}
