@@ -1,7 +1,9 @@
 export class question {
-    question: string | undefined;
-    reponse:string | undefined;
-    choix:string[] | undefined;
+  question: string | undefined;
+  reponse:string | undefined;
+  choix:string[] | undefined;
+  feedback:string | undefined ;
+  type:number | undefined;
 }
 
 export class board_ {

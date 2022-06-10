@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from "./service/level.service";
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys'; //npm install angular2-hotkeys --save
 
 @Component({
   selector: 'app-labyrinthe',
@@ -39,7 +39,7 @@ export class LabyrintheComponent implements OnInit {
   public rows! : number;
   public columns! : number;
   public board!: boolean [][];
-  
+
   private sub: any;
   public manPosition: number[];
   public currentMoves: number = 0;
@@ -49,16 +49,16 @@ export class LabyrintheComponent implements OnInit {
   public exitPosition: number[];
 
   time: number = 0;
-  timebegin : boolean = false; 
+  timebegin : boolean = false;
 
-  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService ) { 
+  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService ) {
     this.manPosition = [];
     this.setHotKeys();
     this.doorsPosition = [];
     this.keysPosition = [];
     this.booksPosition = [];
     this.exitPosition = [];
-  }  
+  }
 
   ngOnInit(): void {
       if(localStorage.getItem('num_niv') != null)
@@ -92,7 +92,7 @@ export class LabyrintheComponent implements OnInit {
         }
         this.board[0][0] = true;
       });
-    
+
         if(localStorage.getItem('perso') != null)
           this.manPosition = JSON.parse( localStorage.getItem('perso') || "" ) ;
         if(localStorage.getItem('nbmove') != null){
@@ -112,7 +112,7 @@ export class LabyrintheComponent implements OnInit {
           this.time = 0;
         }
   }
-  
+
   getvalue(h : number, w : number): number {
     return this.currentLevel.cases[h][w];
   }
@@ -129,6 +129,10 @@ export class LabyrintheComponent implements OnInit {
       }
     }
     return [];
+  }
+
+  getID() : number{
+    return this.id;
   }
 
   exit(h : number, w : number): boolean {
@@ -156,6 +160,8 @@ export class LabyrintheComponent implements OnInit {
   }
 
   isInventaire(i: number): boolean {
+    if(i >= this.keysPosition.length)
+      return false;
     return this.keysPosition[i][2] == 1;
   }
 
@@ -286,7 +292,7 @@ export class LabyrintheComponent implements OnInit {
   }
 
   nextLevel() : void{
-    this.reinitStorage();
+    localStorage.clear();
     this.id = this.id + 1;
     this.timebegin = false;
     this.ngOnInit();
@@ -294,7 +300,7 @@ export class LabyrintheComponent implements OnInit {
   }
 
   previousLevel() : void{
-    this.reinitStorage();
+    localStorage.clear();
     this.id = this.id - 1;
     this.timebegin = false;
     this.ngOnInit();
@@ -302,7 +308,7 @@ export class LabyrintheComponent implements OnInit {
   }
 
   retry() : void{
-    this.reinitStorage();
+    localStorage.clear();
     this.timebegin = false;
     this.ngOnInit();
     this.saveState();
@@ -316,9 +322,9 @@ export class LabyrintheComponent implements OnInit {
     localStorage.setItem('num_niv', JSON.stringify(this.id) );
     localStorage.setItem('perso', JSON.stringify(this.manPosition) );
     localStorage.setItem('nbmove', JSON.stringify(this.currentMoves) );
-    localStorage.setItem('doorsPosition', JSON.stringify(this.doorsPosition) ); 
-    localStorage.setItem('keysPosition', JSON.stringify(this.keysPosition) ); 
-    localStorage.setItem('time', JSON.stringify(this.time) );  
+    localStorage.setItem('doorsPosition', JSON.stringify(this.doorsPosition) );
+    localStorage.setItem('keysPosition', JSON.stringify(this.keysPosition) );
+    localStorage.setItem('time', JSON.stringify(this.time) );
   }
 
   onAction(){

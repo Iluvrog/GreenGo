@@ -7,13 +7,15 @@
         <div fxFlex>
           <ul>
             <li>
-              Sortez du labyrinthe
+              The goal: escape the maze.
             </li>
             <li>
-              Pour cela ramassez les clefs en répondant correctement aux questions
+              You need to take the keys, to do that you need to answer correctly at the question. With the color key you can open the same color door.
+            <br>
+            The books give you tips for the answer to the question.
             </li>
             <li>
-              Pour ce déplacez appuyer sur les touches directions et pour ramesser les clefs appuyez sur espace
+              Use the directionnal keyboards to move your avatar, and the espace keyboard to take the keys, and the books.
             </li>
           </ul>
         </div>
@@ -27,13 +29,13 @@
         </div>-->
       </div>
     </div>
-    <div fxLayout="column" fxLayoutAlign="center center" class="canvas-container">
+    <div fxLayout="column" fxLayoutAlign="center center" class="canvas-container ">
       <div fxflex="10">
         <h1>
           Level: <span class="level">{{ id + 1 }}</span>
         </h1>
       </div>
-  
+
       <!--<div fxFlex="10">
         <h3>
           Current Moves: {{ currentMoves }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Target
@@ -41,14 +43,18 @@
           {{ targetMoves }}
         </h3>
       </div>-->
-  
+
       <div fxFlex="60">
-        <div class="container">
-          <div class="row" *ngFor="let row of board; let i = index">
+        <div class="{{ (getID() == 0 ? 'container1' : '')}}
+        {{ (getID() == 1 ? 'container2' : '')}}">
+          <div class="{{ (getID() == 0 ? 'row1' : '')}}
+          {{ (getID() == 1 ? 'row2' : '')}}" *ngFor="let row of board; let i = index">
             <div
-              class="column" *ngFor="let column of row; let j = index">
-              <button 
-                  class="case 
+              class="{{ (getID() == 0 ? 'column1' : '')}}
+              {{ (getID() == 1 ? 'column2' : '')}}" *ngFor="let column of row; let j = index">
+              <button
+                  class="case
+                  {{ (getID() == 1 ? 'c2' : '')}}
                   {{ (getvalue(i,j) == 15 ? 'vide' : '')}}
                   {{ (getvalue(i,j) == 14 ? 'hdb' : '')}}
                   {{ (getvalue(i,j) == 13 ? 'hdg' : '')}}
@@ -68,12 +74,22 @@
                   {{ (getKeys(i,j) == 0 ? 'keys yellow' : '')}}
                   {{ (getKeys(i,j) == 1 ? 'keys blue' : '')}}
                   {{ (getKeys(i,j) == 2 ? 'keys purple' : '')}}
+                  {{ (getKeys(i,j) == 3 ? 'keys red' : '')}}
+                  {{ (getKeys(i,j) == 4 ? 'keys green' : '')}}
+                  {{ (getKeys(i,j) == 5 ? 'keys orange' : '')}}
                   {{ (getDoors(i,j)[0] == 0 ? 'doors yellow' : '')}}
                   {{ (getDoors(i,j)[0] == 1 ? 'doors blue' : '')}}
-                  {{ (getDoors(i,j)[0] == 2 ? 'doors purple' : '')}}
+                  {{ (getDoors(i,j)[0] == 2 &&  getDoors(i,j)[1] == 1 ? 'doors purple' : '')}}
+                  {{ (getDoors(i,j)[0] == 2 &&  getDoors(i,j)[1] == 3 ? 'doors purple2' : '')}}
+                  {{ (getDoors(i,j)[0] == 3 ? 'doors red' : '')}}
+                  {{ (getDoors(i,j)[0] == 4 ? 'doors green' : '')}}
+                  {{ (getDoors(i,j)[0] == 5 ? 'doors orange' : '')}}
                   {{ (getBooks(i,j) == 0 ? 'books yellow' : '')}}
                   {{ (getBooks(i,j) == 1 ? 'books blue' : '')}}
                   {{ (getBooks(i,j) == 2 ? 'books purple' : '')}}
+                  {{ (getBooks(i,j) == 3 ? 'books red' : '')}}
+                  {{ (getBooks(i,j) == 4 ? 'books green' : '')}}
+                  {{ (getBooks(i,j) == 5 ? 'books orange' : '')}}
                   {{ (perso(i,j) ? 'perso' : '')}}
                   {{ (exit(i,j) ? 'exit' : '')}}
                   "
@@ -83,17 +99,17 @@
           </div>
         </div>
       </div>
-  
+
       <!-- [ngStyle]="{ 'background-image': setImage(i, j) }"-->
-  
+
       <!--<div fxFlex="40" [hidden]="!hasWon">
         <img class="level-complete" src="assets/canvas-images/success.png" />
       </div>
-  
+
       <div fxFlex="40" [hidden]="!hasLost">
         <img class="level-complete" src="assets/canvas-images/failed.jpg" />
       </div>
-  
+
       <div fxFlex [hidden]="!hasWon && !hasLost">
         <div class="next-level">
           <button (click)="Navigate()">
@@ -101,7 +117,7 @@
           </button>
         </div>
       </div>
-  
+
       <div fxFlex [hidden]="!hasWon && !hasLost">
         <div class="retry-level">
           <button (click)="refresh()">
@@ -112,50 +128,69 @@
 
       <div fxFlex>
         <div class="buttons">
-          Inventaire :
-          <button 
-            class="case 
-            {{ (isInventaire(0) ? 'doors yellow' : '')}}"
+          Inventory :
+          <button
+            class="case
+            {{ (isInventaire(0) ? 'keys yellow' : '')}}"
             >
           </button>
-          <button 
-            class="case 
-            {{ (isInventaire(1) ? 'doors blue' : '')}}"
+          <button
+            class="case
+            {{ (isInventaire(1) ? 'keys blue' : '')}}"
             >
           </button>
-          <button 
-            class="case 
-            {{ (isInventaire(2) ? 'doors purple' : '')}}"
+          <button
+            class="case
+            {{ (isInventaire(2) ? 'keys purple' : '')}}"
+          >
+        </button>
+        <button
+            class="case
+            {{ (isInventaire(3) ? 'keys red' : '')}}"
+            >
+          </button>
+          <button
+            class="case
+            {{ (isInventaire(4) ? 'keys green' : '')}}"
+            >
+          </button>
+          <button
+            class="case
+            {{ (isInventaire(5) ? 'keys orange' : '')}}"
           >
           </button>
-          Nombre de pas : {{getNumberMove()}}  Temps : {{gettime()}}
+          Number step : {{getNumberMove()}}  Time : {{gettime()}}
         </div>
       </div>
-  
+
       <div fxFlex>
         <div class="buttons">
-          <button
+          <!--<button
             mat-button
             [disabled]="id <= 0"
             (click)="previousLevel()"
           >
             Previous Level
-          </button>
+          </button>-->
           <button mat-button (click)="retry()">
-            <i class="material-icons">Retry</i>
+            <i class="material-icons">Retry Level</i>
           </button>
-  
-          <button
+
+          <button mat-button (click)="refresh()">
+            <i class="material-icons">Retry All</i>
+          </button>
+
+          <!--<button
           [disabled]="id  >= 1"
             mat-button (click)="nextLevel()"
           >
             Next Level
-          </button>
+          </button>-->
         </div>
       </div>
     </div>
   </div>
-  
+
   <ngx-spinner
     bdColor="rgba(0, 0, 0, 0.8)"
     size="medium"

@@ -1,33 +1,57 @@
 .canvas-container {
-    height: 100vh;
+    height: 120vh;
     background-color: black;
     color: white;
     width: 100%;
   }
-  
+
   .help-container {
     height: 80vh;
     background-color: rgb(29, 29, 29);
     color: white;
     width: 100%;
   }
-  
-  .container {
+
+  .container1 {
     position: relative;
     display: block;
     margin: auto;
     background-color: white;
     border-radius: 5px;
     border: yellow 10px solid;
+    width: 26.8%;
   }
-  
-  .row {
+
+  .container2 {
+    position: relative;
+    display: block;
+    margin: auto;
+    background-color: white;
+    border-radius: 5px;
+    border: yellow 10px solid;
+    width: 45%;
+  }
+
+  .row1 {
     height: 30px;
   }
-  
-  .column {
+
+  .row2 {
+    height: 20px;
+  }
+
+  .column1 {
     width: 30px;
     height: 30px;
+    display: inline-block;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+  }
+
+  .column2 {
+    width: 20px;
+    height: 20px;
     display: inline-block;
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
@@ -44,6 +68,16 @@
     --color:rgb(255, 255, 255);
   }
 
+  .case.c2{
+    background-color: rgba(142, 5, 5, 0);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    border:none;
+    --border: 3px solid rgb(0, 0, 0);
+    --color:rgb(255, 255, 255);
+  }
+
   .case.vide{
     background-color: rgb(255, 255, 255);
   }
@@ -51,7 +85,7 @@
   .case.none{
     background-color: var(--color);
   }
-  
+
   .case.h{
     background-color: var(--color);
     border-top: var(--border);
@@ -148,11 +182,23 @@
   }
 
   .case.keys.blue{
-    background-color: rgba(88, 133, 247, 0.6);
+    background-color: rgb(88, 133, 247);
   }
 
   .case.keys.purple{
-    background-color: rgba(206, 63, 151, 0.6);
+    background-color: rgb(206, 63, 151);
+  }
+
+  .case.keys.red{
+    background-color: rgb(247, 91, 208);
+  }
+
+  .case.keys.orange{
+    background-color: rgb(255, 191, 0);
+  }
+
+  .case.keys.green{
+    background-color: rgb(64, 243, 5);
   }
 
   .case.books.yellow{
@@ -160,11 +206,23 @@
   }
 
   .case.books.blue{
-    background-color: rgba(88, 133, 247, 0.6);
+    background-color: rgb(88, 133, 247);
   }
 
   .case.books.purple{
-    background-color: rgba(206, 63, 151, 0.6);
+    background-color: rgb(206, 63, 151);
+  }
+
+  .case.books.red{
+    background-color: rgb(247, 91, 208);
+  }
+
+  .case.books.orange{
+    background-color: rgb(255, 191, 0);
+  }
+
+  .case.books.green{
+    background-color: rgb(64, 243, 5);
   }
 
   .case.doors.yellow{
@@ -172,49 +230,59 @@
   }
 
   .case.doors.blue{
-    border-top: 5px solid rgba(88, 133, 247, 0.6);
+    border-top: 5px solid rgb(88, 133, 247);
   }
 
   .case.doors.purple{
-    border-top: 5px solid rgba(206, 63, 151, 0.6);
+    border-top: 5px solid rgb(206, 63, 151);
+  }
+
+  .case.doors.purple2{
+    border-bottom: 5px solid rgb(206, 63, 151);
+  }
+
+  .case.doors.orange{
+    border-left: 5px solid rgb(255, 191, 0);
+  }
+
+  .case.doors.green{
+    border-left: 5px solid rgb(64, 243, 5);
+  }
+
+  .case.doors.red{
+    border-left: 5px solid rgb(247, 91, 208);
   }
 
   .case.perso{
     background-color: rgb(234, 69, 69);
-    width: 30px;
-    height: 30px;
-    pointer-events: none;
   }
-  
+
   .case.exit{
     background-color: rgb(113, 230, 142);
-    width: 30px;
-    height: 30px;
-    pointer-events: none;
   }
 
   .level {
     color: rgb(241, 32, 67);
   }
-  
+
   li {
     margin: 15px;
     letter-spacing: 1px;
     color: rgb(124, 124, 124);
   }
-  
+
   img {
     padding-top: 50px;
     display: block;
     height: 300px;
     object-fit: contain;
   }
-  
+
   .level-complete {
     transition: 0.5s ease-in;
     height: 100px;
   }
-  
+
   .next-level button {
     height: 60px;
     width: 200px;
@@ -226,7 +294,7 @@
     font-family: "Montserrat";
     font-weight: bold;
   }
-  
+
   .retry-level button {
     height: 60px;
     width: 200px;

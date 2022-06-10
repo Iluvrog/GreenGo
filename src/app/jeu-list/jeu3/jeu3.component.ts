@@ -17,7 +17,7 @@ export class Jeu3Component implements OnInit {
   constructor(private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit(): void {
-    this.questions = [
+   /* this.questions = [
       {
         question: 'question1...',
         reponse: 'A',
@@ -38,7 +38,7 @@ export class Jeu3Component implements OnInit {
         reponse: 'D',
         choix: ['A','B','C','D']
       }
-    ]
+    ]*/
     this.currentQuestion = this.questions[this.counter] ;
   }
 

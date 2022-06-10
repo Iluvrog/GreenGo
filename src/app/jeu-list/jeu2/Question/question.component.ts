@@ -10,7 +10,7 @@ import { Jeu2Component } from '../jeu2.component';
   template: `<game2 #game></game2>`
 })
 export class QuestionComponent implements OnInit {
-  
+
   //@ViewChild('game') game: Jeu2Component | undefined ;
 
   questions: question[] = [];
@@ -32,7 +32,7 @@ export class QuestionComponent implements OnInit {
       this.score = 0 ;
     }
 
-    this.questions = [
+    /*this.questions = [
       {
         question: 'question1...',
         reponse: 'A',
@@ -53,7 +53,7 @@ export class QuestionComponent implements OnInit {
         reponse: 'D',
         choix: ['A','B','C','D']
       }
-    ]
+    ]*/
     this.currentQuestion = this.questions[this.counter] ;
   }
 
@@ -69,7 +69,7 @@ export class QuestionComponent implements OnInit {
     }
 
     this.counter++ ;
-    
+
     localStorage.setItem('counter', JSON.stringify(this.counter) );
     localStorage.setItem('score', JSON.stringify(this.score) );
     /*
@@ -84,13 +84,13 @@ export class QuestionComponent implements OnInit {
   }
 
   countinue(){
-    
+
     //this.game?.plateau[this.game.currentPosition[0]][this.game.currentPosition[1]] = 0 ;
     this.messageEvent.emit(this.answer) ;
 
     this.router.navigate(['jeu/2']) ;
     this.currentQuestion = this.questions[this.counter] ;
-    
+
   }
 
 }
