@@ -401,4 +401,9 @@ export class Jeu3Component implements OnInit {
       this.feedback = this.currentQuestion?.feedback;
     }
   }
+
+
+  getService(){
+    return this.questionService;
+  }
 }
