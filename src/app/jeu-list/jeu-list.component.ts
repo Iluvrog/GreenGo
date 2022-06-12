@@ -8,11 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class JeuListComponent implements OnInit {
   gameList: string[] | undefined;
   constructor() {
-     
+
    }
 
   ngOnInit(): void {
-    this.gameList = ["1","2", "3", "4"];
+    this.gameList = ["labyrinthe","2", "3", "4"];
     console.log(this.gameList)
   }
 

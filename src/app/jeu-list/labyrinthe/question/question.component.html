@@ -1,0 +1,22 @@
+<div class="score">
+  <p>Score : {{ service.scores[service.levelCounter] }}</p>
+</div>
+<div class="body">
+
+  <div>
+      <div class="question">{{ currentQuestion?.question }}</div>
+      <div *ngFor="let choice of currentQuestion?.choix; let i = index;">
+          <button class="choix
+          {{ ((choice == currentQuestion?.reponse) && service.answer ? 'correct' : '')}}
+          {{ (!(choice == currentQuestion?.reponse) && choice == reponse && service.answer ? 'incorrect' : '')}}
+          {{ (service.answer ? 'respond' : '')}}"
+          id="{{i}}"
+          (click)="respond(choice, i)"
+          >{{ choice }}</button>
+      </div>
+  </div>
+  <div class="feedback" [style.display]="service.answer ? 'block': 'none'"><p> {{currentQuestion?.feedback }}</p></div>
+  <div>
+      <button class="countinue" (click) = "countinue()" >countinue</button>
+  </div>
+</div>

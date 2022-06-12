@@ -1,0 +1,197 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex="20" class="help-container">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+      <div fxFlex>
+        <h1>- Rules -</h1>
+      </div>
+      <div fxFlex>
+        <ul>
+          <li>
+            The goal: escape the maze.
+          </li>
+          <li>
+            You need to take the keys, to do that you need to answer correctly at the question. With the color key you can open the same color door.
+          <br>
+          The books give you tips for the answer to the question.
+          </li>
+          <li>
+            Use the directionnal keyboards to move your avatar, and the espace keyboard to take the keys, and the books.
+          </li>
+        </ul>
+      </div>
+      <div fxflex>
+        <img src="assets/img/1.png" />
+      </div>
+      <!--<div fxflex>
+        <button mat-stroked-button [routerLink]="['/home']">
+          Back to Home
+        </button>
+      </div>-->
+    </div>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="center center" class="canvas-container ">
+    <div fxflex="10">
+      <h1>
+        Level: <span class="level">{{ id + 1 }}</span>
+      </h1>
+    </div>
+
+    <!--<div fxFlex="10">
+      <h3>
+        Current Moves: {{ currentMoves }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Target
+        Moves:
+        {{ targetMoves }}
+      </h3>
+    </div>-->
+
+    <div fxFlex="60">
+      <div class="{{ (getID() == 0 ? 'container1' : '')}}
+      {{ (getID() == 1 ? 'container2' : '')}}">
+        <div class="{{ (getID() == 0 ? 'row1' : '')}}
+        {{ (getID() == 1 ? 'row2' : '')}}" *ngFor="let row of board; let i = index">
+          <div
+            class="{{ (getID() == 0 ? 'column1' : '')}}
+            {{ (getID() == 1 ? 'column2' : '')}}" *ngFor="let column of row; let j = index">
+            <button
+                class="case c1
+                {{ (getID() == 0 ? 'case c1' : '')}}
+                {{ (getID() == 1 ? 'case c2' : '')}}
+
+                {{ (getvalue(i,j) == 15 ? 'vide' : '')}}
+                {{ (getvalue(i,j) == 14 ? 'hdb' : '')}}
+                {{ (getvalue(i,j) == 13 ? 'hdg' : '')}}
+                {{ (getvalue(i,j) == 12 ? 'hd' : '')}}
+                {{ (getvalue(i,j) == 11 ? 'hbg' : '')}}
+                {{ (getvalue(i,j) == 10 ? 'hb' : '')}}
+                {{ (getvalue(i,j) == 9 ? 'hg' : '')}}
+                {{ (getvalue(i,j) == 8 ? 'h' : '')}}
+                {{ (getvalue(i,j) == 7 ? 'dbg' : '')}}
+                {{ (getvalue(i,j) == 6 ? 'bd' : '')}}
+                {{ (getvalue(i,j) == 5 ? 'dg' : '')}}
+                {{ (getvalue(i,j) == 4 ? 'd' : '')}}
+                {{ (getvalue(i,j) == 3 ? 'bg' : '')}}
+                {{ (getvalue(i,j) == 2 ? 'b' : '')}}
+                {{ (getvalue(i,j) == 1 ? 'g' : '')}}
+                {{ (getvalue(i,j) == 0 ? 'none' : '')}}
+
+                {{ (getKeys(i,j) == 0 ? 'keysyellow' : '')}}
+                {{ (getKeys(i,j) == 1 ? 'keysblue' : '')}}
+                {{ (getKeys(i,j) == 2 ? 'keyspurple' : '')}}
+                {{ (getKeys(i,j) == 3 ? 'keysred' : '')}}
+                {{ (getKeys(i,j) == 4 ? 'keysgreen' : '')}}
+                {{ (getKeys(i,j) == 5 ? 'keysorange' : '')}}
+
+                {{ (getDoors(i,j)[0] == 0 ? 'doorsyellow' : '')}}
+                {{ (getDoors(i,j)[0] == 1 ? 'doorsblue' : '')}}
+                {{ (getDoors(i,j)[0] == 2 &&  getDoors(i,j)[1] == 1 ? 'doorspurple1' : '')}}
+                {{ (getDoors(i,j)[0] == 2 &&  getDoors(i,j)[1] == 3 ? 'doorspurple2' : '')}}
+                {{ (getDoors(i,j)[0] == 3 ? 'doorsred' : '')}}
+                {{ (getDoors(i,j)[0] == 4 ? 'doorsgreen' : '')}}
+                {{ (getDoors(i,j)[0] == 5 ? 'doorsorange' : '')}}
+
+                {{ (getBooks(i,j) == 0 ? 'booksyellow' : '')}}
+                {{ (getBooks(i,j) == 1 ? 'booksblue' : '')}}
+                {{ (getBooks(i,j) == 2 ? 'bookspurple' : '')}}
+                {{ (getBooks(i,j) == 3 ? 'booksred' : '')}}
+                {{ (getBooks(i,j) == 4 ? 'booksgreen' : '')}}
+                {{ (getBooks(i,j) == 5 ? 'booksorange' : '')}}
+
+                {{ (getID() == 0 && perso(i,j) ? 'perso1' : '')}}
+                {{ (getID() == 1 && perso(i,j) ? 'perso2' : '')}}
+                {{ (getID() == 0 && exit(i,j) ? 'exit1' : '')}}
+                {{ (getID() == 1 && exit(i,j) ? 'exit2' : '')}}
+                "
+                >
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- [ngStyle]="{ 'background-image': setImage(i, j) }"-->
+
+    <!--<div fxFlex="40" [hidden]="!hasWon">
+      <img class="level-complete" src="assets/canvas-images/success.png" />
+    </div>
+    <div fxFlex="40" [hidden]="!hasLost">
+      <img class="level-complete" src="assets/canvas-images/failed.jpg" />
+    </div>
+    <div fxFlex [hidden]="!hasWon && !hasLost">
+      <div class="next-level">
+        <button (click)="Navigate()">
+          Next Level
+        </button>
+      </div>
+    </div>
+    <div fxFlex [hidden]="!hasWon && !hasLost">
+      <div class="retry-level">
+        <button (click)="refresh()">
+          Retry Level
+        </button>
+      </div>
+    </div> -->
+
+    <div fxFlex>
+      <div class="buttons">
+        Inventory :
+        <button
+          class="case c1
+          {{ (isInventaire(0) ? 'keysyellow' : '')}}"
+          >
+        </button>
+        <button
+          class="case c1
+          {{ (isInventaire(1) ? 'keysblue' : '')}}"
+          >
+        </button>
+        <button
+          class="case c1
+          {{ (isInventaire(2) ? 'keyspurple' : '')}}"
+        >
+      </button>
+      <button
+          class="case c1
+          {{ (isInventaire(3) ? 'keysred' : '')}}"
+          >
+        </button>
+        <button
+          class="case c1
+          {{ (isInventaire(4) ? 'keysgreen' : '')}}"
+          >
+        </button>
+        <button
+          class="case c1
+          {{ (isInventaire(5) ? 'keysorange' : '')}}"
+        >
+        </button>
+        Number step : {{getNumberMove()}}  Time : {{gettime()}}
+      </div>
+    </div>
+
+    <div fxFlex>
+      <div class="buttons">
+        <!--<button
+          mat-button
+          [disabled]="id <= 0"
+          (click)="previousLevel()"
+        >
+          Previous Level
+        </button>-->
+        <button mat-button (click)="retry()">
+          <i class="material-icons">Retry Level</i>
+        </button>
+
+        <button mat-button (click)="refresh()">
+          <i class="material-icons">Retry All</i>
+        </button>
+
+        <!--<button
+        [disabled]="id  >= 1"
+          mat-button (click)="nextLevel()"
+        >
+          Next Level
+        </button>-->
+      </div>
+    </div>
+  </div>
+</div>
