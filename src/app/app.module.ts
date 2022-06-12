@@ -11,6 +11,11 @@ import { Jeu2Component } from './jeu-list/jeu2/jeu2.component';
 import { Jeu3Component } from './jeu-list/jeu3/jeu3.component';
 import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
 import { RuleJ3Component } from './jeu-list/jeu3/rule-j3/rule-j3.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RulesComponent } from './jeu-list/jeu2/rules/rules.component';
+import { GameOverComponent } from './jeu-list/jeu2/game-over/game-over.component';
 import { LabyrintheComponent } from './jeu-list/labyrinthe/labyrinthe.component';
 import { LevelComponent } from './jeu-list/labyrinthe/level/level.component';
 import { QuestionComponent } from './jeu-list/labyrinthe/question/question.component';
@@ -25,6 +30,8 @@ import {HotkeyModule} from 'angular2-hotkeys';
     Jeu3Component,
     Jeu4Component,
     RuleJ3Component,
+    RulesComponent,
+    GameOverComponent,
     LabyrintheComponent,
     LevelComponent,
     QuestionComponent
@@ -42,6 +49,11 @@ import {HotkeyModule} from 'angular2-hotkeys';
       { path: 'jeu/3/rule', component: RuleJ3Component},
       { path: '**', redirectTo: 'home', pathMatch: 'full'}
     ]),
+    BrowserAnimationsModule, 
+    MatDialogModule
+  ],
+  entryComponents : [
+    RulesComponent,
     HotkeyModule.forRoot(),
   ],
   providers: [],
