@@ -50,11 +50,12 @@ import {HotkeyModule} from 'angular2-hotkeys';
       { path: '**', redirectTo: 'home', pathMatch: 'full'}
     ]),
     BrowserAnimationsModule, 
-    MatDialogModule
+    MatDialogModule,
+    HotkeyModule.forRoot(),
   ],
   entryComponents : [
     RulesComponent,
-    HotkeyModule.forRoot(),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
