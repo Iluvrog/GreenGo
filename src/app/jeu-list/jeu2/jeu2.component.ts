@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { question } from 'src/app/models/question';
 import { QuestionService } from 'src/app/question/question.service';
 import {Question} from "../../question"
-
+import { MatDialog } from '@angular/material/dialog' ;
+import { RulesComponent } from './rules/rules.component';
+import { GameOverComponent } from './game-over/game-over.component';
 
 @Component({
   selector: 'app-jeu2',
@@ -37,10 +38,11 @@ export class Jeu2Component implements OnInit {
   score:number = 0 ;
   reponse:string | undefined;
   scores: number[] = [0,0,0,0];
-  maxLevel:number = 3;
+  maxLevel:number = 0;
 
 
-  constructor(private route: ActivatedRoute, private router:Router, public questionService: QuestionService) {
+  constructor(private route: ActivatedRoute, private router:Router, public questionService: QuestionService,
+    private dialogue: MatDialog) {
     this.questions = this.questionService.getNQuestions(20) ;
     this.currentQuestion = this.questions[0];
     if(this.currentQuestion.answerValue != undefined){
@@ -53,6 +55,7 @@ export class Jeu2Component implements OnInit {
   }
   
   ngOnInit(): void {
+
     this.genererNiveau();
     this.isQuestion = false;
 
@@ -71,6 +74,8 @@ export class Jeu2Component implements OnInit {
     
     if(localStorage.getItem('exit-J2') != null)
       this.exit = JSON.parse( localStorage.getItem('exit-J2') || "" ) ;
+
+    this.maxLevel = JSON.parse( localStorage.getItem('maxLevel-J2') || "0" ) ;
 
     this.plateau = this.niveaux[this.levelCounter] ;
     
@@ -266,32 +271,37 @@ export class Jeu2Component implements OnInit {
   }
 
   next(){
-    this.levelCounter++ ;
-    this.plateau = this.niveaux[this.levelCounter] ;
-    localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter));
+    if(this.levelCounter < 3){
+      this.levelCounter++ ;
+      this.plateau = this.niveaux[this.levelCounter] ;
+      localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter));
 
-    var Button = <HTMLInputElement> document.getElementById("previous") ;
-    if(this.levelCounter > 0)
-      Button.disabled = false;
+      var Button = <HTMLInputElement> document.getElementById("previous") ;
+      if(this.levelCounter > 0)
+        Button.disabled = false;
 
-    Button = <HTMLInputElement> document.getElementById("next") ;
-    if(this.levelCounter == this.maxLevel)
-      Button.disabled = true; 
+      Button = <HTMLInputElement> document.getElementById("next") ;
+      if(this.levelCounter == this.maxLevel)
+        Button.disabled = true; 
+    }
   }
 
   previous(){
-    this.levelCounter--;
-    this.plateau = this.niveaux[this.levelCounter] ;
+    if(this.levelCounter > 0){
+      this.levelCounter--;
+      this.plateau = this.niveaux[this.levelCounter] ;
 
-    localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
+      localStorage.setItem('levelCounter-J2', JSON.stringify(this.levelCounter) );
 
-    var Button = <HTMLInputElement> document.getElementById("next") ;
-    if(this.levelCounter < 3)
-      Button.disabled = false;
+      var Button = <HTMLInputElement> document.getElementById("next") ;
+      if(this.levelCounter < 3)
+        Button.disabled = false;
 
-    Button = <HTMLInputElement> document.getElementById("previous") ;
-    if(this.levelCounter <= 0)
-      Button.disabled = true;
+      Button = <HTMLInputElement> document.getElementById("previous") ;
+      if(this.levelCounter <= 0)
+        Button.disabled = true;
+    }
+    
   }
 
   async click(i:number, j:number){
@@ -301,7 +311,7 @@ export class Jeu2Component implements OnInit {
     if(this.plateau){ 
       if(this.plateau[this.currentPosition[0]][this.currentPosition[1]] == 5){
         if(this.levelCounter == 3){
-          //this.dialogue.open(GameOverComponent) ;
+          this.dialogue.open(GameOverComponent) ;
           return;
         }
         if(this.levelCounter == 0){
@@ -316,7 +326,6 @@ export class Jeu2Component implements OnInit {
       }
     }
 
-    //this.router.navigate(['que']) ;
     this.isQuestion = true ;
 
     this.answer = false ;
@@ -400,7 +409,7 @@ export class Jeu2Component implements OnInit {
   }
 
   openRules(){
-    //this.dialogue.open(RulesComponent) ;
+    this.dialogue.open(RulesComponent) ;
   }
 
   sum(list:number[]):number{
@@ -414,7 +423,6 @@ export class Jeu2Component implements OnInit {
 
   respond (resp:string, id:number){
     this.reponse = resp ;
-    //if(resp == this.currentQuestion?.reponse){
     if(this.currentQuestion?.answerValue){
        if(this.currentQuestion?.answerValue[id] != 0){
         this.score++ ;
