@@ -44,7 +44,8 @@ export class QuestionService {
     let lesQuestions =  []
     
     for (var a = [...Array(this.allQuestions?.length).keys()], i = n; i--; ) {
-      var random = Math.floor(Math.random()*this.allQuestions?.length);
+      var random = a.splice(Math.floor(Math.random() * i), 1)[0];
+      console.log(random)
       lesQuestions.push(this.allQuestions[random])
     }
      return lesQuestions 
