@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from "./service/level.service";
 import { HotkeysService, Hotkey } from 'angular2-hotkeys'; //npm install angular2-hotkeys --save
+import { question } from 'src/app/models/question';
+import { ServiceService } from './service/question.service';
 
 @Component({
   selector: 'app-labyrinthe',
@@ -52,7 +54,10 @@ export class LabyrintheComponent implements OnInit {
   timebegin : boolean = false;
   interval: any;
 
-  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService ) {
+  public isQuestion = false;
+  public isBook = false;
+
+  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService,public questionService:ServiceService ) {
     this.manPosition = [];
     this.setHotKeys();
     this.doorsPosition = [];
@@ -112,6 +117,8 @@ export class LabyrintheComponent implements OnInit {
         }else{
           this.time = 0;
         }
+
+        this.initQuestions();
   }
 
   getvalue(h : number, w : number): number {
@@ -347,6 +354,95 @@ export class LabyrintheComponent implements OnInit {
   }
 
   checkBook() : void{
+
+  }
+
+
+  questions: question[] = [];
+  currentQuestion: question | undefined;
+  counter:number = 0 ;
+  //score:number = 0 ;
+  reponse:string | undefined;
+
+  initQuestions(): void {
+
+    this.counter = JSON.parse( localStorage.getItem('counter') || "0" ) ;
+    if(localStorage.getItem('score') != null )
+      //this.service.scores = JSON.parse( localStorage.getItem('score') || "" ) ;
+
+    if(this.counter >= 5){
+      this.counter = 0 ;
+      //this.service.scores[this.service.levelCounter] = 0 ;
+    }
+
+    this.questions = [
+      {
+        question: 'question1...',
+        reponse: 'A',
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 0
+      },
+      {
+        question: 'question2...',
+        reponse: 'B',
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 1
+      },
+      {
+        question: 'question3...',
+        reponse: 'C',
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 2
+      },
+      {
+        question: 'question4...',
+        reponse: 'D',
+        choix: ['A','B','C','D'],
+        feedback: 'feedback',
+        type: 3
+      },
+      {
+        question: 'question5...',
+        reponse: 'F',
+        choix: ['V','F'],
+        feedback: 'feedback',
+        type: 3
+      }
+    ]
+    this.currentQuestion = this.questions[this.counter] ;
+  }
+
+  respond (resp:string, id:number){
+    this.reponse = resp ;
+    if(resp == this.currentQuestion?.reponse){
+      this.questionService.scores[this.questionService.levelCounter]++ ;
+      this.questionService.correctAnswer = true ;
+    }
+    else{
+      this.questionService.correctAnswer = false ;
+    }
+
+    this.counter++ ;
+    this.questionService.answer = true ;
+
+    localStorage.setItem('counter', JSON.stringify(this.counter) );
+    localStorage.setItem('score', JSON.stringify(this.questionService.scores) );
+    /*
+    for(var i=0; i <4; i++){
+      var Button = <HTMLInputElement> document.getElementById(i.toString()) ;
+      Button.disabled = true;
+    }
+    var Button = <HTMLInputElement> document.getElementById(id.toString()) ;
+    */
+  }
+
+  countinue(){
+    if(this.questionService.answer)
+      this.router.navigate(['jeu/2']) ;
+    this.currentQuestion = this.questions[this.counter] ;
 
   }
 }

@@ -13,7 +13,6 @@ import { Jeu4Component } from './jeu-list/jeu4/jeu4.component';
 import { RuleJ3Component } from './jeu-list/jeu3/rule-j3/rule-j3.component';
 import { LabyrintheComponent } from './jeu-list/labyrinthe/labyrinthe.component';
 import { LevelComponent } from './jeu-list/labyrinthe/level/level.component';
-import { QuestionComponent } from './jeu-list/labyrinthe/question/question.component';
 import {HotkeyModule} from 'angular2-hotkeys';
 
 @NgModule({
@@ -27,7 +26,6 @@ import {HotkeyModule} from 'angular2-hotkeys';
     RuleJ3Component,
     LabyrintheComponent,
     LevelComponent,
-    QuestionComponent
   ],
   imports: [
     BrowserModule,
