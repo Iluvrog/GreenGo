@@ -87,12 +87,12 @@
           </div>
 
           <div *ngIf="!isValidate" class="bouton">
-            <button (click)="reset()">Annuler</button>
-            <button (click)="valider()">Valider</button>
-        </div>
-        <div *ngIf="isValidate">
-            <button class="boutonDroit" (click)="countinue()">countinue</button>
-        </div>
+        <button (click)="reset()">Annuler</button>
+        <button (click)="valider()">Valider</button>
+    </div>
+    <div *ngIf="isValidate">
+        <button class="boutonDroit" (click)="countinue()">countinue</button>
+    </div>
       </div>
 
     <div *ngIf="!isQuestion" fxFlex="60">

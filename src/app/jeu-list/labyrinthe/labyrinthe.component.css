@@ -208,42 +208,42 @@
 }
 
 .doorsyellow{
-  border-top: 5px solid rgb(243, 243, 32);
+  background-image:  url(./assets/portes-3260521-haut.png);
   z-index: 2;
 }
 
 .doorsblue{
-  border-top: 5px solid rgb(88, 133, 247);
+  background-image:  url(./assets/portes-10975753-haut.png);
   z-index: 2;
 }
 
 .doorspurple1{
-  border-top: 5px solid rgb(206, 63, 151);
+  background-image:  url(./assets/portes-3260521-haut.png);
   z-index: 2;
 }
 
 .doorspurple2{
-  border-bottom: 5px solid rgb(206, 63, 151);
+  background-image:  url(./assets/portes-3260521-bas.png);
   z-index: 2;
 }
 
 .doorsorange{
-  border-left: 5px solid rgb(255, 191, 0);
+  background-image:  url(./assets/portes-jaune.png);
   z-index: 2;
 }
 
 .doorsgreen{
-  border-left: 5px solid rgb(64, 243, 5);
+  background-image:  url(./assets/portes-12520699-gauche.png);
   z-index: 2;
 }
 
 .doorsred{
-  border-left: 5px solid rgb(247, 91, 208);
+  background-image:  url(./assets/portes-566320-gauche.png);
   z-index: 2;
 }
 
 .perso1{
-  background-image:  url(./assets/objectif.png);
+  background-image:  url(./assets/personnage.png);
   width: 30px;
   height: 30px;
   pointer-events: none;
@@ -253,7 +253,7 @@
 }
 
 .perso2{
-  background-image:  url(./assets/objectif.png);
+  background-image:  url(./assets/personnage.png);
   width: 20px;
   height: 20px;
   pointer-events: none;
