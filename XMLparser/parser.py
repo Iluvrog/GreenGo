@@ -170,12 +170,12 @@ def Upload(questionList):
                         id = i[0]
 
                     for rep in reponses:
-                        if int(rep[1]) == 100:
-                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[1]+"')"
-                        elif int(rep[1]) == 0:
-                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[3]+"')"
+                        if int(float(rep[1])) == 100:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+str(int(float(rep[1])))+",'"+question.getFeedback()[1]+"')"
+                        elif int(float(rep[1])) == 0:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+str(int(float(rep[1])))+",'"+question.getFeedback()[3]+"')"
                         else:
-                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[2]+"')"
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+str(int(float(rep[1])))+",'"+question.getFeedback()[2]+"')"
 
                         try:
                             cur.execute(stmt)
@@ -195,7 +195,7 @@ def Upload(questionList):
                         err = 1
                 previous.append(rep)
 
-                if(0<int(rep[1])<100):
+                if(0<int(float(rep[1]))<100):
                     nbRepJuste = 2
 
             if(err ==  0):
@@ -217,12 +217,12 @@ def Upload(questionList):
                         id = i[0]
 
                     for rep in reponses:
-                        if int(rep[1]) == 100:
-                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[1]+"')"
-                        elif int(rep[1]) == 0 :
-                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[3]+"')"
+                        if int(float(rep[1])) == 100:
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+str(int(float(rep[1])))+",'"+question.getFeedback()[1]+"')"
+                        elif int(float(rep[1])) == 0 :
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+str(int(float(rep[1])))+",'"+question.getFeedback()[3]+"')"
                         else:
-                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+rep[1]+",'"+question.getFeedback()[2]+"')"
+                            stmt = "INSERT INTO Reponses VALUES("+str(id)+", '"+rep[0]+"', "+str(int(float(rep[1])))+",'"+question.getFeedback()[2]+"')"
                         try:
                             cur.execute(stmt)
                             print("inserted :"+stmt)
