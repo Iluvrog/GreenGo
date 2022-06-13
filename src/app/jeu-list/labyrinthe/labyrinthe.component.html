@@ -44,7 +44,58 @@
       </h3>
     </div>-->
 
-    <div fxFlex="60">
+    <div *ngIf="isQuestion" class="container rose">
+      <div class="container">
+          <div class="question">
+              <p>{{currentQuestion?.text}}</p>
+          </div>
+      </div>
+
+      <div class="container">
+          <div *ngIf="typeQuestion == 0 || typeQuestion == 1">
+              <div *ngFor="let choice of currentQuestion?.answers; let i = index;">
+                  <button class="choix
+                  {{ ((i == 0) ? is1 : '')}}
+                  {{ ((i == 1) ? is2 : '')}}
+                  {{ ((i == 2) ? is3 : '')}}
+                  {{ ((i == 3) ? is4 : '')}}
+                  {{ ((i == 0) ? colorQ1 : '')}}
+                  {{ ((i == 1) ? colorQ2 : '')}}
+                  {{ ((i == 2) ? colorQ3 : '')}}
+                  {{ ((i == 3) ? colorQ4 : '')}}"
+                  id="{{i}}"
+                  (click)="clickReponse(i+1)"
+                  >{{choice}}</button>
+              </div>
+          </div>
+        <div *ngIf="typeQuestion == 2">
+            <div *ngFor="let choice of currentQuestion?.answers; let i = index;">
+                <button class="choix
+                {{ ((i == 0) ? is1 : '')}}
+                {{ ((i == 1) ? is2 : '')}}
+                {{ ((i == 2) ? is3 : '')}}
+                {{ ((i == 3) ? is4 : '')}}
+                {{ ((i == 0) ? colorQ1 : '')}}
+                {{ ((i == 1) ? colorQ2 : '')}}
+                {{ ((i == 2) ? colorQ3 : '')}}
+                {{ ((i == 3) ? colorQ4 : '')}}"
+                id="{{i}}"
+                (click)="clickReponseM(i+1)"
+                >{{choice}}</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isValidate" class="bouton">
+            <button (click)="reset()">Annuler</button>
+            <button (click)="valider()">Valider</button>
+        </div>
+        <div *ngIf="isValidate">
+            <button class="boutonDroit" (click)="countinue()">countinue</button>
+        </div>
+      </div>
+
+    <div *ngIf="!isQuestion" fxFlex="60">
       <div class="{{ (getID() == 0 ? 'container1' : '')}}
       {{ (getID() == 1 ? 'container2' : '')}}">
         <div class="{{ (getID() == 0 ? 'row1' : '')}}

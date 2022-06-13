@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LevelService } from "./service/level.service";
 import { HotkeysService, Hotkey } from 'angular2-hotkeys'; //npm install angular2-hotkeys --save
 import { question } from 'src/app/models/question';
-import { ServiceService } from './service/question.service';
+import {Question} from "../../question"
+import { QuestionService } from 'src/app/question/question.service';
 
 @Component({
   selector: 'app-labyrinthe',
@@ -57,7 +58,7 @@ export class LabyrintheComponent implements OnInit {
   public isQuestion = false;
   public isBook = false;
 
-  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService,public questionService:ServiceService ) {
+  constructor(private route: ActivatedRoute, private router:Router, private LevelService: LevelService,private _hotkeysService: HotkeysService,public questionService:QuestionService ) {
     this.manPosition = [];
     this.setHotKeys();
     this.doorsPosition = [];
@@ -118,7 +119,21 @@ export class LabyrintheComponent implements OnInit {
           this.time = 0;
         }
 
-        this.initQuestions();
+        if( localStorage.getItem('cle')){
+          this.cle_question = JSON.parse( localStorage.getItem('cle') || "" ) ;
+        }
+        if( localStorage.getItem('question')){
+          this.isQuestion = JSON.parse( localStorage.getItem('question') || "" ) ;
+        }else{
+          this.isQuestion = false;
+        }
+        if( localStorage.getItem('q')){
+          this.currentQuestion = JSON.parse( localStorage.getItem('q') || "" ) ;
+          this.initQuestion();
+        }
+        if( localStorage.getItem('rep')){
+          this.reponse = JSON.parse( localStorage.getItem('rep') || "" ) ;
+        }
   }
 
   getvalue(h : number, w : number): number {
@@ -284,7 +299,12 @@ export class LabyrintheComponent implements OnInit {
   on_and_take_keys() : void{
     var n = this.getKeys(this.manPosition[0],this.manPosition[1]);
     if(n != -1){//take key
-      this.keysPosition[n][2] = 1;
+      //question
+      this.cle_question = n;
+      this.questionSuivante();
+      this.isQuestion = true;
+      this.reponse = false;
+      this.saveState();
     }
   }
 
@@ -338,6 +358,10 @@ export class LabyrintheComponent implements OnInit {
     localStorage.setItem('doorsPosition', JSON.stringify(this.doorsPosition) );
     localStorage.setItem('keysPosition', JSON.stringify(this.keysPosition) );
     localStorage.setItem('time', JSON.stringify(this.time) );
+    localStorage.setItem('cle', JSON.stringify(this.cle_question) );
+    localStorage.setItem('question', JSON.stringify(this.isQuestion) );
+    localStorage.setItem('q', JSON.stringify(this.currentQuestion) );
+    localStorage.setItem('rep', JSON.stringify(this.reponse) );
   }
 
   onAction(){
@@ -354,95 +378,153 @@ export class LabyrintheComponent implements OnInit {
   }
 
   checkBook() : void{
-
+      // todo
   }
 
+  currentQuestion: Question = new Question();
+  reponse: boolean = false;
 
-  questions: question[] = [];
-  currentQuestion: question | undefined;
-  counter:number = 0 ;
-  //score:number = 0 ;
-  reponse:string | undefined;
+  cle_question : number = 0;
 
-  initQuestions(): void {
+  isActivate = false;
+  isValidate = false;
+  isFinish = false;
+  isGenerate = false;
+  previousNb = 0;
+  nbQuestion = 1;
+  nbRepJuste = 0;
 
-    this.counter = JSON.parse( localStorage.getItem('counter') || "0" ) ;
-    if(localStorage.getItem('score') != null )
-      //this.service.scores = JSON.parse( localStorage.getItem('score') || "" ) ;
+  typeQuestion: number|undefined;
 
-    if(this.counter >= 5){
-      this.counter = 0 ;
-      //this.service.scores[this.service.levelCounter] = 0 ;
-    }
+  is1 = false;
+  is2 = false;
+  is3 = false;
+  is4 = false;
 
-    this.questions = [
-      {
-        question: 'question1...',
-        reponse: 'A',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 0
-      },
-      {
-        question: 'question2...',
-        reponse: 'B',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 1
-      },
-      {
-        question: 'question3...',
-        reponse: 'C',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 2
-      },
-      {
-        question: 'question4...',
-        reponse: 'D',
-        choix: ['A','B','C','D'],
-        feedback: 'feedback',
-        type: 3
-      },
-      {
-        question: 'question5...',
-        reponse: 'F',
-        choix: ['V','F'],
-        feedback: 'feedback',
-        type: 3
-      }
-    ]
-    this.currentQuestion = this.questions[this.counter] ;
+  q1 = 1;
+  q2 = 1;
+  q3 = 1;
+  q4 = 0;
+
+  colorQ1: string|null = 'nothing';
+  colorQ2: string|null = 'nothing';
+  colorQ3: string|null = 'nothing';
+  colorQ4: string|null = 'nothing';
+
+  reponse_string : string|undefined;
+
+  clickReponse(nb: number){
+    let tab = this.questionService.clickReponse(nb, this.previousNb, this.is1, this.is2, this.is3, this.is4, this.isValidate, this.isActivate);
+    this.is1 = tab[0];
+    this.is2 = tab[1];
+    this.is3 = tab[2];
+    this.is4 = tab[3];
+    this.isActivate = tab[4];
+    this.previousNb = tab[5];
   }
 
-  respond (resp:string, id:number){
-    this.reponse = resp ;
-    if(resp == this.currentQuestion?.reponse){
-      this.questionService.scores[this.questionService.levelCounter]++ ;
-      this.questionService.correctAnswer = true ;
-    }
-    else{
-      this.questionService.correctAnswer = false ;
-    }
-
-    this.counter++ ;
-    this.questionService.answer = true ;
-
-    localStorage.setItem('counter', JSON.stringify(this.counter) );
-    localStorage.setItem('score', JSON.stringify(this.questionService.scores) );
-    /*
-    for(var i=0; i <4; i++){
-      var Button = <HTMLInputElement> document.getElementById(i.toString()) ;
-      Button.disabled = true;
-    }
-    var Button = <HTMLInputElement> document.getElementById(id.toString()) ;
-    */
+  clickReponseM(nb: number){
+    let tab = this.questionService.clickReponseM(nb, this.previousNb, this.is1, this.is2, this.is3, this.is4, this.isActivate, this.isValidate);
+    this.is1 = tab[0];
+    this.is2 = tab[1];
+    this.is3 = tab[2];
+    this.is4 = tab[3];
+    this.isActivate = tab[4];
   }
 
   countinue(){
-    if(this.questionService.answer)
-      this.router.navigate(['jeu/2']) ;
-    this.currentQuestion = this.questions[this.counter] ;
+    this.isQuestion = false;
+  }
 
+  valider(){
+    if(this.q3 == undefined){
+      this.q3 = 0;
+    }
+    if(this.q4 == undefined){
+      this.q4 = 0;
+    }
+    let tab = this.questionService.valider(this.is1, this.is2, this.is3, this.is4, this.q1, this.q2, this.q3, this.q4, this.isActivate, 0, this.colorQ1, this.colorQ2, this.colorQ3, this.colorQ4, 0, true, false);
+    this.colorQ1 = tab[0];
+    this.colorQ2 = tab[1];
+    this.colorQ3 = tab[2];
+    this.colorQ4 = tab[3];
+    this.isValidate = tab[4];
+    if(this.isValidate){
+      this.is1 = tab[6];
+      this.is2 = tab[7];
+      this.is3 = tab[8];
+      this.is4 = tab[9];
+      this.isActivate = tab[10];
+      this.previousNb = tab[11];
+      this.reponse = tab[12];
+
+      if(this.reponse){
+          this.keysPosition[this.cle_question][2] = 1;
+          this.isQuestion = false;
+      }
+    }
+    this.saveState();
+  }
+
+  reset(){
+    let tab = this.questionService.reset();
+
+    this.is1 = tab[0];
+    this.is2 = tab[1];
+    this.is3 = tab[2];
+    this.is4 = tab[3];
+    this.isActivate = tab[4];
+    this.previousNb = tab[5];
+  }
+
+  questionSuivante(){
+
+    this.currentQuestion = this.questionService.getNQuestions(1)[0] ;
+    if(this.currentQuestion.answerValue != undefined){
+      this.q1 = this.currentQuestion.answerValue[0];
+      this.q2 = this.currentQuestion.answerValue[1];
+      this.q3 = this.currentQuestion.answerValue[2];
+      this.q4 = this.currentQuestion.answerValue[3];
+    }
+    this.typeQuestion = this.currentQuestion.questionType;
+
+
+    let tab = this.questionService.questionSuivante(this.nbQuestion, true, 1);
+
+    this.is1 = tab[2];
+    this.is2 = tab[3];
+    this.is3 = tab[4];
+    this.is4 = tab[5];
+    this.previousNb = tab[7];
+    this.isValidate = tab[8];
+    this.colorQ1 = tab[9];
+    this.colorQ2 = tab[10];
+    this.colorQ3 = tab[11];
+    this.colorQ4 = tab[12];
+    this.saveState();
+  }
+
+  initQuestion(){
+    if(this.currentQuestion.answerValue != undefined){
+      this.q1 = this.currentQuestion.answerValue[0];
+      this.q2 = this.currentQuestion.answerValue[1];
+      this.q3 = this.currentQuestion.answerValue[2];
+      this.q4 = this.currentQuestion.answerValue[3];
+    }
+    this.typeQuestion = this.currentQuestion.questionType;
+
+
+    let tab = this.questionService.questionSuivante(this.nbQuestion, true, 1);
+
+    this.is1 = tab[2];
+    this.is2 = tab[3];
+    this.is3 = tab[4];
+    this.is4 = tab[5];
+    this.previousNb = tab[7];
+    this.isValidate = tab[8];
+    this.colorQ1 = tab[9];
+    this.colorQ2 = tab[10];
+    this.colorQ3 = tab[11];
+    this.colorQ4 = tab[12];
   }
 }

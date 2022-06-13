@@ -327,3 +327,112 @@ img {
   font-family: "Montserrat";
   font-weight: bold;
 }
+
+
+
+
+
+
+
+
+
+.p {
+  background-color: black;
+}
+
+.question.question{
+  display: block;
+width: 100%;
+padding: 10px 15px;
+appearance: none;
+border: none;
+margin-top: 15px;
+font-size: 20px;
+outline: none;
+  text-align: center;
+}
+
+.choix{
+  background-color: rgba(156, 51, 135, 0.721);
+  border: none;
+  width: 98%;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  margin-top: 2%;
+  margin-left: 1%;
+  margin-bottom: 2%;
+  border-radius:10px;
+  text-align: center;
+}
+
+.score {
+  padding-top: 2%;
+  font-size: 200%;
+  border-color: black;
+  text-align: center;
+}
+
+.countinue {
+  width: 20%;
+  background-color:rgba(70, 161, 78, 0.71);
+  margin-left: 40%;
+}
+
+.choix.correct {
+  background-color:rgba(70, 161, 78, 0.71);
+}
+
+.choix.incorrect {
+  background-color:rgba(161, 70, 70, 0.71);
+}
+
+.choix.respond {
+  pointer-events: none;
+}
+
+
+.feedback {
+  text-align: center;
+  font-size: large;
+}
+
+.boutonDroit{
+  position: relative!important;
+  display: inline-block!important;
+  float: right!important;
+  display: flex;
+  justify-content: end;
+  background-color:rgba(70, 161, 78, 0.71);
+}
+
+.true{
+  background-color: rgb(59, 161, 155)!important;
+}
+
+.green{
+  background-color: #44c963!important;
+}
+
+.red{
+  background-color: rgba(237, 65, 65, 0.959)!important;
+}
+
+.blue{
+  background-color: #44c963!important;;
+}
+
+.nouvellePartie{
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+}
+
+.bouton{
+  display: flex;
+  justify-content:space-between;
+}
+
+.rose{
+  background-color: rgba(111, 41, 97, 0.3)!important;
+  border: 2px solid rgba(66, 8, 55, 0.71);
+}
