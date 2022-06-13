@@ -20,6 +20,7 @@ import { LabyrintheComponent } from './jeu-list/labyrinthe/labyrinthe.component'
 import { LevelComponent } from './jeu-list/labyrinthe/level/level.component';
 import {HotkeyModule} from 'angular2-hotkeys';
 
+
 @NgModule({
   declarations: [
     AppComponent,

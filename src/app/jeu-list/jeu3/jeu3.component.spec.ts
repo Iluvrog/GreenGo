@@ -19,6 +19,7 @@ describe('Jeu3Component', () => {
     fixture = TestBed.createComponent(Jeu3Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.reset();
   });
 
   it('should create', () => {
@@ -115,7 +116,7 @@ describe('Jeu3Component', () => {
   it('should start timer', () => {
     component.startTimer(10);
     expect(component.isStart).toBe(true);
-    expect(component.colorTimer).toEqual('textRouge');
+    //expect(component.colorTimer).toEqual('textRouge');
   });
 
   it('should load', ()=>{
@@ -156,22 +157,22 @@ describe('Jeu3Component', () => {
   });
 
   it('should validate', () => {
-    component.isValidate = true;
-    component.valider();
     let service = component.getService();
-    let tab = service.valider(component.is1, component.is2, component.is3, component.is4, component.q1, component.q2, component.q3, component.q4, component.isActivate, component.nbRepJuste, component.colorQ1, component.colorQ2, component.colorQ3, component.colorQ4, 0, true, false);
-    //expect(component.colorQ1).toBe(tab[0]);
-    expect(component.colorQ2).toBe(tab[1]);
-    expect(component.colorQ3).toBe(tab[2]);
-    expect(component.colorQ4).toBe(tab[3]);
-   // expect(component.isValidate).toBe(tab[4]);
-    expect(component.nbRepJuste).toBe(tab[5]);
-    expect(component.is1).toBe(tab[6]);
-    expect(component.is2).toBe(tab[7]);
-    expect(component.is3).toBe(tab[8]);
-    expect(component.is4).toBe(tab[9]);
-    expect(component.isActivate).toBe(tab[10]);
-    expect(component.previousNb).toBe(tab[11]);
+    let tab = service.valider(true, false, false, false, 1,0,0,0, true, 4, 'nothing', 'nothing', 'nothing', 'nothing', 0, false, true);
+   // component.valider();
+    expect(tab[0]).toBe('green');
+    expect(tab[1]).toBe('nothing');
+    expect(tab[2]).toBe('nothing');
+    expect(tab[3]).toBe('nothing');
+    expect(tab[5]).toEqual(5);
+
+    let tab1 = service.valider(false, true, true, false, 1,0,1,0, true, 4, 'nothing', 'nothing', 'nothing', 'nothing', 0, false, true);
+    // component.valider();
+     expect(tab1[0]).toBe('blue');
+     expect(tab1[1]).toBe('red');
+     expect(tab1[2]).toBe('green');
+     expect(tab1[3]).toBe('nothing');
+     expect(tab1[5]).toEqual(3);
 
   });
 });
