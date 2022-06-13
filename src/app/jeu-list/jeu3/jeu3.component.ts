@@ -75,6 +75,9 @@ export class Jeu3Component implements OnInit {
 
     val = localStorage.getItem('isRep4-J3');
     this.isRep4 = (val == 'false') ? false : true;
+
+    var body = <HTMLElement> document.body;
+    body.classList.remove("mat-typography");
   }
 
   currentQuestionsList : Question[] | undefined;
